@@ -1,12 +1,33 @@
-name: Deploy Hugo site to GitHub Pages
+name: Hugo CI/CD
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Example: Markdown lint
+      - name: Lint Markdown
+        uses: avto-dev/markdown-lint@v1
+
+      # Example: HTMLProofer for link checking (optional, requires Ruby)
+      # - name: Check links
+      #   run: |
+      #     gem install html-proofer
+      #     hugo
+      #     htmlproofer ./public
+
+  build:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,7 +41,36 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: Deploy
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: public
+          path: public
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: public
+          path: public
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "Release ${{ github.run_number }}"
+          body: "Automated release of the Hugo site."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
