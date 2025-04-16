@@ -50,7 +50,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,17 +61,21 @@ jobs:
           name: public
           path: public
 
+      - name: Zip public folder
+        run: zip -r public.zip public
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.run_number }}
           name: "Release ${{ github.run_number }}"
           body: "Automated release of the Hugo site."
+          files: public.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./public
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
