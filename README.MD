@@ -51,6 +51,7 @@ hugo new content/posts/my-new-post.md
 
 
 ### Front Matter Template
+```markdown
 ---
 title: "Your Post Title"
 date: 2025-04-15
@@ -78,8 +79,9 @@ avatar: "/images/authors/your-avatar.jpg"
 social:
   twitter: "yourhandle"
   github: "yourhandle"
+```
 
-🛠 Development
+### 🛠 Development
 Available Make Commands
 make serve - Start local development server
 make build - Build the site
@@ -87,8 +89,11 @@ make clean - Clean build directory
 make new-post - Create a new post
 make check - Run validation checks
 make help - Show all available commands
-Project Structure
-.
+
+###Project Structure
+
+```bash
+./
 ├── archetypes/
 ├── content/
 │   └── posts/
@@ -101,8 +106,9 @@ Project Structure
 │   └── techishthoughts/
 ├── config.toml
 └── README.md
+```
 
-🚀 Deployment
+### 🚀 Deployment
 
 The site is automatically deployed to GitHub Pages when changes are pushed to the main branch.
 
