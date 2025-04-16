@@ -1,10 +1,4 @@
-.PHONY: help serve build clean new-post
-
-# Variables
-HUGO := hugo
-PORT := 1313
-POST_NAME ?= new-post
-AUTHOR ?= default-author
+.PHONY: help clean install build serve dev
 
 help: ## Show this help message
 	@echo 'Usage:'
@@ -13,27 +7,21 @@ help: ## Show this help message
 	@echo 'Targets:'
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
-serve: ## Start Hugo server with drafts enabled
-	$(HUGO) server -D --port $(PORT)
-
-build: clean ## Build the site
-	$(HUGO) --minify
-
-clean: ## Clean public directory
+clean: ## Clean generated files
 	rm -rf public/
-
-new-post: ## Create a new post (usage: make new-post POST_NAME="my-post-title" AUTHOR="author-id")
-	$(HUGO) new content/posts/$(POST_NAME).md
-	@sed -i '' '4i\author: $(AUTHOR)' content/posts/$(POST_NAME).md
-
-check: ## Run link checker and validation
-	$(HUGO)
-	@echo "Checking links..."
-	@# Add your preferred link checker here
+	rm -rf static/js/
+	rm -rf node_modules/
+	rm -f package-lock.json
 
 install: ## Install dependencies
-	@echo "Checking Hugo installation..."
-	@if ! command -v hugo >/dev/null 2>&1; then \
-		echo "Hugo not found. Please install Hugo: https://gohugo.io/installation/"; \
-		exit 1; \
-	fi
+	npm install
+
+build: ## Build both Hugo and React
+	npm run build
+	hugo --minify
+
+serve: ## Start Hugo server
+	hugo server
+
+dev: ## Start development servers
+	npm run watch & hugo server

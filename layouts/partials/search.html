@@ -1,0 +1,3 @@
+<div id="search-root"></div>
+{{ $js := resources.Get "js/main.tsx" | js.Build }}
+<script src="{{ $js.RelPermalink }}"></script>

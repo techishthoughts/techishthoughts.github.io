@@ -1,0 +1,56 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  <div class="post-meta">
+    {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+    {{ $dateHuman := .Date | time.Format ":date_long" }}
+    <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+    {{ with .Params.author }}
+      {{ $author := index site.Data.authors . }}
+      <span> | By {{ $author.name }}</span>
+    {{ end }}
+  </div>
+  {{ with .Params.author }}
+    {{ $author := index site.Data.authors . }}
+    <div class="author-box">
+      <img src="{{ $author.avatar | relURL }}" alt="{{ $author.name }}">
+      <div>
+        <strong>{{ $author.name }}</strong>
+        <div style="font-size:0.95em;color:#666;">{{ $author.bio }}</div>
+        {{ with $author.social.twitter }}
+          <a href="https://twitter.com/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;">Twitter</a>
+        {{ end }}
+        {{ with $author.social.linkedin }}
+          <a href="https://www.linkedin.com/in/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">LinkedIn</a>
+        {{ end }}
+        {{ with $author.social.instagram }}
+          <a href="https://www.instagram.com/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">Instagram</a>
+        {{ end }}
+        {{ with $author.social.facebook }}
+          <a href="https://www.facebook.com/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">Facebook</a>
+        {{ end }}
+        {{ with $author.social.youtube }}
+          <a href="https://www.youtube.com/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">YouTube</a>
+        {{ end }}
+        {{ with $author.social.twitch }}
+          <a href="https://www.twitch.tv/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">Twitch</a>
+        {{ end }}
+        {{ with $author.social.patreon }}
+          <a href="https://www.patreon.com/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">Patreon</a>
+        {{ end }}
+        {{ with $author.social.discord }}
+          <a href="https://discord.gg/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">Discord</a>
+        {{ end }}
+        {{ with $author.social.reddit }}
+          <a href="https://www.reddit.com/user/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">Reddit</a>
+        {{ end }}
+        {{ with $author.social.tiktok }}
+          <a href="https://www.tiktok.com/@{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">TikTok</a>
+        {{ end }}
+        {{ with $author.social.github }}
+          <a href="https://github.com/{{ . }}" target="_blank" rel="noopener" style="font-size:0.9em;margin-left:0.5em;">GitHub</a>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+  {{ .Content }}
+{{ end }}
