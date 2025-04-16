@@ -15,16 +15,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Example: Markdown lint
       - name: Lint Markdown
         uses: avto-dev/markdown-lint@v1
-
-      # Example: HTMLProofer for link checking (optional, requires Ruby)
-      # - name: Check links
-      #   run: |
-      #     gem install html-proofer
-      #     hugo
-      #     htmlproofer ./public
 
   build:
     needs: validate
@@ -33,12 +25,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Build React components
+        run: npm run build
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: "latest"
+          extended: true  # Required for SCSS/SASS
 
-      - name: Build
+      - name: Build Hugo site
         run: hugo --minify
 
       - name: Upload artifact
@@ -51,6 +56,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      pages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -69,13 +77,42 @@ jobs:
         with:
           tag_name: v${{ github.run_number }}
           name: "Release ${{ github.run_number }}"
-          body: "Automated release of the Hugo site."
+          body: |
+            Automated release of the Hugo site.
+            
+            Changes in this release:
+            ${{ github.event.head_commit.message }}
           files: public.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    needs: release
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify on success
+        if: ${{ success() }}
+        run: |
+          echo "✅ Deploy successful!"
+          # Add notification steps here (e.g., Slack, Discord, etc.)
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: |
+          echo "❌ Deploy failed!"
+          # Add notification steps here (e.g., Slack, Discord, etc.)
