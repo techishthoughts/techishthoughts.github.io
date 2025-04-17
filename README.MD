@@ -16,6 +16,7 @@ A collaborative tech blog built with [Hugo](https://gohugo.io/), featuring multi
 ### Local Development
 
 1. **Clone the repository**
+
     ```bash
     git clone https://github.com/techishthoughts/techishthoughts.github.io.git
     cd techishthoughts.github.io
@@ -23,28 +24,37 @@ A collaborative tech blog built with [Hugo](https://gohugo.io/), featuring multi
 
 2. **Install dependencies**
   **Note:** If you are using `npm` instead of `yarn`, you can skip this step.
+
     ```bash
     make install
     ```
+
     or
+
     ```bash
     npm install
     ```
 
 3. **Build React components**
+
     ```bash
     npm run build
     ```
 
 4. **Start the Hugo server**
+
     ```bash
     make serve
-    # or
+    ```
+
+    or
+
+    ```bash
     hugo server -D
     ```
 
 5. **View the site**
-    - Open [http://localhost:1313](http://localhost:1313) in your browser.
+    - Open [http://localhost:1313](http://localhost:1313) in your browser to view the site.
 
 ---
 
@@ -63,6 +73,7 @@ Manually:
 ```bash
 hugo new content/posts/my-new-post.md
 ```
+
 ```makefile
 Front Matter Template
 ---
@@ -100,7 +111,7 @@ The blog features a fast, client-side search powered by React and Chakra UI.
 Search is available at the top of every page.
 
 🛠 Development
-Available Make Commands
+Available Make Commands:
 **make serve** - Start local development server
 **make build** - Build the site (React + Hugo)
 **make clean** - Clean build and static files
@@ -109,8 +120,9 @@ Available Make Commands
 **make help** - Show all available commands
 
 Project Structure
+
 ```bash
-.
+./
 ├── archetypes/
 ├── assets/
 │   └── js/
