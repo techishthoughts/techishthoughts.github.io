@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Categories | Tech.ish Thoughts</title>
+  <title>{{ block "title" . }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap">
   <style>
     body { font-family: 'Inter', Arial, sans-serif; background: #fff; color: #222; margin: 0; }
@@ -15,28 +15,5 @@
     .read-more { color: #ff6700; text-decoration: none; font-weight: 600; }
     @media (max-width: 800px) { .container { padding: 1rem; } }
   </style>
-  <div id="search-root"></div>
-
-<script src="/js/main.js"></script>
+  {{ partial "search.html" . }}
 </head>
-<body>
-  <div class="container">
-    <header>
-      <h1 style="font-size:2.5rem; margin-bottom:0.2em;">Tech.ish Thoughts</h1>
-      <p style="color:#666; margin-top:0;">A collaborative tech blog for everyone.</p>
-      <nav>
-        <a href="/">Home</a> | <a href="/posts/">Posts</a>
-      </nav>
-    </header>
-    <main>
-      
-  <h2>Latest Posts</h2>
-  
-
-    </main>
-    <footer style="margin-top:3em; color:#aaa; font-size:0.9em;">
-      &copy; 2025 Tech.ish Thoughts. All rights reserved.
-    </footer>
-  </div>
-</body>
-</html>

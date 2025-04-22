@@ -1,0 +1,26 @@
+{
+  "authors": [
+    {
+      "name": "Arthur Costa",
+      "bio": "Tech enthusiast and writer at Tech.ish Thoughts.",
+      "avatar": "https://avatars.githubusercontent.com/u/31043997?v=4",
+      "social": {
+        "linkedin": "https://www.linkedin.com/in/arthur-alves-da-costa/",
+        "github": "https://github.com/thukabjj",
+        "twitter": "https://twitter.com/arthurcosta_",
+        "instagram": "https://www.instagram.com/arthurcosta_/"
+      }
+    },
+    {
+      "name": "Lucas Oliveira",
+      "bio": "Tech enthusiast and writer at Tech.ish Thoughts.",
+      "avatar": "https://avatars.githubusercontent.com/u/31043997?v=4",
+      "social": {
+        "linkedin": "https://www.linkedin.com/in/lucas-oliveira-7a0b1a1b8/",
+        "github": "https://github.com/thukabjj",
+        "twitter": "https://twitter.com/arthurcosta_",
+        "instagram": "https://www.instagram.com/arthurcosta_/"
+      }
+    }
+  ]
+}
