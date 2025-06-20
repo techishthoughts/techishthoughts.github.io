@@ -106,26 +106,21 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{js,jsx,json,css,md,yml,yaml}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{cjs,mjs}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "data/authors.json": [
       "node scripts/validate-authors.cjs",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "content/posts/*.md": [
       "node scripts/validate-frontmatter.cjs",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "engines": {
