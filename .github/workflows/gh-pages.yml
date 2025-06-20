@@ -349,11 +349,217 @@ jobs:
           path: build-report.txt
           retention-days: 30
 
-  deploy:
-    name: 🚀 Deploy to GitHub Pages
+  tag:
+    name: 🏷️ Generate Tags & Release
     needs: [validate, test, build]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      packages: write
+    outputs:
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
+      changelog: ${{ steps.tag_version.outputs.changelog }}
+      release_created: ${{ steps.tag_version.outputs.release_created }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔍 Analyze Commits for Version Bump
+        id: analyze_commits
+        run: |
+          echo "🔍 Analyzing commits since last tag..."
+
+          # Get the latest tag
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+
+          # Get commits since last tag
+          COMMITS=$(git log ${LATEST_TAG}..HEAD --oneline --no-merges)
+          echo "Commits since last tag:"
+          echo "$COMMITS"
+
+          # Analyze commit types for semantic versioning
+          MAJOR_BUMP=false
+          MINOR_BUMP=false
+          PATCH_BUMP=false
+
+          while IFS= read -r commit; do
+            if [[ $commit == *"BREAKING CHANGE"* ]] || [[ $commit == *"feat!"* ]] || [[ $commit == *"fix!"* ]]; then
+              MAJOR_BUMP=true
+              echo "🚨 Major version bump detected: $commit"
+            elif [[ $commit == *"feat:"* ]] || [[ $commit == *"feat("* ]]; then
+              MINOR_BUMP=true
+              echo "✨ Minor version bump detected: $commit"
+            elif [[ $commit == *"fix:"* ]] || [[ $commit == *"fix("* ]] || [[ $commit == *"perf:"* ]] || [[ $commit == *"perf("* ]]; then
+              PATCH_BUMP=true
+              echo "🐛 Patch version bump detected: $commit"
+            fi
+          done <<< "$COMMITS"
+
+          # Determine version bump type
+          if [ "$MAJOR_BUMP" = true ]; then
+            echo "bump_type=major" >> $GITHUB_OUTPUT
+            echo "🚨 Will create MAJOR version bump"
+          elif [ "$MINOR_BUMP" = true ]; then
+            echo "bump_type=minor" >> $GITHUB_OUTPUT
+            echo "✨ Will create MINOR version bump"
+          elif [ "$PATCH_BUMP" = true ]; then
+            echo "bump_type=patch" >> $GITHUB_OUTPUT
+            echo "🐛 Will create PATCH version bump"
+          else
+            echo "bump_type=none" >> $GITHUB_OUTPUT
+            echo "ℹ️ No version bump needed"
+          fi
+
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+      - name: 🏷️ Generate New Version Tag
+        id: tag_version
+        if: steps.analyze_commits.outputs.bump_type != 'none'
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: ${{ steps.analyze_commits.outputs.bump_type }}
+          tag_prefix: "v"
+          release_branches: "main"
+          create_annotated_tag: true
+          custom_tag: ${{ steps.analyze_commits.outputs.bump_type != 'none' && '' || 'skip' }}
+
+      - name: 📝 Generate Changelog
+        id: changelog
+        if: steps.tag_version.outputs.new_tag
+        run: |
+          echo "📝 Generating changelog for ${{ steps.tag_version.outputs.new_tag }}..."
+
+          PREVIOUS_TAG="${{ steps.analyze_commits.outputs.latest_tag }}"
+          NEW_TAG="${{ steps.tag_version.outputs.new_tag }}"
+
+          # Generate changelog content
+          CHANGELOG="## 🚀 What's Changed in $NEW_TAG
+
+          ### 📅 Release Date
+          $(date '+%Y-%m-%d %H:%M:%S UTC')
+
+          ### 📊 Commits Since $PREVIOUS_TAG
+          "
+
+          # Get commits and categorize them
+          git log ${PREVIOUS_TAG}..HEAD --oneline --no-merges | while IFS= read -r commit; do
+            if [[ $commit == *"feat:"* ]] || [[ $commit == *"feat("* ]]; then
+              echo "### ✨ New Features" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            elif [[ $commit == *"fix:"* ]] || [[ $commit == *"fix("* ]]; then
+              echo "### 🐛 Bug Fixes" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            elif [[ $commit == *"docs:"* ]] || [[ $commit == *"docs("* ]]; then
+              echo "### 📚 Documentation" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            elif [[ $commit == *"style:"* ]] || [[ $commit == *"refactor:"* ]]; then
+              echo "### 🎨 Code Style & Refactoring" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            elif [[ $commit == *"perf:"* ]] || [[ $commit == *"perf("* ]]; then
+              echo "### ⚡ Performance Improvements" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            elif [[ $commit == *"test:"* ]] || [[ $commit == *"test("* ]]; then
+              echo "### 🧪 Tests" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            elif [[ $commit == *"ci:"* ]] || [[ $commit == *"ci("* ]]; then
+              echo "### 🔧 CI/CD" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            else
+              echo "### 🔄 Other Changes" >> changelog_temp.md
+              echo "- $commit" >> changelog_temp.md
+            fi
+          done
+
+          # Add build and deployment info
+          echo "
+          ### 🏗️ Build Information
+          - **Node.js Version**: ${{ env.NODE_VERSION }}
+          - **Hugo Version**: ${{ env.HUGO_VERSION }}
+          - **Build Date**: $(date '+%Y-%m-%d %H:%M:%S UTC')
+          - **Commit SHA**: ${{ github.sha }}
+
+          ### 🔗 Links
+          - [📊 Full Changelog](https://github.com/${{ github.repository }}/compare/${PREVIOUS_TAG}...${NEW_TAG})
+          - [🌐 Live Site](https://techishthoughts.github.io)
+          - [📦 Build Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          " >> changelog_temp.md
+
+          # Save changelog to output
+          if [ -f changelog_temp.md ]; then
+            cat changelog_temp.md >> $GITHUB_OUTPUT
+            echo "changelog_file=changelog_temp.md" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🎉 Create GitHub Release
+        if: steps.tag_version.outputs.new_tag
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          name: "Release ${{ steps.tag_version.outputs.new_tag }}"
+          body: |
+            ## 🚀 Tech.ish Thoughts - Release ${{ steps.tag_version.outputs.new_tag }}
+
+            ### 📅 Release Information
+            - **Release Date**: ${{ steps.tag_version.outputs.release_date }}
+            - **Previous Version**: ${{ steps.analyze_commits.outputs.latest_tag }}
+            - **Version Bump**: ${{ steps.analyze_commits.outputs.bump_type }}
+
+            ### 🔄 Changes
+            This release includes all commits since ${{ steps.analyze_commits.outputs.latest_tag }}.
+
+            ### 🏗️ Build Details
+            - **Node.js**: v${{ env.NODE_VERSION }}
+            - **Hugo**: v${{ env.HUGO_VERSION }}
+            - **Commit**: ${{ github.sha }}
+
+            ### 🔗 Quick Links
+            - [🌐 Live Site](https://techishthoughts.github.io)
+            - [📊 Full Changelog](https://github.com/${{ github.repository }}/compare/${{ steps.analyze_commits.outputs.latest_tag }}...${{ steps.tag_version.outputs.new_tag }})
+            - [📦 Build Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ---
+            *Automatically generated release from CI/CD pipeline*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            HUGO_VALIDATION_FIXES.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📊 Update Package Version
+        if: steps.tag_version.outputs.new_tag
+        run: |
+          echo "📊 Updating package.json version to match tag..."
+          NEW_VERSION="${{ steps.tag_version.outputs.new_tag }}"
+          # Remove 'v' prefix if present
+          CLEAN_VERSION=${NEW_VERSION#v}
+
+          # Update package.json version
+          npm version $CLEAN_VERSION --no-git-tag-version
+
+          echo "✅ Updated package.json version to $CLEAN_VERSION"
+
+      - name: 📤 Commit Version Update
+        if: steps.tag_version.outputs.new_tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ steps.tag_version.outputs.new_tag }}" || exit 0
+          git push origin main
+
+  deploy:
+    name: 🚀 Deploy to GitHub Pages
+    needs: [validate, test, build, tag]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && always()
     permissions:
       contents: read
       pages: write
@@ -387,7 +593,7 @@ jobs:
 
   notify:
     name: 📬 Send Notifications
-    needs: [validate, test, build, deploy]
+    needs: [validate, test, build, tag, deploy]
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -404,8 +610,17 @@ jobs:
           echo "| 🔍 Validation | ${{ needs.validate.result }} | - |" >> $GITHUB_STEP_SUMMARY
           echo "| 🧪 Testing | ${{ needs.test.result }} | - |" >> $GITHUB_STEP_SUMMARY
           echo "| 🏗️ Build | ${{ needs.build.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏷️ Tagging | ${{ needs.tag.result }} | - |" >> $GITHUB_STEP_SUMMARY
           echo "| 🚀 Deploy | ${{ needs.deploy.result }} | - |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Add release information if a tag was created
+          if [ "${{ needs.tag.outputs.new_tag }}" != "" ]; then
+            echo "## 🎉 New Release Created" >> $GITHUB_STEP_SUMMARY
+            echo "- **Version**: ${{ needs.tag.outputs.new_tag }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Release URL**: [View Release](https://github.com/${{ github.repository }}/releases/tag/${{ needs.tag.outputs.new_tag }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
 
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "## 🔗 Important Links" >> $GITHUB_STEP_SUMMARY
@@ -449,7 +664,8 @@ jobs:
             const buildStatus = {
               validate: '${{ needs.validate.result }}',
               test: '${{ needs.test.result }}',
-              build: '${{ needs.build.result }}'
+              build: '${{ needs.build.result }}',
+              tag: '${{ needs.tag.result }}'
             };
 
             const statusEmoji = {
@@ -467,6 +683,7 @@ jobs:
             | 🔍 Validation | \${statusEmoji[buildStatus.validate] || '❓'} | \${buildStatus.validate} |
             | 🧪 Testing | \${statusEmoji[buildStatus.test] || '❓'} | \${buildStatus.test} |
             | 🏗️ Build | \${statusEmoji[buildStatus.build] || '❓'} | \${buildStatus.build} |
+            | 🏷️ Tagging | \${statusEmoji[buildStatus.tag] || '❓'} | \${buildStatus.tag} |
 
             ### 📊 Summary
             \${buildStatus.build === 'success' ?
