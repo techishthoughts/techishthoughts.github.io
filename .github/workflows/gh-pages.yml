@@ -10,7 +10,7 @@ on:
     - cron: '0 2 * * 0'
 
 env:
-  HUGO_VERSION: '0.126.0'
+  HUGO_VERSION: '0.147.5'
   NODE_VERSION: '20'
 
 jobs:

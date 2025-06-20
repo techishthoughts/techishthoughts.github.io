@@ -1,130 +1,130 @@
 version: 2
 updates:
   # Enable updates for npm dependencies
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: 'weekly'
+      day: 'monday'
     open-pull-requests-limit: 10
     commit-message:
-      prefix: "deps"
-      prefix-development: "deps-dev"
-      include: "scope"
+      prefix: 'deps'
+      prefix-development: 'deps-dev'
+      include: 'scope'
     labels:
-      - "dependencies"
-      - "automated"
-    rebase-strategy: "auto"
+      - 'dependencies'
+      - 'automated'
+    rebase-strategy: 'auto'
     allow:
-      - dependency-type: "direct"
-      - dependency-type: "indirect"
-      - dependency-type: "all"
+      - dependency-type: 'direct'
+      - dependency-type: 'indirect'
+      - dependency-type: 'all'
     ignore:
-      - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
     groups:
       react-ecosystem:
         patterns:
-          - "react*"
-          - "@types/react*"
+          - 'react*'
+          - '@types/react*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       testing:
         patterns:
-          - "*test*"
-          - "*vitest*"
-          - "*playwright*"
-          - "@testing-library/*"
+          - '*test*'
+          - '*vitest*'
+          - '*playwright*'
+          - '@testing-library/*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       build-tools:
         patterns:
-          - "vite*"
-          - "@vitejs/*"
-          - "typescript"
-          - "eslint*"
-          - "prettier"
+          - 'vite*'
+          - '@vitejs/*'
+          - 'typescript'
+          - 'eslint*'
+          - 'prettier'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       ui-components:
         patterns:
-          - "@chakra-ui/*"
-          - "@emotion/*"
-          - "framer-motion"
+          - '@chakra-ui/*'
+          - '@emotion/*'
+          - 'framer-motion'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
 
   # Enable updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "tuesday"
+      interval: 'weekly'
+      day: 'tuesday'
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "ci"
-      include: "scope"
+      prefix: 'ci'
+      include: 'scope'
     labels:
-      - "github-actions"
-      - "ci/cd"
-      - "automated"
-    rebase-strategy: "auto"
+      - 'github-actions'
+      - 'ci/cd'
+      - 'automated'
+    rebase-strategy: 'auto'
     allow:
-      - dependency-type: "direct"
-      - dependency-type: "indirect"
+      - dependency-type: 'direct'
+      - dependency-type: 'indirect'
     groups:
       actions:
         patterns:
-          - "actions/*"
-          - "github/*"
+          - 'actions/*'
+          - 'github/*'
         update-types:
-          - "major"
-          - "minor"
-          - "patch"
+          - 'major'
+          - 'minor'
+          - 'patch'
 
   # Enable updates for Hugo modules (if any)
-  - package-ecosystem: "gomod"
-    directory: "/"
+  - package-ecosystem: 'gomod'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "09:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'wednesday'
+      time: '09:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 3
     reviewers:
-      - "techishthoughts/maintainers"
+      - 'techishthoughts/maintainers'
     commit-message:
-      prefix: "hugo"
-      include: "scope"
+      prefix: 'hugo'
+      include: 'scope'
     labels:
-      - "hugo"
-      - "go-modules"
-      - "automated"
-    rebase-strategy: "auto"
-    target-branch: "main"
+      - 'hugo'
+      - 'go-modules'
+      - 'automated'
+    rebase-strategy: 'auto'
+    target-branch: 'main'
 
   # Enable updates for Docker (if any Dockerfile exists)
-  - package-ecosystem: "docker"
-    directory: "/"
+  - package-ecosystem: 'docker'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "thursday"
-      time: "09:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'thursday'
+      time: '09:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 2
     reviewers:
-      - "techishthoughts/maintainers"
+      - 'techishthoughts/maintainers'
     commit-message:
-      prefix: "docker"
-      include: "scope"
+      prefix: 'docker'
+      include: 'scope'
     labels:
-      - "docker"
-      - "automated"
-    rebase-strategy: "auto"
-    target-branch: "main"
+      - 'docker'
+      - 'automated'
+    rebase-strategy: 'auto'
+    target-branch: 'main'

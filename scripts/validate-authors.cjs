@@ -13,7 +13,9 @@ function validateAuthors() {
 
   // Check if file exists
   if (!fs.existsSync(authorsPath)) {
-    console.log('⚠️  Authors file not found at data/authors.json, skipping validation');
+    console.log(
+      '⚠️  Authors file not found at data/authors.json, skipping validation'
+    );
     process.exit(0);
   }
 
@@ -37,7 +39,9 @@ function validateAuthors() {
       const requiredFields = ['name', 'bio', 'avatar'];
       requiredFields.forEach(field => {
         if (!author[field]) {
-          throw new Error(`Author '${authorId}' missing required field: ${field}`);
+          throw new Error(
+            `Author '${authorId}' missing required field: ${field}`
+          );
         }
       });
 
@@ -47,23 +51,31 @@ function validateAuthors() {
       }
 
       if (typeof author.bio !== 'string' || author.bio.trim().length < 20) {
-        throw new Error(`Author '${authorId}' bio must be at least 20 characters`);
+        throw new Error(
+          `Author '${authorId}' bio must be at least 20 characters`
+        );
       }
 
       if (author.bio.length > 250) {
-        console.warn(`⚠️  Author '${authorId}' bio is longer than 250 characters (${author.bio.length})`);
+        console.warn(
+          `⚠️  Author '${authorId}' bio is longer than 250 characters (${author.bio.length})`
+        );
       }
 
       // Validate avatar URL
       if (!author.avatar.startsWith('http')) {
-        throw new Error(`Author '${authorId}' avatar must be a valid HTTP/HTTPS URL`);
+        throw new Error(
+          `Author '${authorId}' avatar must be a valid HTTP/HTTPS URL`
+        );
       }
 
       // Validate social links if present
       if (author.social) {
         Object.entries(author.social).forEach(([platform, url]) => {
           if (url && !url.startsWith('http')) {
-            throw new Error(`Author '${authorId}' ${platform} link must be a valid HTTP/HTTPS URL`);
+            throw new Error(
+              `Author '${authorId}' ${platform} link must be a valid HTTP/HTTPS URL`
+            );
           }
         });
       }
@@ -73,7 +85,6 @@ function validateAuthors() {
 
     console.log('\n🎉 All authors validated successfully!');
     console.log(`📊 Summary: ${authors.length} authors validated`);
-
   } catch (error) {
     console.error(`❌ Author validation failed: ${error.message}`);
     process.exit(1);

@@ -19,7 +19,8 @@ function validateFrontMatter() {
 
   try {
     // Get all markdown files
-    const markdownFiles = fs.readdirSync(postsDir)
+    const markdownFiles = fs
+      .readdirSync(postsDir)
       .filter(file => file.endsWith('.md'))
       .map(file => path.join(postsDir, file));
 
@@ -41,13 +42,17 @@ function validateFrontMatter() {
 
         // Check if file has front matter
         if (!content.startsWith('---')) {
-          throw new Error(`Missing front matter delimiters (---) at the start of ${fileName}`);
+          throw new Error(
+            `Missing front matter delimiters (---) at the start of ${fileName}`
+          );
         }
 
         // Extract front matter
         const frontMatterEnd = content.indexOf('---', 3);
         if (frontMatterEnd === -1) {
-          throw new Error(`Missing closing front matter delimiter (---) in ${fileName}`);
+          throw new Error(
+            `Missing closing front matter delimiter (---) in ${fileName}`
+          );
         }
 
         const frontMatter = content.substring(3, frontMatterEnd).trim();
@@ -59,7 +64,10 @@ function validateFrontMatter() {
         frontMatterLines.forEach(line => {
           if (line.trim() && line.includes(':')) {
             const [key, ...valueParts] = line.split(':');
-            const value = valueParts.join(':').trim().replace(/^['"]|['"]$/g, '');
+            const value = valueParts
+              .join(':')
+              .trim()
+              .replace(/^['"]|['"]$/g, '');
             frontMatterData[key.trim()] = value;
           }
         });
@@ -73,14 +81,21 @@ function validateFrontMatter() {
         });
 
         // Validate title
-        if (frontMatterData.title.length < 10 || frontMatterData.title.length > 100) {
-          console.warn(`⚠️  Title in ${fileName} should be between 10-100 characters (current: ${frontMatterData.title.length})`);
+        if (
+          frontMatterData.title.length < 10 ||
+          frontMatterData.title.length > 100
+        ) {
+          console.warn(
+            `⚠️  Title in ${fileName} should be between 10-100 characters (current: ${frontMatterData.title.length})`
+          );
         }
 
         // Validate date format (basic check)
         const datePattern = /^\d{4}-\d{2}-\d{2}/;
         if (!datePattern.test(frontMatterData.date)) {
-          throw new Error(`Invalid date format in ${fileName}. Expected YYYY-MM-DD format.`);
+          throw new Error(
+            `Invalid date format in ${fileName}. Expected YYYY-MM-DD format.`
+          );
         }
 
         // Validate author if present
@@ -88,9 +103,13 @@ function validateFrontMatter() {
           // Check if author exists in authors.json
           const authorsPath = path.join(process.cwd(), 'data', 'authors.json');
           if (fs.existsSync(authorsPath)) {
-            const authorsData = JSON.parse(fs.readFileSync(authorsPath, 'utf8'));
+            const authorsData = JSON.parse(
+              fs.readFileSync(authorsPath, 'utf8')
+            );
             if (!authorsData[frontMatterData.author]) {
-              console.warn(`⚠️  Author '${frontMatterData.author}' in ${fileName} not found in authors.json`);
+              console.warn(
+                `⚠️  Author '${frontMatterData.author}' in ${fileName} not found in authors.json`
+              );
             }
           }
         }
@@ -98,22 +117,30 @@ function validateFrontMatter() {
         // Validate tags if present
         if (frontMatterData.tags) {
           const tagsStr = frontMatterData.tags.replace(/[[\]]/g, '');
-          const tags = tagsStr.split(',').map(tag => tag.trim().replace(/'/g, ''));
+          const tags = tagsStr
+            .split(',')
+            .map(tag => tag.trim().replace(/'/g, ''));
 
           if (tags.length > 10) {
-            console.warn(`⚠️  Too many tags in ${fileName} (${tags.length}). Consider limiting to 5-7 tags.`);
+            console.warn(
+              `⚠️  Too many tags in ${fileName} (${tags.length}). Consider limiting to 5-7 tags.`
+            );
           }
 
           tags.forEach(tag => {
             if (tag.length > 20) {
-              console.warn(`⚠️  Tag '${tag}' in ${fileName} is too long (${tag.length} chars). Keep tags under 20 characters.`);
+              console.warn(
+                `⚠️  Tag '${tag}' in ${fileName} is too long (${tag.length} chars). Keep tags under 20 characters.`
+              );
             }
           });
         }
 
         // Validate summary/description
         if (frontMatterData.summary && frontMatterData.summary.length > 200) {
-          console.warn(`⚠️  Summary in ${fileName} is too long (${frontMatterData.summary.length} chars). Keep under 200 characters for SEO.`);
+          console.warn(
+            `⚠️  Summary in ${fileName} is too long (${frontMatterData.summary.length} chars). Keep under 200 characters for SEO.`
+          );
         }
 
         // Check for draft status
@@ -123,7 +150,6 @@ function validateFrontMatter() {
 
         validatedCount++;
         console.log(`✅ ${fileName} validation passed`);
-
       } catch (error) {
         errorCount++;
         console.error(`❌ ${fileName}: ${error.message}`);
@@ -138,7 +164,6 @@ function validateFrontMatter() {
     } else {
       console.log('🎉 All front matter validation passed!');
     }
-
   } catch (error) {
     console.error(`❌ Front matter validation failed: ${error.message}`);
     process.exit(1);

@@ -40,13 +40,9 @@
       "name": "Developer",
       "email": "developer@techishthoughts.com"
     },
-    "added": [
-      "content/posts/new-post.md"
-    ],
+    "added": ["content/posts/new-post.md"],
     "removed": [],
-    "modified": [
-      "README.md"
-    ]
+    "modified": ["README.md"]
   },
   "commits": [
     {
@@ -62,13 +58,9 @@
         "name": "Developer",
         "email": "developer@techishthoughts.com"
       },
-      "added": [
-        "content/posts/new-post.md"
-      ],
+      "added": ["content/posts/new-post.md"],
       "removed": [],
-      "modified": [
-        "README.md"
-      ]
+      "modified": ["README.md"]
     }
   ]
 }

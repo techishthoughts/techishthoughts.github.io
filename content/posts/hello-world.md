@@ -2,12 +2,12 @@
 title: 'Hello World'
 date: 2024-01-15T10:00:00Z
 draft: false
-author: 'default'
+author: 'arthur-costa'
 tags: ['welcome', 'intro']
 summary: 'Welcome to Tech.ish Thoughts! This is our first post introducing the blog and what you can expect from our content.'
 ---
 
-# Welcome to Tech.ish Thoughts!
+# Welcome to Tech.ish Thoughts
 
 This is our inaugural post, and we're excited to share our journey with you. Tech.ish Thoughts is designed to be a platform where technology meets thoughtful discussion.
 
