@@ -412,6 +412,18 @@ jobs:
 
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
 
+      - name: 🧹 Clean up problematic tags
+        if: steps.analyze_commits.outputs.bump_type != 'none'
+        run: |
+          echo "🧹 Checking for problematic tags..."
+          # Remove vskip tag if it exists
+          if git tag -l | grep -q "^vskip$"; then
+            echo "Removing problematic vskip tag..."
+            git tag -d vskip || true
+            git push --delete origin vskip || true
+            echo "✅ Cleaned up vskip tag"
+          fi
+
       - name: 🏷️ Generate New Version Tag
         id: tag_version
         if: steps.analyze_commits.outputs.bump_type != 'none'
@@ -422,7 +434,6 @@ jobs:
           tag_prefix: 'v'
           release_branches: 'main'
           create_annotated_tag: true
-          custom_tag: ${{ steps.analyze_commits.outputs.bump_type != 'none' && '' || 'skip' }}
 
       - name: 📝 Generate Changelog
         id: changelog
