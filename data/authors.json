@@ -1,24 +1,138 @@
 {
   "arthur-costa": {
     "name": "Arthur Costa",
-    "bio": "Passionate tech enthusiast and experienced software developer, sharing insights and thoughtful perspectives on the latest technologies and industry trends.",
+    "title": "Senior Full-Stack Engineer & Tech Lead",
+    "bio": "Senior Full-Stack Engineer with 8+ years in React, TypeScript, and Node.js. Expert in performance optimization and leading engineering teams.",
+    "long_bio": "Arthur Costa is a seasoned software engineer with over 8 years of experience building scalable web applications and leading engineering teams. Currently working as a Senior Full-Stack Engineer at a leading tech company, Arthur has a passion for modern JavaScript ecosystems, performance optimization, and developer experience.\n\nHe has contributed to numerous open-source projects and is particularly interested in React's concurrent features, TypeScript's advanced type system, and web performance optimization. Arthur regularly speaks at tech conferences and mentors junior developers.\n\nWhen he's not coding, Arthur enjoys contributing to the tech community through blog posts, open-source contributions, and speaking engagements. He believes in sharing knowledge and helping others grow in their technical careers.",
     "avatar": "https://avatars.githubusercontent.com/u/31043997?v=4",
+    "location": "São Paulo, Brazil",
+    "company": "Tech Innovators Inc.",
+    "website": "https://arthurcosta.dev",
+    "expertise": [
+      "React & Next.js",
+      "TypeScript",
+      "Node.js & Express",
+      "Performance Optimization",
+      "System Architecture",
+      "Team Leadership",
+      "DevOps & CI/CD"
+    ],
+    "languages": ["JavaScript", "TypeScript", "Python", "Go"],
+    "tools": [
+      "React",
+      "Vue.js",
+      "Node.js",
+      "Docker",
+      "AWS",
+      "PostgreSQL",
+      "Redis"
+    ],
+    "certifications": [
+      "AWS Solutions Architect",
+      "Google Cloud Professional Developer",
+      "Certified Kubernetes Administrator (CKA)"
+    ],
+    "experience": {
+      "years": 8,
+      "current_role": "Senior Full-Stack Engineer",
+      "previous_roles": [
+        "Full-Stack Developer at StartupXYZ",
+        "Frontend Engineer at WebCorp",
+        "Junior Developer at DevStudio"
+      ]
+    },
+    "achievements": [
+      "Led migration of legacy system serving 1M+ users",
+      "Reduced application load time by 60% through optimization",
+      "Mentored 15+ junior developers",
+      "Contributed to 25+ open-source projects"
+    ],
     "social": {
       "linkedin": "https://www.linkedin.com/in/arthur-alves-da-costa/",
       "github": "https://github.com/thukabjj",
       "twitter": "https://twitter.com/arthurcosta_",
-      "instagram": "https://www.instagram.com/arthurcosta_/"
+      "instagram": "https://www.instagram.com/arthurcosta_/",
+      "youtube": "https://youtube.com/@arthurcosta",
+      "medium": "https://medium.com/@arthurcosta",
+      "stackoverflow": "https://stackoverflow.com/users/123456/arthur-costa"
+    },
+    "contact": {
+      "email": "arthur@techishthoughts.com",
+      "calendar": "https://calendly.com/arthur-costa"
+    },
+    "stats": {
+      "posts_count": 25,
+      "github_stars": 1200,
+      "followers": 850,
+      "contributions": 1500
     }
   },
   "lucas-oliveira": {
     "name": "Lucas Oliveira",
-    "bio": "Dedicated software developer and technology enthusiast with expertise in modern web development, passionate about creating innovative solutions and sharing knowledge.",
-    "avatar": "https://avatars.githubusercontent.com/u/31043997?v=4",
+    "title": "Backend Engineer & API Architect",
+    "bio": "Backend Engineer with 6+ years in API design and microservices. Expert in Node.js, Python, and Go development for scalable systems.",
+    "long_bio": "Lucas Oliveira is a backend engineer with 6+ years of experience specializing in API design, microservices architecture, and cloud-native applications. He has a strong background in Node.js, Python, and Go, with extensive experience in designing and implementing RESTful and GraphQL APIs that serve millions of requests daily.\n\nLucas is passionate about system design, database optimization, and creating developer-friendly APIs. He has worked with startups and established companies, helping them scale their backend infrastructure and improve their development workflows.\n\nHe's also an advocate for TypeScript and strongly-typed systems, believing that good type safety leads to more maintainable and reliable software. In his spare time, Lucas contributes to open-source projects and writes about backend development, API design, and system architecture.",
+    "avatar": "https://avatars.githubusercontent.com/u/87654321?v=4",
+    "location": "Rio de Janeiro, Brazil",
+    "company": "CloudScale Solutions",
+    "website": "https://lucasoliveira.dev",
+    "expertise": [
+      "API Design & Development",
+      "Microservices Architecture",
+      "Database Design & Optimization",
+      "Cloud Architecture (AWS/GCP)",
+      "TypeScript & Node.js",
+      "System Design",
+      "Performance Tuning"
+    ],
+    "languages": ["JavaScript", "TypeScript", "Python", "Go", "SQL"],
+    "tools": [
+      "Node.js",
+      "Express.js",
+      "NestJS",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Docker",
+      "Kubernetes"
+    ],
+    "certifications": [
+      "AWS Solutions Architect Professional",
+      "Google Cloud Professional Cloud Architect",
+      "MongoDB Certified Developer"
+    ],
+    "experience": {
+      "years": 6,
+      "current_role": "Senior Backend Engineer",
+      "previous_roles": [
+        "Backend Developer at APIFirst Inc.",
+        "Full-Stack Developer at DataFlow",
+        "Software Engineer at TechStart"
+      ]
+    },
+    "achievements": [
+      "Designed APIs serving 10M+ requests/day",
+      "Reduced database query time by 75% through optimization",
+      "Built microservices architecture for 50+ services",
+      "Authored API design guidelines adopted company-wide"
+    ],
     "social": {
-      "linkedin": "https://www.linkedin.com/in/lucas-oliveira-7a0b1a1b8/",
-      "github": "https://github.com/thukabjj",
-      "twitter": "https://twitter.com/arthurcosta_",
-      "instagram": "https://www.instagram.com/arthurcosta_/"
+      "linkedin": "https://www.linkedin.com/in/lucas-oliveira-dev/",
+      "github": "https://github.com/lucasoliveira-dev",
+      "twitter": "https://twitter.com/lucas_dev",
+      "dev": "https://dev.to/lucasoliveira",
+      "medium": "https://medium.com/@lucasoliveira",
+      "stackoverflow": "https://stackoverflow.com/users/789012/lucas-oliveira"
+    },
+    "contact": {
+      "email": "lucas@techishthoughts.com",
+      "calendar": "https://calendly.com/lucas-oliveira"
+    },
+    "stats": {
+      "posts_count": 18,
+      "github_stars": 890,
+      "followers": 620,
+      "contributions": 1100
     }
   }
 }
