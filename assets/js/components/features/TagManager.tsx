@@ -222,7 +222,7 @@ export const TagManager: React.FC<TagManagerProps> = ({
       setEditingTag(null);
       setTagForm({ name: '', description: '', color: TAG_COLORS[0] });
       onEditClose();
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error updating tag',
         description: 'Failed to update the tag. Please try again.',

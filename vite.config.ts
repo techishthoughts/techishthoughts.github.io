@@ -27,7 +27,6 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           chakra: ['@chakra-ui/react', '@emotion/react', '@emotion/styled'],
-          utils: ['lodash-es', 'date-fns', 'fuse.js'],
         },
       },
     },

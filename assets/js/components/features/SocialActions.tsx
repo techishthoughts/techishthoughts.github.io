@@ -73,7 +73,7 @@ export const SocialActions: React.FC<SocialActionsProps> = ({
         duration: 2000,
         isClosable: true,
       });
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to update like status',
@@ -136,7 +136,7 @@ export const SocialActions: React.FC<SocialActionsProps> = ({
         duration: 2000,
         isClosable: true,
       });
-    } catch (error) {
+    } catch {
       if (!copied) {
         toast({
           title: 'Error',

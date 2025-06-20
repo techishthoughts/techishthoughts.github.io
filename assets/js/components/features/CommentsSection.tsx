@@ -231,7 +231,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const handleLike = async () => {
     try {
       await toggleCommentLike(comment.id);
-    } catch (_error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to update like status',
@@ -428,7 +428,7 @@ export const CommentsSection: React.FC<CommentsSectionProps> = ({
         setIsLoading(true);
         try {
           await loadComments(postId);
-        } catch (_error) {
+        } catch {
           toast({
             title: 'Error',
             description: 'Failed to load comments',
@@ -456,7 +456,7 @@ export const CommentsSection: React.FC<CommentsSectionProps> = ({
         duration: 3000,
         isClosable: true,
       });
-    } catch (_error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to post comment',
