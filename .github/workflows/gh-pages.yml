@@ -181,7 +181,7 @@ jobs:
           echo "✅ Unit tests completed"
 
       - name: 📊 Upload Coverage Reports
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: success()
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
