@@ -188,6 +188,12 @@ jobs:
           files: ./coverage/lcov.info
           fail_ci_if_error: false
 
+      - name: 🦄 Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
       - name: 🎭 Install Playwright Browsers
         run: |
           echo "🎭 Installing Playwright browsers..."
@@ -199,19 +205,8 @@ jobs:
           echo "🎭 Running end-to-end tests..."
           # Build first for E2E tests
           npm run build
-          # Start Hugo server in background for E2E tests
-          hugo server --port 1314 --bind 127.0.0.1 &
-          SERVER_PID=$!
-
-          # Wait for server to be ready
-          sleep 5
-
-          # Run E2E tests
+          # Run E2E tests (Playwright will start Hugo server automatically)
           npm run test:e2e -- --reporter=html
-
-          # Kill Hugo server
-          kill $SERVER_PID || true
-
           echo "✅ E2E tests completed"
 
       - name: 📤 Upload E2E Test Results
@@ -267,7 +262,7 @@ jobs:
       - name: 🚀 Build Hugo Site
         run: |
           echo "🔨 Building Hugo site..."
-          hugo --minify --gc --verbose
+          hugo --minify --gc
           echo "✅ Hugo build completed"
 
           # Verify Hugo build
@@ -559,7 +554,7 @@ jobs:
     name: 🚀 Deploy to GitHub Pages
     needs: [validate, test, build, tag]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && always()
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.build.result == 'success'
     permissions:
       contents: read
       pages: write
@@ -573,6 +568,25 @@ jobs:
         with:
           name: hugo-site
           path: public
+
+      - name: 🔍 Verify Build Artifact
+        run: |
+          echo "🔍 Verifying downloaded site artifact..."
+          if [ -d "public" ] && [ "$(ls -A public)" ]; then
+            echo "✅ Hugo site artifact downloaded successfully"
+            echo "📊 Total files: $(find public -type f | wc -l)"
+            echo "📦 Total size: $(du -sh public/ | cut -f1)"
+
+            # Check for essential files
+            if [ -f "public/index.html" ]; then
+              echo "✅ Homepage found"
+            else
+              echo "⚠️  Homepage not found"
+            fi
+          else
+            echo "❌ Hugo site artifact is empty or missing"
+            exit 1
+          fi
 
       - name: 🔧 Setup Pages
         uses: actions/configure-pages@v4
