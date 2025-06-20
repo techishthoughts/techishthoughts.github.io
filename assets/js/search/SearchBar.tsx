@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Icon
-} from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftAddon, Icon } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
 interface Props {
@@ -19,13 +14,13 @@ const SearchBar: React.FC<Props> = ({ onSearch }) => {
   return (
     <InputGroup>
       <InputLeftAddon>
-        <Icon as={SearchIcon} color="gray.500" />
+        <Icon as={SearchIcon} color='gray.500' />
       </InputLeftAddon>
       <Input
-        placeholder="Search posts..."
+        placeholder='Search posts...'
         onChange={handleChange}
-        bg="white"
-        borderRadius="md"
+        bg='white'
+        borderRadius='md'
       />
     </InputGroup>
   );

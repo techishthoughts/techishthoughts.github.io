@@ -7,7 +7,9 @@ interface SearchContextProps {
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
-export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [query, setQuery] = useState('');
 
   return (

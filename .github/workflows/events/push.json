@@ -1,0 +1,74 @@
+{
+  "ref": "refs/heads/main",
+  "before": "0000000000000000000000000000000000000000",
+  "after": "1234567890123456789012345678901234567890",
+  "repository": {
+    "id": 123456789,
+    "name": "techishthoughts.github.io",
+    "full_name": "techishthoughts/techishthoughts.github.io",
+    "private": false,
+    "owner": {
+      "login": "techishthoughts",
+      "id": 12345678,
+      "type": "Organization"
+    },
+    "html_url": "https://github.com/techishthoughts/techishthoughts.github.io",
+    "clone_url": "https://github.com/techishthoughts/techishthoughts.github.io.git",
+    "git_url": "git://github.com/techishthoughts/techishthoughts.github.io.git",
+    "ssh_url": "git@github.com:techishthoughts/techishthoughts.github.io.git",
+    "default_branch": "main"
+  },
+  "pusher": {
+    "name": "developer",
+    "email": "developer@techishthoughts.com"
+  },
+  "sender": {
+    "login": "developer",
+    "id": 87654321,
+    "type": "User"
+  },
+  "head_commit": {
+    "id": "1234567890123456789012345678901234567890",
+    "tree_id": "abcdefabcdefabcdefabcdefabcdefabcdefabcd",
+    "message": "feat: add new blog post",
+    "timestamp": "2024-01-15T10:00:00Z",
+    "author": {
+      "name": "Developer",
+      "email": "developer@techishthoughts.com"
+    },
+    "committer": {
+      "name": "Developer",
+      "email": "developer@techishthoughts.com"
+    },
+    "added": [
+      "content/posts/new-post.md"
+    ],
+    "removed": [],
+    "modified": [
+      "README.md"
+    ]
+  },
+  "commits": [
+    {
+      "id": "1234567890123456789012345678901234567890",
+      "tree_id": "abcdefabcdefabcdefabcdefabcdefabcdefabcd",
+      "message": "feat: add new blog post",
+      "timestamp": "2024-01-15T10:00:00Z",
+      "author": {
+        "name": "Developer",
+        "email": "developer@techishthoughts.com"
+      },
+      "committer": {
+        "name": "Developer",
+        "email": "developer@techishthoughts.com"
+      },
+      "added": [
+        "content/posts/new-post.md"
+      ],
+      "removed": [],
+      "modified": [
+        "README.md"
+      ]
+    }
+  ]
+}

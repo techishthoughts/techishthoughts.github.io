@@ -1,19 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>{{ block "title" . }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap">
-  <style>
-    body { font-family: 'Inter', Arial, sans-serif; background: #fff; color: #222; margin: 0; }
-    .container { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
-    .author-box { display: flex; align-items: center; margin: 1.5em 0; }
-    .author-box img { width: 48px; height: 48px; border-radius: 50%; margin-right: 1em; }
-    .post-meta { color: #888; font-size: 0.95em; margin-bottom: 1em; }
-    .post-preview { border-bottom: 1px solid #eee; padding: 2em 0; }
-    .read-more { color: #ff6700; text-decoration: none; font-weight: 600; }
-    @media (max-width: 800px) { .container { padding: 1rem; } }
-  </style>
-  {{ partial "search.html" . }}
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{{ block "title" . }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap"
+    />
+    <style>
+      body {
+        font-family: 'Inter', Arial, sans-serif;
+        background: #fff;
+        color: #222;
+        margin: 0;
+      }
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .author-box {
+        display: flex;
+        align-items: center;
+        margin: 1.5em 0;
+      }
+      .author-box img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin-right: 1em;
+      }
+      .post-meta {
+        color: #888;
+        font-size: 0.95em;
+        margin-bottom: 1em;
+      }
+      .post-preview {
+        border-bottom: 1px solid #eee;
+        padding: 2em 0;
+      }
+      .read-more {
+        color: #ff6700;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      @media (max-width: 800px) {
+        .container {
+          padding: 1rem;
+        }
+      }
+    </style>
+    {{ partial "search.html" . }}
+  </head>
+</html>

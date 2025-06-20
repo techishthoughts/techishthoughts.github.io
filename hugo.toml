@@ -1,8 +1,50 @@
 baseURL = "https://techishthoughts.github.io/"
 languageCode = "en-us"
 title = "Tech.ish Thoughts"
+
 [pagination]
   pagerSize = 10
 
 [params]
-  description = "A collaborative tech blog for everyone."
+  description = "Insights, tutorials, and thoughts from tech enthusiasts, developers, and designers."
+  author = "Tech.ish Thoughts Community"
+
+  # Social media
+  github = "https://github.com/techishthoughts/techishthoughts.github.io"
+
+  # Features
+  showReadingTime = true
+  showWordCount = false
+  showShareButtons = false
+  showToc = false
+
+  # SEO
+  enableTwitterCard = true
+  enableOpenGraph = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "github"
+    lineNos = false
+    codeFences = true
+    guessSyntax = true
+    tabWidth = 2
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  author = "authors"
+
+[related]
+  includeNewer = true
+  threshold = 80
+  toLower = false
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "categories"
+    weight = 200

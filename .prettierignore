@@ -1,0 +1,31 @@
+# Build outputs
+dist/
+build/
+static/js/
+public/
+
+# Hugo templates and layouts
+layouts/
+archetypes/
+
+# Dependencies
+node_modules/
+
+# Generated files
+coverage/
+test-results/
+playwright-report/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.parcel-cache/
+
+# Configuration files that need specific formatting
+*.config.js
+*.config.ts
+
+# Hugo specific
+hugo_stats.json
+resources/_gen/

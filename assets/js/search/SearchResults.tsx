@@ -1,13 +1,14 @@
+import { Box, Heading, Link, Spinner, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
-import {
-  Box,
-  Stack,
-  Heading,
-  Text,
-  Link,
-  Spinner
-} from '@chakra-ui/react';
-import { Post } from './App';
+
+interface Post {
+  title: string;
+  permalink: string;
+  summary: string;
+  author: string;
+  date: string;
+  tags?: string[];
+}
 
 interface Props {
   results: Post[];
@@ -17,7 +18,7 @@ interface Props {
 const SearchResults: React.FC<Props> = ({ results, isLoading }) => {
   if (isLoading) {
     return (
-      <Box textAlign="center" py={8}>
+      <Box textAlign='center' py={8}>
         <Spinner />
       </Box>
     );
@@ -28,22 +29,22 @@ const SearchResults: React.FC<Props> = ({ results, isLoading }) => {
   }
 
   return (
-    <Stack spacing="4" mt={4}>
+    <Stack spacing='4' mt={4}>
       {results.map((post, index) => (
         <Box
           key={index}
           p={4}
-          borderRadius="md"
-          borderWidth="1px"
+          borderRadius='md'
+          borderWidth='1px'
           _hover={{ bg: 'gray.50' }}
         >
           <Link href={post.permalink}>
-            <Heading size="md">{post.title}</Heading>
+            <Heading size='md'>{post.title}</Heading>
           </Link>
-          <Text color="gray.600" mt={2}>
+          <Text color='gray.600' mt={2}>
             {post.summary}
           </Text>
-          <Text fontSize="sm" color="gray.500" mt={2}>
+          <Text fontSize='sm' color='gray.500' mt={2}>
             By {post.author}
           </Text>
         </Box>

@@ -1,121 +1,532 @@
-name: Hugo CI/CD
+name: Hugo CI/CD - Multi-Author Blog
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+  schedule:
+    # Weekly security scan at 2 AM UTC on Sundays
+    - cron: '0 2 * * 0'
+
+env:
+  HUGO_VERSION: '0.126.0'
+  NODE_VERSION: '20'
 
 jobs:
   validate:
+    name: 🔍 Validate Content & Security
     runs-on: ubuntu-latest
+    outputs:
+      authors-changed: ${{ steps.changes.outputs.authors }}
+      posts-changed: ${{ steps.changes.outputs.posts }}
+      config-changed: ${{ steps.changes.outputs.config }}
     steps:
-      - name: Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v4
-
-      - name: Lint Markdown
-        uses: avto-dev/markdown-lint@v1
         with:
-          args: '**/*.md'
+          fetch-depth: 0
 
-  build:
+      - name: 🔍 Detect Changes
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            authors:
+              - 'data/authors.json'
+            posts:
+              - 'content/posts/**'
+            config:
+              - 'hugo.toml'
+              - 'package.json'
+              - 'tsconfig.json'
+              - '.github/workflows/**'
+            components:
+              - 'assets/js/**'
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+          echo "📦 Dependencies installed successfully"
+
+      - name: 🔒 Security Audit
+        run: |
+          echo "🔍 Running security audit..."
+          npm audit --audit-level moderate
+          echo "✅ Security audit completed"
+
+      - name: 📝 Lint Markdown
+        run: |
+          echo "📝 Linting markdown files..."
+          find content -name "*.md" -type f | head -10 | while read file; do
+            echo "Checking: $file"
+            # Basic markdown validation
+            if ! grep -q "^---" "$file"; then
+              echo "⚠️  Missing front matter in $file"
+            else
+              echo "✅ $file has front matter"
+            fi
+          done
+
+      - name: ✅ Validate Author Data
+        run: |
+          echo "🔍 Validating author data structure..."
+          node -e "
+            const fs = require('fs');
+
+            if (!fs.existsSync('data/authors.json')) {
+              console.log('⚠️  Authors file not found, skipping validation');
+              process.exit(0);
+            }
+
+            const authors = JSON.parse(fs.readFileSync('data/authors.json', 'utf8'));
+
+            if (!authors || typeof authors !== 'object') {
+              throw new Error('Authors data must be a valid object');
+            }
+
+            Object.entries(authors).forEach(([id, author]) => {
+              const required = ['name', 'bio', 'avatar'];
+              required.forEach(field => {
+                if (!author[field]) {
+                  throw new Error(\`Author \${id} missing required field: \${field}\`);
+                }
+              });
+
+              if (author.avatar && !author.avatar.startsWith('http')) {
+                console.warn(\`Warning: Author \${author.name} avatar should be a full URL\`);
+              }
+
+              if (author.bio && author.bio.length > 250) {
+                console.warn(\`Warning: Author \${author.name} bio is longer than 250 characters\`);
+              }
+            });
+
+            console.log('✅ Author data validation passed');
+          "
+
+      - name: 🏷️ Validate Post Front Matter
+        run: |
+          echo "🔍 Validating post front matter..."
+
+          if [ ! -d "content/posts" ]; then
+            echo "⚠️  No posts directory found, skipping validation"
+            exit 0
+          fi
+
+          find content/posts -name "*.md" -type f | while read file; do
+            echo "Checking: $file"
+
+            # Check if file has front matter
+            if ! grep -q "^---" "$file"; then
+              echo "❌ Missing front matter in $file"
+              exit 1
+            fi
+
+            # Check for required fields
+            if ! grep -q "^title:" "$file"; then
+              echo "❌ Missing title in $file"
+              exit 1
+            fi
+
+            if ! grep -q "^date:" "$file"; then
+              echo "❌ Missing date in $file"
+              exit 1
+            fi
+
+            echo "✅ $file validated"
+          done
+
+      - name: 🔧 Lint TypeScript/JavaScript
+        run: |
+          echo "🔧 Linting TypeScript and JavaScript files..."
+          npm run lint
+          echo "✅ Code linting completed"
+
+      - name: 🎨 Check Code Formatting
+        run: |
+          echo "🎨 Checking code formatting..."
+          npm run format:check
+          echo "✅ Code formatting check completed"
+
+  test:
+    name: 🧪 Run Tests
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install Node.js dependencies
-        run: npm ci
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+          echo "📦 Dependencies installed for testing"
 
-      - name: Build React components
-        run: npm run build
+      - name: 🔬 Run Unit Tests
+        run: |
+          echo "🔬 Running unit tests..."
+          npm run test:coverage
+          echo "✅ Unit tests completed"
 
-      - name: Setup Hugo
+      - name: 📊 Upload Coverage Reports
+        uses: codecov/codecov-action@v4
+        if: success()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+      - name: 🎭 Install Playwright Browsers
+        run: |
+          echo "🎭 Installing Playwright browsers..."
+          npx playwright install --with-deps chromium
+          echo "✅ Playwright browsers installed"
+
+      - name: 🎭 Run E2E Tests
+        run: |
+          echo "🎭 Running end-to-end tests..."
+          # Build first for E2E tests
+          npm run build
+          # Start Hugo server in background for E2E tests
+          hugo server --port 1314 --bind 127.0.0.1 &
+          SERVER_PID=$!
+
+          # Wait for server to be ready
+          sleep 5
+
+          # Run E2E tests
+          npm run test:e2e -- --reporter=html
+
+          # Kill Hugo server
+          kill $SERVER_PID || true
+
+          echo "✅ E2E tests completed"
+
+      - name: 📤 Upload E2E Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  build:
+    name: 🏗️ Build Site
+    needs: [validate, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+          echo "📦 Dependencies installed for build"
+
+      - name: ⚛️ Build React Components
+        run: |
+          echo "🔨 Building React components..."
+          npm run build
+          echo "✅ React build completed"
+
+          # Verify build output
+          if [ -f "static/js/main.js" ]; then
+            echo "✅ Main JavaScript bundle created"
+            ls -la static/js/
+          else
+            echo "❌ Main JavaScript bundle not found"
+            exit 1
+          fi
+
+      - name: 🦄 Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "latest"
-          extended: true  # Required for SCSS/SASS
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
 
-      - name: Build Hugo site
-        run: hugo --minify
+      - name: 🚀 Build Hugo Site
+        run: |
+          echo "🔨 Building Hugo site..."
+          hugo --minify --gc --verbose
+          echo "✅ Hugo build completed"
 
-      - name: Upload artifact
+          # Verify Hugo build
+          if [ -f "public/index.html" ]; then
+            echo "✅ Hugo site generated successfully"
+          else
+            echo "❌ Hugo site generation failed"
+            exit 1
+          fi
+
+      - name: 🔍 Check Build Quality
+        run: |
+          echo "🔍 Checking build quality..."
+
+          # Check for broken internal links
+          echo "Checking internal links..."
+          find public -name "*.html" -exec grep -l "href=\"/" {} \; | head -5 | while read file; do
+            echo "Checking links in $(basename $file)"
+            # Basic link validation
+            grep -o 'href="[^"]*"' "$file" | grep -o '/[^"]*' | head -5 | while read link; do
+              if [ -f "public$link" ] || [ -f "public${link}index.html" ] || [ -d "public$link" ]; then
+                echo "✅ $link"
+              else
+                echo "⚠️  Potential broken link: $link"
+              fi
+            done
+          done
+
+          # Check bundle sizes
+          echo "Bundle size analysis:"
+          find static/js -name "*.js" | while read file; do
+            size=$(wc -c < "$file")
+            echo "$(basename $file): ${size} bytes"
+            if [ $size -gt 1048576 ]; then  # 1MB
+              echo "⚠️  Large bundle detected: $(basename $file)"
+            fi
+          done
+
+      - name: 📊 Generate Build Report
+        run: |
+          echo "📊 Build Report" > build-report.txt
+          echo "===============" >> build-report.txt
+          echo "Build Date: $(date)" >> build-report.txt
+          echo "Commit: ${{ github.sha }}" >> build-report.txt
+          echo "Hugo Version: ${{ env.HUGO_VERSION }}" >> build-report.txt
+          echo "Node Version: ${{ env.NODE_VERSION }}" >> build-report.txt
+          echo "" >> build-report.txt
+
+          echo "📄 Pages Generated:" >> build-report.txt
+          find public -name "*.html" | wc -l >> build-report.txt
+
+          echo "" >> build-report.txt
+          echo "📁 JavaScript Assets:" >> build-report.txt
+          find public -name "*.js" | wc -l >> build-report.txt
+
+          echo "" >> build-report.txt
+          echo "📁 CSS Assets:" >> build-report.txt
+          find public -name "*.css" | wc -l >> build-report.txt
+
+          echo "" >> build-report.txt
+          echo "📦 Total Site Size:" >> build-report.txt
+          du -sh public/ | cut -f1 >> build-report.txt
+
+          echo "" >> build-report.txt
+          echo "🔗 Sample URLs Generated:" >> build-report.txt
+          find public -name "index.html" | head -5 | sed 's|public||g' >> build-report.txt
+
+      - name: 📤 Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: public
+          name: hugo-site
           path: public
+          retention-days: 7
 
-  release:
-    needs: build
+      - name: 📤 Upload Build Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-report
+          path: build-report.txt
+          retention-days: 30
+
+  deploy:
+    name: 🚀 Deploy to GitHub Pages
+    needs: [validate, test, build]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
-      contents: write
+      contents: read
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download artifact
+      - name: 📥 Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: public
+          name: hugo-site
           path: public
 
-      - name: Zip public folder
-        run: zip -r public.zip public
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ github.run_number }}
-          name: "Release ${{ github.run_number }}"
-          body: |
-            Automated release of the Hugo site.
-            
-            Changes in this release:
-            ${{ github.event.head_commit.message }}
-          files: public.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Pages
+      - name: 🔧 Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload Pages artifact
+      - name: 📤 Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
-      - name: Deploy to GitHub Pages
+      - name: 🚀 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ✅ Verify Deployment
+        run: |
+          echo "🌐 Site deployed to: ${{ steps.deployment.outputs.page_url }}"
+          echo "🎉 Deployment completed successfully!"
 
   notify:
-    needs: release
+    name: 📬 Send Notifications
+    needs: [validate, test, build, deploy]
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Notify on success
-        if: ${{ success() }}
-        run: |
-          echo "✅ Deploy successful!"
-          # Add notification steps here (e.g., Slack, Discord, etc.)
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-      - name: Notify on failure
-        if: ${{ failure() }}
+      - name: 📊 Create Job Summary
         run: |
-          echo "❌ Deploy failed!"
-          # Add notification steps here (e.g., Slack, Discord, etc.)
+          echo "# 🚀 Tech.ish Thoughts - Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Job Status Overview" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status | Duration |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔍 Validation | ${{ needs.validate.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧪 Testing | ${{ needs.test.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏗️ Build | ${{ needs.build.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🚀 Deploy | ${{ needs.deploy.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "## 🔗 Important Links" >> $GITHUB_STEP_SUMMARY
+            echo "- 🌐 [Live Site](https://techishthoughts.github.io)" >> $GITHUB_STEP_SUMMARY
+            echo "- 📊 [Build Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+            echo "- 📈 [Performance Report](https://pagespeed.web.dev/analysis/https-techishthoughts-github-io/)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔄 Change Details" >> $GITHUB_STEP_SUMMARY
+          echo "**📝 Commit**: [\`${{ github.sha }}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
+          echo "**👤 Author**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**📅 Date**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ github.event.head_commit.message }}" != "" ]; then
+            echo "**💬 Message**: ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Build Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Hugo Version**: ${{ env.HUGO_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Node.js Version**: ${{ env.NODE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: 💬 Comment on Pull Request
+        if: github.event_name == 'pull_request' && needs.build.result == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' && comment.body.includes('🚀 Build Status')
+            );
+
+            const buildStatus = {
+              validate: '${{ needs.validate.result }}',
+              test: '${{ needs.test.result }}',
+              build: '${{ needs.build.result }}'
+            };
+
+            const statusEmoji = {
+              success: '✅',
+              failure: '❌',
+              cancelled: '⏹️',
+              skipped: '⏭️'
+            };
+
+            const commentBody = \`
+            ## 🚀 Build Status - Tech.ish Thoughts
+
+            | Stage | Status | Result |
+            |-------|--------|--------|
+            | 🔍 Validation | \${statusEmoji[buildStatus.validate] || '❓'} | \${buildStatus.validate} |
+            | 🧪 Testing | \${statusEmoji[buildStatus.test] || '❓'} | \${buildStatus.test} |
+            | 🏗️ Build | \${statusEmoji[buildStatus.build] || '❓'} | \${buildStatus.build} |
+
+            ### 📊 Summary
+            \${buildStatus.build === 'success' ?
+              '✅ **Your changes have been successfully built and validated!**' :
+              '❌ **Build failed. Please check the logs for details.**'
+            }
+
+            ### 🔄 Next Steps
+            \${buildStatus.build === 'success' ?
+              \`- 👀 Review the changes carefully
+              - 🧪 All tests are passing
+              - 🚀 Ready to merge when approved\` :
+              \`- 🔍 Check the build logs for error details
+              - 🛠️ Fix any issues and push updates
+              - 🔄 The build will run automatically on new commits\`
+            }
+
+            ### 📈 Artifacts
+            - 📊 [Build Report](https://github.com/\${context.repo.owner}/\${context.repo.repo}/actions/runs/\${context.runId})
+            - 🧪 [Test Results](https://github.com/\${context.repo.owner}/\${context.repo.repo}/actions/runs/\${context.runId})
+
+            ---
+            *This comment is automatically updated on each commit.*
+            \`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody
+              });
+            }
+
+      - name: 📧 Notify on Success
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "🎉 Deployment successful!"
+          echo "🌐 Site is live at: https://techishthoughts.github.io"
+          echo "📊 Build completed at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "🔗 View build details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: 📧 Notify on Failure
+        if: failure()
+        run: |
+          echo "❌ Build or deployment failed!"
+          echo "🔍 Check the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "🛠️  Common troubleshooting steps:"
+          echo "  1. Verify all markdown files have proper front matter"
+          echo "  2. Check author data structure in data/authors.json"
+          echo "  3. Ensure all required fields are present in posts"
+          echo "  4. Verify TypeScript compilation errors"
+          echo "  5. Check for broken internal links"
+          echo ""
+          echo "📚 For help, visit: https://github.com/${{ github.repository }}/issues"

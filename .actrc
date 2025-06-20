@@ -1,0 +1,36 @@
+# Act configuration for local GitHub Actions testing
+# This file configures act to run GitHub Actions locally
+
+# Use GitHub's runner images for better compatibility
+-P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-latest
+-P ubuntu-22.04=ghcr.io/catthehacker/ubuntu:act-22.04
+-P ubuntu-20.04=ghcr.io/catthehacker/ubuntu:act-20.04
+
+# Set default platform
+--platform ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-latest
+
+# Enable verbose output for debugging
+--verbose
+
+# Bind mount the workspace to preserve file permissions
+--bind
+
+# Use host networking for better performance
+--use-gitignore
+
+# Set default environment variables
+--env NODE_ENV=test
+--env CI=true
+--env GITHUB_ACTIONS=true
+
+# Default secrets (can be overridden)
+--secret GITHUB_TOKEN=dummy_token_for_local_testing
+
+# Container options for better performance
+--container-options "--memory=4g --cpus=2"
+
+# Reuse containers for faster subsequent runs
+--reuse
+
+# Default event type
+--eventpath .github/workflows/events/push.json
