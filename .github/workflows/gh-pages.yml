@@ -433,46 +433,92 @@ jobs:
           PREVIOUS_TAG="${{ steps.analyze_commits.outputs.latest_tag }}"
           NEW_TAG="${{ steps.tag_version.outputs.new_tag }}"
 
-          # Generate changelog content
-          CHANGELOG="## 🚀 What's Changed in $NEW_TAG
+          # Initialize changelog file
+          cat > changelog_temp.md << 'EOF'
+          ## 🚀 What's Changed in ${{ steps.tag_version.outputs.new_tag }}
 
           ### 📅 Release Date
-          $(date '+%Y-%m-%d %H:%M:%S UTC')
+          EOF
+          echo "$(date '+%Y-%m-%d %H:%M:%S UTC')" >> changelog_temp.md
+          echo "" >> changelog_temp.md
+          echo "### 📊 Commits Since ${PREVIOUS_TAG}" >> changelog_temp.md
+          echo "" >> changelog_temp.md
 
-          ### 📊 Commits Since $PREVIOUS_TAG
-          "
+          # Initialize sections
+          FEATURES=""
+          FIXES=""
+          DOCS=""
+          STYLE=""
+          PERF=""
+          TESTS=""
+          CI=""
+          OTHER=""
 
           # Get commits and categorize them
-          git log ${PREVIOUS_TAG}..HEAD --oneline --no-merges | while IFS= read -r commit; do
+          while IFS= read -r commit; do
             if [[ $commit == *"feat:"* ]] || [[ $commit == *"feat("* ]]; then
-              echo "### ✨ New Features" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              FEATURES="${FEATURES}- ${commit}\n"
             elif [[ $commit == *"fix:"* ]] || [[ $commit == *"fix("* ]]; then
-              echo "### 🐛 Bug Fixes" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              FIXES="${FIXES}- ${commit}\n"
             elif [[ $commit == *"docs:"* ]] || [[ $commit == *"docs("* ]]; then
-              echo "### 📚 Documentation" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              DOCS="${DOCS}- ${commit}\n"
             elif [[ $commit == *"style:"* ]] || [[ $commit == *"refactor:"* ]]; then
-              echo "### 🎨 Code Style & Refactoring" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              STYLE="${STYLE}- ${commit}\n"
             elif [[ $commit == *"perf:"* ]] || [[ $commit == *"perf("* ]]; then
-              echo "### ⚡ Performance Improvements" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              PERF="${PERF}- ${commit}\n"
             elif [[ $commit == *"test:"* ]] || [[ $commit == *"test("* ]]; then
-              echo "### 🧪 Tests" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              TESTS="${TESTS}- ${commit}\n"
             elif [[ $commit == *"ci:"* ]] || [[ $commit == *"ci("* ]]; then
-              echo "### 🔧 CI/CD" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              CI="${CI}- ${commit}\n"
             else
-              echo "### 🔄 Other Changes" >> changelog_temp.md
-              echo "- $commit" >> changelog_temp.md
+              OTHER="${OTHER}- ${commit}\n"
             fi
-          done
+          done < <(git log ${PREVIOUS_TAG}..HEAD --oneline --no-merges)
+
+          # Add sections if they have content
+          if [ -n "$FEATURES" ]; then
+            echo "### ✨ New Features" >> changelog_temp.md
+            echo -e "$FEATURES" >> changelog_temp.md
+          fi
+
+          if [ -n "$FIXES" ]; then
+            echo "### 🐛 Bug Fixes" >> changelog_temp.md
+            echo -e "$FIXES" >> changelog_temp.md
+          fi
+
+          if [ -n "$DOCS" ]; then
+            echo "### 📚 Documentation" >> changelog_temp.md
+            echo -e "$DOCS" >> changelog_temp.md
+          fi
+
+          if [ -n "$STYLE" ]; then
+            echo "### 🎨 Code Style & Refactoring" >> changelog_temp.md
+            echo -e "$STYLE" >> changelog_temp.md
+          fi
+
+          if [ -n "$PERF" ]; then
+            echo "### ⚡ Performance Improvements" >> changelog_temp.md
+            echo -e "$PERF" >> changelog_temp.md
+          fi
+
+          if [ -n "$TESTS" ]; then
+            echo "### 🧪 Tests" >> changelog_temp.md
+            echo -e "$TESTS" >> changelog_temp.md
+          fi
+
+          if [ -n "$CI" ]; then
+            echo "### 🔧 CI/CD" >> changelog_temp.md
+            echo -e "$CI" >> changelog_temp.md
+          fi
+
+          if [ -n "$OTHER" ]; then
+            echo "### 🔄 Other Changes" >> changelog_temp.md
+            echo -e "$OTHER" >> changelog_temp.md
+          fi
 
           # Add build and deployment info
-          echo "
+          cat >> changelog_temp.md << EOF
+
           ### 🏗️ Build Information
           - **Node.js Version**: ${{ env.NODE_VERSION }}
           - **Hugo Version**: ${{ env.HUGO_VERSION }}
@@ -483,13 +529,13 @@ jobs:
           - [📊 Full Changelog](https://github.com/${{ github.repository }}/compare/${PREVIOUS_TAG}...${NEW_TAG})
           - [🌐 Live Site](https://techishthoughts.github.io)
           - [📦 Build Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          " >> changelog_temp.md
+          EOF
 
-          # Save changelog to output
-          if [ -f changelog_temp.md ]; then
-            cat changelog_temp.md >> $GITHUB_OUTPUT
-            echo "changelog_file=changelog_temp.md" >> $GITHUB_OUTPUT
-          fi
+          # Set output for use in other steps
+          echo "changelog_created=true" >> $GITHUB_OUTPUT
+          echo "changelog_file=changelog_temp.md" >> $GITHUB_OUTPUT
+
+          echo "✅ Changelog generated successfully"
 
       - name: 🎉 Create GitHub Release
         if: steps.tag_version.outputs.new_tag
