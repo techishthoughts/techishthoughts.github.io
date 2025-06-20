@@ -35,6 +35,8 @@
     "build:watch": "npm run build -- --watch",
     "analyze": "npm run build && npx vite-bundle-analyzer",
     "pre-commit": "lint-staged",
+    "pre-commit:full": "npm run format && npm run lint && npm run type-check && npm run validate:content && npm run test -- --run",
+    "prepare": "husky install",
     "lighthouse": "lhci autorun",
     "validate:authors": "node scripts/validate-authors.cjs",
     "validate:frontmatter": "node scripts/validate-frontmatter.cjs",
@@ -69,6 +71,8 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.40.1",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
@@ -102,10 +106,26 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ],
-    "*.{js,jsx,json,css,md}": [
-      "prettier --write"
+    "*.{js,jsx,json,css,md,yml,yaml}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{cjs,mjs}": [
+      "prettier --write",
+      "git add"
+    ],
+    "data/authors.json": [
+      "node scripts/validate-authors.cjs",
+      "prettier --write",
+      "git add"
+    ],
+    "content/posts/*.md": [
+      "node scripts/validate-frontmatter.cjs",
+      "prettier --write",
+      "git add"
     ]
   },
   "engines": {

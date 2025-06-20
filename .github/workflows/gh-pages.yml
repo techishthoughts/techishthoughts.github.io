@@ -424,8 +424,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: ${{ steps.analyze_commits.outputs.bump_type }}
-          tag_prefix: "v"
-          release_branches: "main"
+          tag_prefix: 'v'
+          release_branches: 'main'
           create_annotated_tag: true
           custom_tag: ${{ steps.analyze_commits.outputs.bump_type != 'none' && '' || 'skip' }}
 
@@ -501,7 +501,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          name: "Release ${{ steps.tag_version.outputs.new_tag }}"
+          name: 'Release ${{ steps.tag_version.outputs.new_tag }}'
           body: |
             ## 🚀 Tech.ish Thoughts - Release ${{ steps.tag_version.outputs.new_tag }}
 
