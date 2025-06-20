@@ -197,8 +197,8 @@ jobs:
       - name: 🎭 Install Playwright Browsers
         run: |
           echo "🎭 Installing Playwright browsers..."
-          npx playwright install --with-deps chromium
-          echo "✅ Playwright browsers installed"
+          npx playwright install --with-deps
+          echo "✅ All Playwright browsers installed"
 
       - name: 🎭 Run E2E Tests
         run: |
