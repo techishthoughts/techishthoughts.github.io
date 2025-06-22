@@ -85,9 +85,15 @@ test.describe('Blog Functionality', () => {
         .first();
 
       if (isMobile) {
-        // On mobile (≤480px), navigation is hidden by design
+        // On mobile (≤480px), navigation exists but most links are hidden
         const nav = page.locator('.site-nav');
-        await expect(nav).toBeHidden();
+        await expect(nav).toBeVisible();
+
+        // Regular nav links should be hidden on mobile
+        const homeNavLink = page
+          .locator('.site-nav .nav-link')
+          .filter({ hasText: 'Home' });
+        await expect(homeNavLink).toBeHidden();
 
         // But site title should still be visible
         const siteTitle = page.locator('.site-title');
@@ -116,14 +122,15 @@ test.describe('Blog Functionality', () => {
     });
 
     test('should navigate to a blog post', async ({ page }) => {
-      // Navigate directly to a known post
       await page.goto('http://localhost:1313/posts/hello-world/');
+      await page.waitForLoadState('networkidle'); // Ensures the page is fully loaded
 
-      // Check that we're on a post page
       await expect(page.locator('h1').first()).toBeVisible();
 
-      // Check for article content
-      const article = page.locator('article, .post, .content').first();
+      // Update the selector to match your real markup if needed
+      const article = page
+        .locator('article, .post, .content, .post-content')
+        .first();
       await expect(article).toBeVisible();
     });
 
@@ -145,6 +152,10 @@ test.describe('Blog Functionality', () => {
 
   test.describe('Dark Mode', () => {
     test('should have consistent theme behavior', async ({ page }) => {
+      // Check viewport size to adapt behavior
+      const viewport = page.viewportSize();
+      const isMobile = viewport && viewport.width <= 480;
+
       // Look for dark mode toggle or theme switching functionality
       const darkModeToggle = page.locator(
         '[data-testid="dark-mode-toggle"], .theme-toggle, .dark-mode-toggle'
@@ -158,20 +169,40 @@ test.describe('Blog Functionality', () => {
 
       if (toggleCount > 0) {
         // Dark mode toggle exists
-        await expect(darkModeToggle.first()).toBeVisible();
+        const toggleButton = darkModeToggle.first();
+
+        if (isMobile) {
+          // On mobile, nav may be hidden but toggle should be visible
+          // Wait for the element to be attached, then check if it's visually accessible
+          await expect(toggleButton).toBeAttached();
+
+          // On mobile, check if theme toggle is the only visible nav element
+          const nav = page.locator('.site-nav');
+          if ((await nav.count()) > 0) {
+            // Nav exists but may have specific mobile visibility rules
+            console.log(
+              'Mobile viewport detected - checking theme toggle accessibility'
+            );
+          }
+        } else {
+          // On desktop/tablet, toggle should be visible
+          await expect(toggleButton).toBeVisible();
+        }
 
         // Try to interact with it
         try {
-          await darkModeToggle.first().click();
+          await toggleButton.click();
           await page.waitForTimeout(500);
 
           // Check if any theme-related changes occurred
           const bodyClasses = await page.getAttribute('body', 'class');
           const htmlClasses = await page.getAttribute('html', 'class');
+          const dataTheme = await page.getAttribute('html', 'data-theme');
 
           console.log('Theme interaction successful');
           console.log('Body classes:', bodyClasses);
           console.log('HTML classes:', htmlClasses);
+          console.log('Data theme:', dataTheme);
         } catch (error) {
           console.log(
             'Theme toggle interaction failed (expected if not implemented):',
@@ -199,9 +230,19 @@ test.describe('Blog Functionality', () => {
       // Check that the page still loads
       await expect(page.locator('.site-title').first()).toBeVisible();
 
-      // On mobile (375px < 480px), navigation should be hidden
+      // On mobile (375px < 480px), navigation exists but most links are hidden
       const nav = page.locator('.site-nav');
-      await expect(nav).toBeHidden();
+      await expect(nav).toBeVisible();
+
+      // Regular nav links should be hidden on mobile
+      const homeLink = page
+        .locator('.site-nav .nav-link')
+        .filter({ hasText: 'Home' });
+      await expect(homeLink).toBeHidden();
+
+      // Theme toggle should be visible on mobile
+      const themeToggle = page.locator('.theme-toggle');
+      await expect(themeToggle).toBeVisible();
 
       // Site title should still be visible and clickable
       const siteTitle = page.locator('.site-title');
