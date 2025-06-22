@@ -20,11 +20,14 @@
     "watch": "vite build --watch",
     "preview": "vite preview",
     "test": "vitest",
+    "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:local": "./scripts/test-e2e-local.sh",
+    "test:e2e:ci": "playwright test --reporter=html --reporter=github",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write .",
@@ -36,12 +39,14 @@
     "build:watch": "npm run build -- --watch",
     "analyze": "npm run build && npx vite-bundle-analyzer",
     "pre-commit": "lint-staged",
-    "pre-commit:full": "npm run format && npm run lint && npm run type-check && npm run validate:content && npm run test -- --run",
+    "pre-commit:full": "./scripts/pre-commit-comprehensive.sh",
+    "pre-commit:fast": "npm run format && npm run lint && npm run type-check && npm run validate:content && npm run test:run",
     "prepare": "husky install",
     "lighthouse": "lhci autorun",
     "validate:authors": "node scripts/validate-authors.cjs",
     "validate:frontmatter": "node scripts/validate-frontmatter.cjs",
     "validate:content": "npm run validate:authors && npm run validate:frontmatter",
+    "validate:all": "npm run validate:content && npm run lint && npm run type-check",
     "ci:local": "act -W .github/workflows/gh-pages.yml",
     "ci:test": "act --dryrun",
     "ci:validate": "act --list",
@@ -105,9 +110,10 @@
     "vitest": "^3.2.4"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+    "assets/js/**/*.{ts,tsx}": [
+      "eslint --fix --max-warnings 0",
+      "prettier --write",
+      "bash -c 'npm run test:run -- --reporter=verbose --bail=1'"
     ],
     "*.{js,jsx,json,css,md,yml,yaml}": [
       "prettier --write"
@@ -122,6 +128,10 @@
     "content/posts/*.md": [
       "node scripts/validate-frontmatter.cjs",
       "prettier --write"
+    ],
+    "package.json": [
+      "prettier --write",
+      "bash -c 'npm run security:audit'"
     ]
   },
   "engines": {

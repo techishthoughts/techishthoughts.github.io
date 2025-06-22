@@ -197,7 +197,7 @@ jobs:
       - name: 🎭 Install Playwright Browsers
         run: |
           echo "🎭 Installing Playwright browsers..."
-          npx playwright install --with-deps
+          npx playwright install --with-deps chromium firefox webkit
           echo "✅ All Playwright browsers installed"
 
       - name: 🎭 Run E2E Tests
@@ -205,9 +205,13 @@ jobs:
           echo "🎭 Running end-to-end tests..."
           # Build first for E2E tests
           npm run build
-          # Run E2E tests (Playwright will start Hugo server automatically)
-          npm run test:e2e -- --reporter=html
+          echo "✅ Build completed for E2E tests"
+
+          # Run E2E tests with proper reporters for CI
+          npm run test:e2e -- --reporter=html --reporter=github --max-failures=5
           echo "✅ E2E tests completed"
+        env:
+          CI: true
 
       - name: 📤 Upload E2E Test Results
         uses: actions/upload-artifact@v4
