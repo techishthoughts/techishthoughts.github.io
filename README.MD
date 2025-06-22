@@ -30,18 +30,21 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Core Technologies
 
 - **[Hugo](https://gohugo.io/)** `v0.147.5+` - Static site generator chosen for:
+
   - ⚡ **Performance**: Sub-second build times for 100+ posts
   - 🔍 **SEO Excellence**: Built-in SEO optimization and structured data
   - 📱 **Mobile-First**: Responsive templates out of the box
   - 🌐 **Multi-language**: Ready for internationalization
 
 - **[React](https://reactjs.org/)** `v18.2.0` - Interactive UI components for:
+
   - 🎯 **Component Reusability**: Modular, testable components
   - 🔄 **State Management**: Complex interactions (search, comments, TTS)
   - 🎨 **Dynamic UI**: Real-time updates and animations
   - ♿ **Accessibility**: ARIA support and keyboard navigation
 
 - **[TypeScript](https://www.typescriptlang.org/)** `v5.3.3` - Type safety providing:
+
   - 🛡️ **Runtime Safety**: Catch errors at compile time
   - 📖 **Developer Experience**: IntelliSense and auto-completion
   - 🔧 **Refactoring**: Safe code changes across large codebase
@@ -56,6 +59,7 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Frontend Stack
 
 - **[Chakra UI](https://chakra-ui.com/)** `v2.8.2` - Design system providing:
+
   - 🎨 **Consistent Design**: Unified component library
   - 🌙 **Dark Mode**: Built-in theme switching
   - ♿ **Accessibility**: WCAG 2.1 AA compliant components
@@ -63,18 +67,21 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
   - 🎭 **Customization**: Extensive theming capabilities
 
 - **[Framer Motion](https://www.framer.com/motion/)** `v10.18.0` - Animation library for:
+
   - ✨ **Smooth Animations**: 60fps performance animations
   - 🎯 **Gesture Handling**: Touch and mouse interactions
   - 📐 **Layout Animations**: Automatic layout transitions
   - 🎪 **Complex Sequences**: Orchestrated animation timelines
 
 - **[TanStack Query](https://tanstack.com/query/latest)** `v5.17.15` - Server state management:
+
   - 🔄 **Caching**: Intelligent data caching and invalidation
   - 🔁 **Background Updates**: Automatic refetching
   - ⚡ **Optimistic Updates**: Instant UI feedback
   - 📡 **Offline Support**: Offline-first architecture
 
 - **[Zustand](https://github.com/pmndrs/zustand)** `v4.4.7` - Lightweight state management:
+
   - 🪶 **Minimal Bundle**: <1KB compressed
   - 🎯 **Simple API**: No boilerplate required
   - 🔄 **Persistence**: LocalStorage integration
@@ -89,24 +96,28 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Development Tools
 
 - **[Vitest](https://vitest.dev/)** `v3.2.4` - Testing framework chosen for:
+
   - ⚡ **Speed**: 10x faster than Jest
   - 🔧 **Vite Integration**: Native Vite support
   - 🎯 **Modern Features**: ESM, TypeScript, JSX out of the box
   - 📊 **Coverage**: Built-in code coverage with v8
 
 - **[Playwright](https://playwright.dev/)** `v1.53.1` - E2E testing providing:
+
   - 🌐 **Cross-Browser**: Chrome, Firefox, Safari, Edge
   - 📱 **Mobile Testing**: Real device simulation
   - 🎥 **Test Recording**: Video and screenshot capture
   - 🔄 **Auto-Wait**: Smart waiting for elements
 
 - **[ESLint](https://eslint.org/)** `v8.57.1` - Code linting with:
+
   - 🛡️ **Error Prevention**: Catch bugs before runtime
   - 📏 **Code Standards**: Consistent code style
   - 🔧 **Auto-Fix**: Automatic code corrections
   - 🎯 **TypeScript Support**: Full TS integration
 
 - **[Prettier](https://prettier.io/)** `v3.2.4` - Code formatting ensuring:
+
   - 🎨 **Consistent Style**: Unified code formatting
   - ⚡ **Fast Formatting**: Instant code beautification
   - 🔧 **Zero Config**: Works out of the box
@@ -121,6 +132,7 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### CI/CD & Deployment
 
 - **GitHub Actions** - Automated workflows providing:
+
   - 🔄 **Continuous Integration**: Automated testing on every PR
   - 🚀 **Continuous Deployment**: Automatic deployment to GitHub Pages
   - 🔒 **Security Scanning**: Automated vulnerability detection
@@ -128,6 +140,7 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
   - 🤖 **Dependency Management**: Automated dependency updates
 
 - **GitHub Pages** - Static hosting offering:
+
   - 🌐 **Global CDN**: Fast content delivery worldwide
   - 🔒 **HTTPS**: Automatic SSL certificate management
   - 🎯 **Custom Domain**: Custom domain support
@@ -144,6 +157,7 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Core Dependencies Philosophy
 
 Our dependency selection follows these principles:
+
 - **🎯 Purpose-Driven**: Each dependency solves a specific problem
 - **📏 Bundle Size**: Minimize impact on user experience
 - **🔒 Security**: Regular updates and vulnerability monitoring
@@ -153,12 +167,15 @@ Our dependency selection follows these principles:
 ### Production Dependencies
 
 #### **Content Management & Generation**
+
 ```json
 {
   "hugo-bin": "^0.147.5"
 }
 ```
+
 **Why Hugo?**
+
 - ⚡ **Performance**: 10-100x faster than traditional CMSs
 - 🔍 **SEO-First**: Built-in SEO optimization
 - 📱 **Mobile-Ready**: Responsive by default
@@ -166,13 +183,16 @@ Our dependency selection follows these principles:
 - 🔧 **Flexible**: Extensive templating and customization
 
 #### **React Ecosystem**
+
 ```json
 {
   "react": "^18.2.0",
   "react-dom": "^18.2.0"
 }
 ```
+
 **Why React 18?**
+
 - 🔄 **Concurrent Features**: Better user experience with Suspense
 - 🎯 **Component Model**: Reusable, testable components
 - 🌟 **Ecosystem**: Vast library ecosystem
@@ -180,6 +200,7 @@ Our dependency selection follows these principles:
 - 🧪 **Testing**: Excellent testing library support
 
 #### **UI Framework**
+
 ```json
 {
   "@chakra-ui/react": "^2.8.2",
@@ -188,7 +209,9 @@ Our dependency selection follows these principles:
   "@emotion/styled": "^11.11.0"
 }
 ```
+
 **Why Chakra UI?**
+
 - ♿ **Accessibility**: WCAG 2.1 AA compliant out of the box
 - 🎨 **Design System**: Consistent, professional design
 - 🌙 **Dark Mode**: Built-in theme switching
@@ -199,13 +222,16 @@ Our dependency selection follows these principles:
 **Alternative Considered**: Material-UI (too heavy), Tailwind (less accessible)
 
 #### **State Management**
+
 ```json
 {
   "zustand": "^4.4.7",
   "@tanstack/react-query": "^5.17.15"
 }
 ```
+
 **Why Zustand?**
+
 - 🪶 **Lightweight**: <1KB vs Redux's ~20KB
 - 🎯 **Simple API**: No boilerplate, easy to understand
 - 🔄 **Persistence**: Built-in localStorage integration
@@ -213,6 +239,7 @@ Our dependency selection follows these principles:
 - 📈 **Performance**: Minimal re-renders
 
 **Why TanStack Query?**
+
 - 🔄 **Caching**: Intelligent data caching and invalidation
 - 📡 **Background Updates**: Automatic refetching
 - ⚡ **Optimistic Updates**: Instant UI feedback
@@ -222,12 +249,15 @@ Our dependency selection follows these principles:
 **Alternatives Considered**: Redux (too complex), Context API (performance issues)
 
 #### **Search & Data Processing**
+
 ```json
 {
   "fuse.js": "^7.0.0"
 }
 ```
+
 **Why Fuse.js?**
+
 - 🔍 **Fuzzy Search**: Typo-tolerant search
 - ⚡ **Performance**: Optimized for large datasets
 - 🎯 **Relevance**: Weighted search results
@@ -237,12 +267,15 @@ Our dependency selection follows these principles:
 **Alternatives Considered**: Lunr.js (larger), Algolia (external dependency)
 
 #### **Animation & Interactions**
+
 ```json
 {
   "framer-motion": "^10.18.0"
 }
 ```
+
 **Why Framer Motion?**
+
 - ✨ **Smooth Animations**: 60fps performance
 - 🎯 **Gesture Handling**: Touch and mouse interactions
 - 📐 **Layout Animations**: Automatic layout transitions
@@ -254,13 +287,16 @@ Our dependency selection follows these principles:
 ### Development Dependencies
 
 #### **Build Tools**
+
 ```json
 {
   "vite": "^6.3.5",
   "@vitejs/plugin-react": "^4.2.1"
 }
 ```
+
 **Why Vite?**
+
 - ⚡ **Fast HMR**: Instant hot module replacement
 - 📦 **Optimized Builds**: Tree-shaking and code splitting
 - 🔌 **Plugin Ecosystem**: Rich plugin architecture
@@ -270,6 +306,7 @@ Our dependency selection follows these principles:
 **Alternatives Considered**: Webpack (slower), Parcel (less mature)
 
 #### **Testing Framework**
+
 ```json
 {
   "vitest": "^3.2.4",
@@ -279,25 +316,30 @@ Our dependency selection follows these principles:
   "playwright": "^1.53.1"
 }
 ```
+
 **Why Vitest?**
+
 - ⚡ **Speed**: 10x faster than Jest
 - 🔧 **Vite Integration**: Native Vite support
 - 🎯 **Modern**: ESM, TypeScript, JSX out of the box
 - 📊 **Coverage**: Built-in code coverage
 
 **Why Testing Library?**
+
 - 🎯 **User-Centric**: Test behavior, not implementation
 - ♿ **Accessibility**: Encourages accessible design
 - 🔍 **Semantic**: Query by role, label, text
 - 🧪 **Best Practices**: Promotes good testing habits
 
 **Why Playwright?**
+
 - 🌐 **Cross-Browser**: Chrome, Firefox, Safari, Edge
 - 📱 **Mobile**: Real device simulation
 - 🎥 **Recording**: Video and screenshot capture
 - 🔄 **Reliable**: Auto-wait and retry mechanisms
 
 #### **Code Quality**
+
 ```json
 {
   "typescript": "^5.3.3",
@@ -307,19 +349,23 @@ Our dependency selection follows these principles:
   "@typescript-eslint/parser": "^6.16.0"
 }
 ```
+
 **Why TypeScript?**
+
 - 🛡️ **Type Safety**: Catch errors at compile time
 - 📖 **Developer Experience**: IntelliSense and auto-completion
 - 🔧 **Refactoring**: Safe code changes
 - 📚 **Documentation**: Self-documenting code
 
 **Why ESLint + Prettier?**
+
 - 🛡️ **Error Prevention**: Catch bugs before runtime
 - 📏 **Consistency**: Unified code style
 - 🔧 **Auto-Fix**: Automatic corrections
 - 🤝 **Team Harmony**: No style debates
 
 #### **Git Hooks & Automation**
+
 ```json
 {
   "husky": "^8.0.3",
@@ -327,7 +373,9 @@ Our dependency selection follows these principles:
   "commitlint": "^18.4.3"
 }
 ```
+
 **Why Husky?**
+
 - 🛡️ **Quality Gates**: Pre-commit validation
 - 📏 **Standards**: Enforce commit conventions
 - 🧪 **Automation**: Run tests before commits
@@ -336,6 +384,7 @@ Our dependency selection follows these principles:
 ### Dependency Management Strategy
 
 #### **Version Pinning Strategy**
+
 ```json
 {
   "exact": ["react", "react-dom", "typescript"],
@@ -345,12 +394,14 @@ Our dependency selection follows these principles:
 ```
 
 #### **Update Schedule**
+
 - **Major Updates**: Quarterly review and testing
 - **Minor Updates**: Monthly automated updates
 - **Patch Updates**: Weekly automated updates
 - **Security Updates**: Immediate (Dependabot alerts)
 
 #### **Bundle Analysis**
+
 ```bash
 # Regular bundle analysis
 npm run analyze-bundle
@@ -367,6 +418,7 @@ npm run analyze-bundle
 ```
 
 #### **Security Monitoring**
+
 - **Dependabot**: Automated security updates
 - **npm audit**: Regular vulnerability scanning
 - **Snyk**: Advanced vulnerability monitoring
@@ -374,24 +426,24 @@ npm run analyze-bundle
 
 ### Performance Impact Analysis
 
-| Category | Dependencies | Bundle Impact | Justification |
-|----------|-------------|---------------|---------------|
-| **Core React** | react, react-dom | 42KB | Essential framework |
-| **UI Framework** | @chakra-ui/* | 85KB | Accessibility + DX |
-| **State Management** | zustand, react-query | 25KB | Performance + UX |
-| **Search** | fuse.js | 12KB | Core feature |
-| **Animation** | framer-motion | 32KB | Enhanced UX |
-| **Total Runtime** | - | **196KB** | Well under 300KB budget |
+| Category             | Dependencies         | Bundle Impact | Justification           |
+| -------------------- | -------------------- | ------------- | ----------------------- |
+| **Core React**       | react, react-dom     | 42KB          | Essential framework     |
+| **UI Framework**     | @chakra-ui/\*        | 85KB          | Accessibility + DX      |
+| **State Management** | zustand, react-query | 25KB          | Performance + UX        |
+| **Search**           | fuse.js              | 12KB          | Core feature            |
+| **Animation**        | framer-motion        | 32KB          | Enhanced UX             |
+| **Total Runtime**    | -                    | **196KB**     | Well under 300KB budget |
 
 ### Alternatives Evaluation Matrix
 
-| Need | Chosen | Alternative 1 | Alternative 2 | Decision Rationale |
-|------|--------|---------------|---------------|-------------------|
-| **UI Framework** | Chakra UI | Material-UI | Tailwind CSS | Better accessibility, smaller bundle |
-| **State Management** | Zustand | Redux Toolkit | Context API | Simplicity + performance |
-| **Testing** | Vitest | Jest | Cypress | Speed + Vite integration |
-| **Build Tool** | Vite | Webpack | Parcel | Modern + fast development |
-| **Search** | Fuse.js | Lunr.js | Algolia | Offline + lightweight |
+| Need                 | Chosen    | Alternative 1 | Alternative 2 | Decision Rationale                   |
+| -------------------- | --------- | ------------- | ------------- | ------------------------------------ |
+| **UI Framework**     | Chakra UI | Material-UI   | Tailwind CSS  | Better accessibility, smaller bundle |
+| **State Management** | Zustand   | Redux Toolkit | Context API   | Simplicity + performance             |
+| **Testing**          | Vitest    | Jest          | Cypress       | Speed + Vite integration             |
+| **Build Tool**       | Vite      | Webpack       | Parcel        | Modern + fast development            |
+| **Search**           | Fuse.js   | Lunr.js       | Algolia       | Offline + lightweight                |
 
 ## 🏗 Architecture
 
@@ -1008,6 +1060,7 @@ jobs:
 ### Deployment Environments
 
 #### **Production** (GitHub Pages)
+
 - **URL**: https://techishthoughts.github.io
 - **Trigger**: Push to `main` branch
 - **Build**: Hugo + Vite production build
@@ -1016,6 +1069,7 @@ jobs:
 - **Custom Domain**: Configurable
 
 #### **Preview** (PR Previews)
+
 - **URL**: Netlify/Vercel preview URLs
 - **Trigger**: Pull request creation/update
 - **Purpose**: Review changes before merge
@@ -1071,6 +1125,7 @@ hugo --minify --environment production
 ### Deployment Commands
 
 #### **Automated Deployment** (Recommended)
+
 ```bash
 # Simply push to main branch
 git push origin main
@@ -1078,6 +1133,7 @@ git push origin main
 ```
 
 #### **Manual Deployment** (Emergency)
+
 ```bash
 # Build all assets
 npm run build:all
@@ -1092,6 +1148,7 @@ git push origin main
 ```
 
 #### **Local Testing**
+
 ```bash
 # Test production build locally
 npm run hugo:build
@@ -1104,12 +1161,14 @@ hugo server --environment production
 ### Environment Configuration
 
 #### **Development**
+
 - Hugo: Development mode with live reload
 - Vite: HMR enabled, source maps
 - Analytics: Disabled
 - Comments: Local storage only
 
 #### **Production**
+
 - Hugo: Minified, optimized
 - Vite: Minified, tree-shaken
 - Analytics: Google Analytics enabled
@@ -1118,12 +1177,14 @@ hugo server --environment production
 ### Monitoring & Observability
 
 #### **Performance Monitoring**
+
 - **Lighthouse CI**: Automated performance testing
 - **Core Web Vitals**: LCP, FID, CLS tracking
 - **Bundle Analysis**: Regular bundle size monitoring
 - **Error Tracking**: JavaScript error monitoring
 
 #### **Deployment Monitoring**
+
 - **Build Status**: GitHub Actions status badges
 - **Uptime Monitoring**: GitHub Pages status
 - **CDN Performance**: Global CDN metrics
@@ -1132,6 +1193,7 @@ hugo server --environment production
 ### Rollback Strategy
 
 #### **Automatic Rollback**
+
 ```bash
 # If deployment fails, GitHub Actions automatically:
 # 1. Preserves previous deployment
@@ -1140,6 +1202,7 @@ hugo server --environment production
 ```
 
 #### **Manual Rollback**
+
 ```bash
 # Revert to previous commit
 git revert HEAD
@@ -1153,11 +1216,13 @@ git push --force-with-lease origin main
 ### Secrets & Environment Variables
 
 #### **Required Secrets**
+
 - `GITHUB_TOKEN`: Automatic (GitHub provides)
 - `LHCI_GITHUB_APP_TOKEN`: Lighthouse CI integration
 - `CODECOV_TOKEN`: Code coverage reporting
 
 #### **Optional Configuration**
+
 - `HUGO_VERSION`: Hugo version override
 - `NODE_VERSION`: Node.js version override
 - `DEPLOYMENT_BRANCH`: Custom deployment branch
@@ -1213,6 +1278,7 @@ assets/js/test/
 ```
 
 **Current Test Metrics:**
+
 - ✅ **87/87 tests passing** (100% pass rate)
 - ✅ **Unit Test Coverage**: 90%+ statements, 85%+ branches
 - ✅ **Integration Coverage**: Component interactions
@@ -1223,12 +1289,14 @@ assets/js/test/
 #### Unit Testing Stack
 
 - **[Vitest](https://vitest.dev/)** - Core testing framework
+
   - ⚡ **Performance**: 3-5x faster than Jest
   - 🔧 **Vite Integration**: Native ESM and TypeScript support
   - 📊 **Coverage**: Built-in code coverage with v8
   - 🎯 **Watch Mode**: Intelligent test re-running
 
 - **[@testing-library/react](https://testing-library.com/react)** - Component testing
+
   - 🎯 **User-Centric**: Test behavior, not implementation
   - ♿ **Accessibility**: Encourages accessible component design
   - 🔍 **Query Methods**: Semantic element selection
@@ -1361,7 +1429,9 @@ test('complete blog reading workflow', async ({ page }) => {
 
   // Test text-to-speech functionality
   await page.click('[aria-label="Play text-to-speech"]');
-  await expect(page.locator('[aria-label="Pause text-to-speech"]')).toBeVisible();
+  await expect(
+    page.locator('[aria-label="Pause text-to-speech"]')
+  ).toBeVisible();
 
   // Test social sharing
   await page.click('[aria-label="Share this post"]');
@@ -1427,12 +1497,14 @@ jobs:
 ### Testing Best Practices
 
 #### 1. Test Organization
+
 - **Arrange-Act-Assert**: Clear test structure
 - **Descriptive Names**: Tests as documentation
 - **Single Responsibility**: One concept per test
 - **Test Independence**: No test dependencies
 
 #### 2. Mocking Strategy
+
 ```typescript
 // Mock external dependencies
 vi.mock('../services/api', () => ({
@@ -1451,6 +1523,7 @@ Object.defineProperty(window, 'speechSynthesis', {
 ```
 
 #### 3. Test Data Management
+
 ```typescript
 // factories/articleFactory.ts
 export const createMockArticle = (overrides = {}): Article => ({
@@ -1465,6 +1538,7 @@ export const createMockArticle = (overrides = {}): Article => ({
 ```
 
 #### 4. Performance Testing
+
 - **Bundle Size**: Automated bundle analysis
 - **Lighthouse CI**: Performance regression detection
 - **Memory Leaks**: Component cleanup verification
@@ -1473,6 +1547,7 @@ export const createMockArticle = (overrides = {}): Article => ({
 ### Quality Gates
 
 #### Pre-Commit Hooks
+
 ```bash
 # Fast pre-commit (default)
 npm run pre-commit         # Linting + formatting
@@ -1485,12 +1560,14 @@ npm run pre-commit:full    # + E2E + security audit
 ```
 
 #### Coverage Requirements
+
 - **Statements**: >90%
 - **Branches**: >85%
 - **Functions**: >80%
 - **Lines**: >90%
 
 #### Quality Metrics
+
 - **Test Reliability**: >99% pass rate
 - **Test Speed**: Unit tests <30s, E2E <5min
 - **Maintenance**: Regular test review and refactoring

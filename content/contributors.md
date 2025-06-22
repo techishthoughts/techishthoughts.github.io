@@ -1,8 +1,8 @@
 ---
-title: "Contributors"
-layout: "contributors"
-type: "page"
-description: "Meet the contributors behind Tech.ish Thoughts - passionate developers and tech enthusiasts sharing their knowledge and insights."
+title: 'Contributors'
+layout: 'contributors'
+type: 'page'
+description: 'Meet the contributors behind Tech.ish Thoughts - passionate developers and tech enthusiasts sharing their knowledge and insights.'
 ---
 
 # Contributors
@@ -15,4 +15,4 @@ The Tech.ish Thoughts project is made possible by the dedication and expertise o
 
 ---
 
-*Want to become a contributor? We're always looking for passionate developers to join our team. Check out our [contribution guidelines](https://github.com/techishthoughts/techishthoughts.github.io) to get started.*
+_Want to become a contributor? We're always looking for passionate developers to join our team. Check out our [contribution guidelines](https://github.com/techishthoughts/techishthoughts.github.io) to get started._
