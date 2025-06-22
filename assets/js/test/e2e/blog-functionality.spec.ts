@@ -122,20 +122,22 @@ test.describe('Blog Functionality', () => {
     });
 
     test('should navigate to a blog post', async ({ page }) => {
-      await page.goto('http://localhost:1313/posts/hello-world/');
+      await page.goto(
+        'http://localhost:1313/posts/react-18-concurrent-features/'
+      );
       await page.waitForLoadState('networkidle'); // Ensures the page is fully loaded
 
       await expect(page.locator('h1').first()).toBeVisible();
 
-      // Update the selector to match your real markup if needed
-      const article = page
-        .locator('article, .post, .content, .post-content')
-        .first();
+      // Check for the article element in our updated template
+      const article = page.locator('article').first();
       await expect(article).toBeVisible();
     });
 
     test('should have social component containers', async ({ page }) => {
-      await page.goto('http://localhost:1313/posts/hello-world/');
+      await page.goto(
+        'http://localhost:1313/posts/react-18-concurrent-features/'
+      );
       await page.waitForLoadState('networkidle');
 
       // Check that the containers exist (even if empty)
@@ -371,7 +373,9 @@ test.describe('Blog Functionality', () => {
 
   test.describe('JavaScript Integration', () => {
     test('should load main JavaScript file', async ({ page }) => {
-      await page.goto('http://localhost:1313/posts/hello-world/');
+      await page.goto(
+        'http://localhost:1313/posts/react-18-concurrent-features/'
+      );
 
       // Check if main.js is loaded
       const scripts = page.locator('script[src*="main.js"]');
@@ -389,7 +393,9 @@ test.describe('Blog Functionality', () => {
     });
 
     test('should have ChakraUI theme available', async ({ page }) => {
-      await page.goto('http://localhost:1313/posts/hello-world/');
+      await page.goto(
+        'http://localhost:1313/posts/react-18-concurrent-features/'
+      );
       await page.waitForLoadState('networkidle');
 
       // Check if Chakra UI classes are present
