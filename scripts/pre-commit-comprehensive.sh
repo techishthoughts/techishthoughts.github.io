@@ -75,7 +75,7 @@ run_with_status "npm run security:audit" "Security audit"
 
 # 6. Unit Tests
 print_status "🧪 Running unit tests..." "$BLUE"
-if npm run test:run -- --reporter=verbose --bail=1; then
+if npm run test -- --reporter=verbose --bail=1; then
     print_status "✅ Unit tests passed" "$GREEN"
 else
     print_status "❌ Unit tests failed" "$RED"

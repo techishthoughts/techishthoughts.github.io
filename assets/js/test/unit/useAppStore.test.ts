@@ -75,17 +75,19 @@ describe('useAppStore', () => {
     const mockArticle: Article = {
       id: '1',
       title: 'Test Article',
-      content: 'Test content',
+      slug: 'test-article',
       summary: 'Test summary',
-      author: 'Test Author',
-      date: '2024-01-01',
-      tags: ['test'],
-      url: '/test-article',
+      content: 'Test content',
+      plainContent: 'Test content',
+      author: 'author1',
+      publishedDate: '2024-01-01',
       readingTime: 5,
-      published: true,
+      wordCount: 100,
+      tags: [],
       featured: false,
-      createdDate: '2024-01-01',
-      lastModified: '2024-01-01',
+      draft: false,
+      seo: {},
+      permalink: '/test-article',
     };
 
     it('should set articles', () => {
@@ -140,16 +142,11 @@ describe('useAppStore', () => {
       name: 'Test Author',
       bio: 'Test bio',
       avatar: '/avatar.jpg',
-      email: 'test@example.com',
-      socialLinks: {
-        twitter: '@test',
-        github: 'test',
-        linkedin: 'test',
-        website: 'https://test.com',
+      social: {
+        github: 'testuser',
+        linkedin: 'testuser',
       },
-      expertise: ['JavaScript', 'React'],
-      joinDate: '2024-01-01',
-      postsCount: 5,
+      joinedDate: '2024-01-01',
       isActive: true,
     };
 
@@ -194,13 +191,10 @@ describe('useAppStore', () => {
   describe('Tag Management', () => {
     const mockTag: Tag = {
       id: '1',
-      name: 'JavaScript',
-      slug: 'javascript',
-      description: 'JavaScript programming language',
-      color: '#f7df1e',
-      postsCount: 10,
+      name: 'React',
+      slug: 'react',
+      articlesCount: 10,
       createdDate: '2024-01-01',
-      isPopular: true,
     };
 
     it('should set tags', () => {
@@ -214,17 +208,14 @@ describe('useAppStore', () => {
     it('should add tag', () => {
       const { addTag } = useAppStore.getState();
       addTag({
-        name: 'React',
-        slug: 'react',
-        description: 'React library',
-        color: '#61dafb',
-        postsCount: 5,
-        isPopular: false,
+        name: 'JavaScript',
+        slug: 'javascript',
+        articlesCount: 5,
       });
 
       const { tags } = useAppStore.getState();
       expect(tags).toHaveLength(1);
-      expect(tags[0].name).toBe('React');
+      expect(tags[0].name).toBe('JavaScript');
       expect(tags[0].id).toBeDefined();
       expect(tags[0].createdDate).toBeDefined();
     });
@@ -253,9 +244,27 @@ describe('useAppStore', () => {
       const { setTags, getPopularTags } = useAppStore.getState();
 
       setTags([
-        { id: '1', name: 'React', slug: 'react', articlesCount: 10, createdDate: '2024-01-01' },
-        { id: '2', name: 'JavaScript', slug: 'javascript', articlesCount: 15, createdDate: '2024-01-02' },
-        { id: '3', name: 'Vue', slug: 'vue', articlesCount: 20, createdDate: '2024-01-03' },
+        {
+          id: '1',
+          name: 'React',
+          slug: 'react',
+          articlesCount: 10,
+          createdDate: '2024-01-01',
+        },
+        {
+          id: '2',
+          name: 'JavaScript',
+          slug: 'javascript',
+          articlesCount: 15,
+          createdDate: '2024-01-02',
+        },
+        {
+          id: '3',
+          name: 'Vue',
+          slug: 'vue',
+          articlesCount: 20,
+          createdDate: '2024-01-03',
+        },
       ]);
 
       const popularTags = getPopularTags();
@@ -271,9 +280,8 @@ describe('useAppStore', () => {
       id: '1',
       name: 'Frontend',
       slug: 'frontend',
-      description: 'Frontend development',
-      postsCount: 15,
-      isActive: true,
+      articlesCount: 15,
+      createdDate: '2024-01-01',
     };
 
     it('should set categories', () => {
@@ -470,7 +478,12 @@ describe('useAppStore', () => {
     it('should share post', async () => {
       const { sharePost } = useAppStore.getState();
 
-      await sharePost('post-1', 'twitter', 'https://example.com/post-1', 'Test Post');
+      await sharePost(
+        'post-1',
+        'twitter',
+        'https://example.com/post-1',
+        'Test Post'
+      );
 
       // Should NOT call API (it's mocked/TODO in actual implementation)
       expect(global.fetch).not.toHaveBeenCalled();
@@ -496,7 +509,9 @@ describe('useAppStore', () => {
 
       const { comments } = useAppStore.getState();
       expect(comments['post-1']).toHaveLength(2); // Mock comments
-      expect(comments['post-1'][0].content).toBe('Great article! Thanks for sharing.');
+      expect(comments['post-1'][0].content).toBe(
+        'Great article! Thanks for sharing.'
+      );
     });
 
     it('should add comment', async () => {

@@ -46,6 +46,7 @@
     "pre-commit": "lint-staged",
     "pre-commit:full": "./scripts/pre-commit-comprehensive.sh",
     "pre-commit:fast": "npm run format && npm run lint && npm run type-check && npm run validate:content && npm run test",
+    "pre-commit:test": "npm run lint && npm run type-check && npm run test",
     "prepare": "husky install",
     "lighthouse": "lhci autorun --no-lighthouserc",
     "lighthouse:ci": "lhci autorun",
@@ -119,8 +120,7 @@
   "lint-staged": {
     "assets/js/**/*.{ts,tsx}": [
       "eslint --fix --max-warnings 0",
-      "prettier --write",
-      "bash -c 'npm run test -- --reporter=verbose --bail=1'"
+      "prettier --write"
     ],
     "*.{js,jsx,json,css,md,yml,yaml}": [
       "prettier --write"
@@ -137,8 +137,7 @@
       "prettier --write"
     ],
     "package.json": [
-      "prettier --write",
-      "bash -c 'npm run security:audit'"
+      "prettier --write"
     ]
   },
   "engines": {

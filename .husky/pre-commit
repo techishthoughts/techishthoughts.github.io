@@ -1,4 +1,16 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Pre-commit hook with multiple options
+#
+# Default: Fast lint-staged checks (formatting, linting, validation)
+# For comprehensive checks including tests, run: npm run pre-commit:full
+# For quick test check, run: npm run pre-commit:test
+
+echo "🔍 Running pre-commit checks..."
+
+# Run the default fast pre-commit (lint-staged)
 npm run pre-commit
+
+echo "✅ Pre-commit checks completed!"
+echo "💡 For comprehensive checks (including all tests), run: npm run pre-commit:full"

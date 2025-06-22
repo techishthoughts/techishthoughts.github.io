@@ -134,6 +134,24 @@ test.describe('Blog Functionality', () => {
       await expect(article).toBeVisible();
     });
 
+    test('should navigate to contributors page', async ({ page }) => {
+      await page.goto('http://localhost:1313/contributors/');
+      await page.waitForLoadState('networkidle');
+
+      // Check that the contributors page loads
+      await expect(page.locator('h1').first()).toHaveText('Contributors');
+
+      // Check for the article element/main content
+      const article = page.locator('article').first();
+      await expect(article).toBeVisible();
+
+      // Check that contributor data is displayed
+      const contributorCards = page.locator(
+        '[style*="border: 1px solid #e5e5e5"]'
+      );
+      await expect(contributorCards.first()).toBeVisible();
+    });
+
     test('should have social component containers', async ({ page }) => {
       await page.goto(
         'http://localhost:1313/posts/react-18-concurrent-features/'
@@ -267,9 +285,13 @@ test.describe('Blog Functionality', () => {
       const postsLink = page
         .locator('.nav-link')
         .filter({ hasText: 'Articles' });
+      const contributorsLink = page
+        .locator('.nav-link')
+        .filter({ hasText: 'Contributors' });
 
       await expect(homeLink).toBeVisible();
       await expect(postsLink).toBeVisible();
+      await expect(contributorsLink).toBeVisible();
     });
 
     test('should show navigation on desktop viewport', async ({ page }) => {
@@ -284,11 +306,15 @@ test.describe('Blog Functionality', () => {
       const postsLink = page
         .locator('.nav-link')
         .filter({ hasText: 'Articles' });
+      const contributorsLink = page
+        .locator('.nav-link')
+        .filter({ hasText: 'Contributors' });
       const aboutLink = page.locator('.nav-link').filter({ hasText: 'About' });
       const subscribeBtn = page.locator('.subscribe-btn');
 
       await expect(homeLink).toBeVisible();
       await expect(postsLink).toBeVisible();
+      await expect(contributorsLink).toBeVisible();
       await expect(aboutLink).toBeVisible();
       await expect(subscribeBtn).toBeVisible();
     });

@@ -36,7 +36,6 @@ title = "Tech.ish Thoughts"
 [taxonomies]
   tag = "tags"
   category = "categories"
-  author = "authors"
 
 [related]
   includeNewer = true

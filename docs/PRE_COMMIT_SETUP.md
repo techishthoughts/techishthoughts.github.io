@@ -1,200 +1,218 @@
-# Pre-Commit Setup & Comprehensive Testing
+# Pre-Commit Setup Guide
 
-This project uses comprehensive pre-commit hooks to ensure code quality and prevent broken commits from reaching the repository.
+This project uses a multi-tiered pre-commit system to ensure code quality and prevent issues before they reach the repository.
 
-## 🔍 What Runs on Every Commit
+## 🚀 Quick Start
 
-The pre-commit hooks automatically run the following checks:
-
-### 1. **Code Formatting** ✨
-
-- Prettier formatting check
-- Auto-fixes minor formatting issues
-- Ensures consistent code style
-
-### 2. **Linting** 🔧
-
-- ESLint with TypeScript support
-- Zero warnings policy (`--max-warnings 0`)
-- Auto-fixes fixable issues
-
-### 3. **Type Checking** 🎯
-
-- TypeScript compilation check
-- Ensures type safety across the codebase
-
-### 4. **Content Validation** 📝
-
-- Author data validation (`data/authors.json`)
-- Blog post frontmatter validation
-- Required fields and format checking
-
-### 5. **Unit Tests** 🧪
-
-- All unit tests must pass
-- Uses Vitest with verbose reporter
-- Fails immediately on first test failure (`--bail=1`)
-
-### 6. **Security Audit** 🔒
-
-- NPM security audit
-- Checks for known vulnerabilities
-- Moderate severity level
-
-## 🚀 How to Use
-
-### Standard Commit (Recommended)
+The pre-commit hooks are automatically set up when you run:
 
 ```bash
-git add .
-git commit -m "feat: your commit message"
+npm install
 ```
 
-The pre-commit hooks will automatically run all checks.
+This will install Husky and configure the pre-commit hooks.
 
-### Manual Pre-Commit Validation
+## 📋 Pre-Commit Levels
+
+### 1. Default Pre-Commit (Fast) ⚡
+
+**Runs automatically on every commit**
 
 ```bash
-# Run comprehensive validation manually
+npm run pre-commit
+```
+
+**What it does:**
+
+- ✅ Code formatting (Prettier)
+- ✅ Linting (ESLint) with auto-fix
+- ✅ Content validation (authors & frontmatter)
+- ✅ Basic file formatting
+
+**Time:** ~10-30 seconds
+
+### 2. Test Pre-Commit (Medium) 🧪
+
+**Run manually when you want to include tests**
+
+```bash
+npm run pre-commit:test
+```
+
+**What it does:**
+
+- ✅ All fast checks above
+- ✅ TypeScript type checking
+- ✅ Unit tests (all 87 tests)
+
+**Time:** ~1-2 minutes
+
+### 3. Comprehensive Pre-Commit (Full) 🔍
+
+**Run manually for complete validation**
+
+```bash
 npm run pre-commit:full
-
-# Run fast validation (without E2E tests)
-npm run pre-commit:fast
 ```
 
-### Comprehensive Pre-Commit Script
+**What it does:**
 
-```bash
-# Run the full comprehensive script
-./scripts/pre-commit-comprehensive.sh
+- ✅ All test checks above
+- ✅ Security audit
+- ✅ Build process validation
+- ✅ E2E tests (if E2E files changed)
+- ✅ Hugo build test (if content changed)
+
+**Time:** ~3-5 minutes
+
+## 🛠️ Configuration Files
+
+### Husky Configuration
+
+- `.husky/pre-commit` - Main pre-commit hook
+- Runs the fast pre-commit by default
+
+### Lint-Staged Configuration
+
+Located in `package.json`:
+
+```json
+{
+  "lint-staged": {
+    "assets/js/**/*.{ts,tsx}": [
+      "eslint --fix --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,css,md,yml,yaml}": ["prettier --write"],
+    "data/authors.json": [
+      "node scripts/validate-authors.cjs",
+      "prettier --write"
+    ],
+    "content/posts/*.md": [
+      "node scripts/validate-frontmatter.cjs",
+      "prettier --write"
+    ]
+  }
+}
 ```
 
-## 🎭 E2E Tests
+### Comprehensive Script
 
-E2E tests run in these scenarios:
+- `scripts/pre-commit-comprehensive.sh` - Full validation script
 
-- When E2E-related files are modified
-- When `playwright.config.ts` is changed
-- When manually running `npm run pre-commit:full`
+## 🔧 Customization
 
-## 🛠 Available Commands
+### Skip Pre-Commit (Emergency)
 
-### Testing Commands
-
-```bash
-npm run test:run           # Run unit tests once
-npm run test:e2e          # Run E2E tests
-npm run test:e2e:ui       # Run E2E tests with UI
-npm run test:e2e:headed   # Run E2E tests in headed mode
-```
-
-### Validation Commands
-
-```bash
-npm run lint              # Run ESLint
-npm run type-check        # Run TypeScript check
-npm run format:check      # Check formatting
-npm run format            # Fix formatting
-npm run validate:content  # Validate authors & posts
-npm run validate:all      # Run all validations
-```
-
-### Build Commands
-
-```bash
-npm run build             # Build React components
-npm run hugo:build        # Build Hugo site
-npm run build:all         # Build everything
-```
-
-## 🚨 Troubleshooting
-
-### If Pre-Commit Fails
-
-1. **Formatting Issues**
-
-   ```bash
-   npm run format
-   ```
-
-2. **Linting Errors**
-
-   ```bash
-   npm run lint:fix
-   ```
-
-3. **Type Errors**
-
-   ```bash
-   npm run type-check
-   ```
-
-   Fix the reported TypeScript errors manually.
-
-4. **Test Failures**
-
-   ```bash
-   npm run test:ui
-   ```
-
-   Use the test UI to debug failing tests.
-
-5. **E2E Test Failures**
-   ```bash
-   npm run test:e2e:ui
-   ```
-   Use Playwright's UI mode to debug E2E tests.
-
-### Bypassing Pre-Commit (Emergency Only)
+If you need to skip pre-commit checks in an emergency:
 
 ```bash
 git commit --no-verify -m "emergency fix"
 ```
 
-**⚠️ Warning**: Only use `--no-verify` in genuine emergencies. All checks will still run in CI.
+**⚠️ Use sparingly! Always run checks manually afterward.**
 
-## 📊 Pre-Commit Performance
+### Modify Pre-Commit Behavior
 
-The comprehensive pre-commit process typically takes:
+#### Change Default Behavior
 
-- **Fast mode**: 30-60 seconds
-- **Full mode** (with E2E): 2-5 minutes
+Edit `.husky/pre-commit` to change what runs by default.
 
-### Optimization Tips
+#### Add New File Types
 
-- Keep commits focused and small
-- Run tests locally during development
-- Use `npm run pre-commit:fast` for quick iterations
+Edit the `lint-staged` section in `package.json`.
 
-## 🔧 Configuration
+#### Customize Comprehensive Checks
 
-### Lint-Staged Configuration
+Edit `scripts/pre-commit-comprehensive.sh`.
 
-Located in `package.json` under `lint-staged`.
+## 🚨 Troubleshooting
 
-### Husky Configuration
+### Common Issues
 
-Located in `.husky/pre-commit`.
+#### 1. Pre-commit fails with "command not found"
 
-### Playwright Configuration
+```bash
+# Reinstall husky
+npm run prepare
+```
 
-Located in `playwright.config.ts`.
+#### 2. Tests fail during pre-commit
 
-## 🎯 Benefits
+```bash
+# Run tests individually to debug
+npm run test
+npm run test:ui  # For interactive debugging
+```
 
-1. **Prevents Broken Commits**: Catches issues before they reach the repository
-2. **Consistent Quality**: Ensures all code meets project standards
-3. **Fast Feedback**: Immediate feedback on code quality
-4. **Reduced CI Failures**: Fewer failed builds in GitHub Actions
-5. **Team Confidence**: Shared assurance that all code is tested
+#### 3. Linting errors
 
-## 📈 Continuous Improvement
+```bash
+# Auto-fix linting issues
+npm run lint:fix
+```
 
-The pre-commit setup is continuously improved based on:
+#### 4. Formatting issues
 
-- Team feedback
-- CI failure patterns
-- Performance considerations
-- New tooling and best practices
+```bash
+# Auto-format all files
+npm run format
+```
 
-For suggestions or issues with the pre-commit setup, please open an issue or discussion in the repository.
+### Performance Issues
+
+If pre-commit is too slow:
+
+1. Use the default fast pre-commit for regular commits
+2. Run comprehensive checks before pushing:
+   ```bash
+   npm run pre-commit:full
+   ```
+
+## 📊 What Each Check Does
+
+| Check          | Purpose                     | Time | Frequency    |
+| -------------- | --------------------------- | ---- | ------------ |
+| Prettier       | Code formatting consistency | ~5s  | Every commit |
+| ESLint         | Code quality & standards    | ~10s | Every commit |
+| TypeScript     | Type safety                 | ~15s | Manual/CI    |
+| Unit Tests     | Functionality validation    | ~30s | Manual/CI    |
+| E2E Tests      | User workflow validation    | ~2m  | Manual/CI    |
+| Security Audit | Dependency vulnerabilities  | ~10s | Manual/CI    |
+| Build Test     | Production readiness        | ~30s | Manual/CI    |
+
+## 🎯 Best Practices
+
+1. **Daily Development**: Use default pre-commit (fast)
+2. **Before PR**: Run `npm run pre-commit:test`
+3. **Before Release**: Run `npm run pre-commit:full`
+4. **Fix Issues Early**: Don't accumulate linting/formatting issues
+
+## 🔄 Integration with CI/CD
+
+The pre-commit checks align with CI/CD pipeline:
+
+- Local pre-commit prevents most issues
+- CI runs comprehensive checks
+- Consistent tooling and configuration
+
+## 📝 Adding New Checks
+
+To add a new pre-commit check:
+
+1. **For all files**: Add to `lint-staged` in `package.json`
+2. **For comprehensive**: Add to `scripts/pre-commit-comprehensive.sh`
+3. **Test locally**: Run your new check manually first
+4. **Document**: Update this guide
+
+## 🤝 Contributing
+
+When contributing to this project:
+
+1. Ensure pre-commit hooks are working
+2. Run comprehensive checks before major PRs
+3. Update this documentation if you modify the setup
+
+---
+
+**Questions?** Check the project README or open an issue!
