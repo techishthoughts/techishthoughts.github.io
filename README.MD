@@ -601,10 +601,15 @@ npm run watch       # Vite build in watch mode
 npm run test        # Unit tests
 npm run test:e2e    # End-to-end tests
 
-# Linting and formatting
+# Code quality (with automatic formatting)
 npm run lint        # ESLint
-npm run format      # Prettier
+npm run format      # Auto-format all files
+npm run format:check # Check formatting without fixing
 npm run type-check  # TypeScript
+
+# Pre-commit testing
+npm run pre-commit:format  # Test format auto-fix
+npm run pre-commit         # Full pre-commit flow
 ```
 
 ## 🖥 Development Guide
@@ -1546,11 +1551,16 @@ export const createMockArticle = (overrides = {}): Article => ({
 
 ### Quality Gates
 
-#### Pre-Commit Hooks
+#### Pre-Commit Hooks with Auto-Formatting
 
 ```bash
-# Fast pre-commit (default)
-npm run pre-commit         # Linting + formatting
+# Fast pre-commit (default) - with automatic format fixing
+npm run pre-commit         # Format check + auto-fix + linting
+
+# Format management
+npm run format:check       # Check formatting without fixing
+npm run format             # Auto-format all files
+npm run pre-commit:format  # Format check with auto-fix
 
 # Test pre-commit
 npm run pre-commit:test    # + TypeScript + unit tests
