@@ -1,10 +1,13 @@
 {{- $index := slice -}}
 {{- range where .Site.RegularPages "Type" "posts" -}}
-    {{- $index = $index | append (dict 
-        "title" .Title 
-        "permalink" .Permalink 
-        "summary" .Summary 
-        "author" (index site.Data.authors .Params.author).name
+    {{- $index = $index | append (dict
+        "title" .Title
+        "permalink" .Permalink
+        "summary" .Summary
+        "content" .Content
+        "date" (.Date.Format "2006-01-02T15:04:05Z07:00")
+        "authors" .Params.authors
+        "tags" .Params.tags
     ) -}}
 {{- end -}}
 {{- $index | jsonify -}}

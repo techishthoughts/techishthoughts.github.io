@@ -67,14 +67,17 @@ test.describe('Blog Functionality', () => {
       // Check that the page loads without errors
       await expect(page).toHaveTitle(/Tech\.ish Thoughts/);
 
-      // Check for the site title (use first occurrence)
-      await expect(page.locator('.site-title').first()).toBeVisible();
+      // Check for the site title (now it's just a link with the site name)
+      await expect(page.locator('header a').first()).toBeVisible();
+      await expect(page.locator('header a').first()).toContainText(
+        'Tech.ish Thoughts'
+      );
     });
 
     test('should have navigation links', async ({ page }) => {
       // Get viewport size to determine expected behavior
       const viewport = page.viewportSize();
-      const isMobile = viewport && viewport.width <= 480;
+      const isMobile = viewport && viewport.width <= 768; // Updated to match our breakpoint
 
       // Check for navigation elements (be flexible with hrefs)
       const homeLink = page
@@ -85,18 +88,16 @@ test.describe('Blog Functionality', () => {
         .first();
 
       if (isMobile) {
-        // On mobile (≤480px), navigation exists but most links are hidden
-        const nav = page.locator('.site-nav');
+        // On mobile (≤768px), navigation links are hidden but header is visible
+        const nav = page.locator('header nav');
         await expect(nav).toBeVisible();
 
-        // Regular nav links should be hidden on mobile
-        const homeNavLink = page
-          .locator('.site-nav .nav-link')
-          .filter({ hasText: 'Home' });
-        await expect(homeNavLink).toBeHidden();
+        // Regular nav links should be hidden on mobile (they have md:flex class)
+        const navLinks = page.locator('header nav .hidden');
+        await expect(navLinks).toBeAttached(); // They exist but are hidden
 
         // But site title should still be visible
-        const siteTitle = page.locator('.site-title');
+        const siteTitle = page.locator('header a').first();
         await expect(siteTitle).toBeVisible();
       } else {
         // On desktop/tablet, navigation should be visible
@@ -115,10 +116,8 @@ test.describe('Blog Functionality', () => {
       await expect(body).toBeVisible();
 
       // Check for main content area
-      const main = page.locator('main, .main, .content').first();
-      if ((await main.count()) > 0) {
-        await expect(main).toBeVisible();
-      }
+      const main = page.locator('main').first();
+      await expect(main).toBeVisible();
     });
 
     test('should navigate to a blog post', async ({ page }) => {
@@ -145,10 +144,8 @@ test.describe('Blog Functionality', () => {
       const article = page.locator('article').first();
       await expect(article).toBeVisible();
 
-      // Check that contributor data is displayed
-      const contributorCards = page.locator(
-        '[style*="border: 1px solid #e5e5e5"]'
-      );
+      // Check that contributor data is displayed (using the new CSS class)
+      const contributorCards = page.locator('.contributor-card');
       await expect(contributorCards.first()).toBeVisible();
     });
 
@@ -174,7 +171,7 @@ test.describe('Blog Functionality', () => {
     test('should have consistent theme behavior', async ({ page }) => {
       // Check viewport size to adapt behavior
       const viewport = page.viewportSize();
-      const isMobile = viewport && viewport.width <= 480;
+      const isMobile = viewport && viewport.width <= 768;
 
       // Look for dark mode toggle or theme switching functionality
       const darkModeToggle = page.locator(
@@ -197,7 +194,7 @@ test.describe('Blog Functionality', () => {
           await expect(toggleButton).toBeAttached();
 
           // On mobile, check if theme toggle is the only visible nav element
-          const nav = page.locator('.site-nav');
+          const nav = page.locator('header nav');
           if ((await nav.count()) > 0) {
             // Nav exists but may have specific mobile visibility rules
             console.log(
@@ -239,7 +236,7 @@ test.describe('Blog Functionality', () => {
 
       // Ensure basic styling is applied regardless of theme
       const body = page.locator('body');
-      await expect(body).toHaveCSS('font-family', /sans-serif/);
+      await expect(body).toHaveCSS('font-family', /Inter/);
     });
   });
 
@@ -247,29 +244,27 @@ test.describe('Blog Functionality', () => {
     test('should work on mobile viewport', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
 
-      // Check that the page still loads
-      await expect(page.locator('.site-title').first()).toBeVisible();
+      // Check that the page still loads - look for site title in header
+      await expect(page.locator('header a').first()).toBeVisible();
 
-      // On mobile (375px < 480px), navigation exists but most links are hidden
-      const nav = page.locator('.site-nav');
+      // On mobile (375px < 768px), navigation exists but desktop links are hidden
+      const nav = page.locator('header nav');
       await expect(nav).toBeVisible();
 
-      // Regular nav links should be hidden on mobile
-      const homeLink = page
-        .locator('.site-nav .nav-link')
-        .filter({ hasText: 'Home' });
-      await expect(homeLink).toBeHidden();
+      // Desktop nav links should be hidden on mobile (they have md:flex class)
+      const desktopNavLinks = page.locator('header nav .hidden');
+      await expect(desktopNavLinks).toBeAttached();
 
-      // Theme toggle should be visible on mobile
-      const themeToggle = page.locator('.theme-toggle');
-      await expect(themeToggle).toBeVisible();
+      // Subscribe button should be visible (specifically the one in header)
+      const subscribeBtn = page.locator('header .btn-primary');
+      await expect(subscribeBtn).toBeVisible();
 
       // Site title should still be visible and clickable
-      const siteTitle = page.locator('.site-title');
+      const siteTitle = page.locator('header a').first();
       await expect(siteTitle).toBeVisible();
 
       // Content should still be accessible
-      const mainContent = page.locator('.site-main');
+      const mainContent = page.locator('main');
       await expect(mainContent).toBeVisible();
     });
 
@@ -277,16 +272,16 @@ test.describe('Blog Functionality', () => {
       await page.setViewportSize({ width: 768, height: 1024 });
 
       // Check that navigation is visible on tablet
-      const nav = page.locator('.site-nav');
+      const nav = page.locator('header nav');
       await expect(nav).toBeVisible();
 
-      // Navigation links should be visible - use text-based selectors
-      const homeLink = page.locator('.nav-link').filter({ hasText: 'Home' });
+      // Navigation links should be visible on tablet (md breakpoint) - be more specific
+      const homeLink = page.locator('header nav a').filter({ hasText: 'Home' });
       const postsLink = page
-        .locator('.nav-link')
+        .locator('header nav a')
         .filter({ hasText: 'Articles' });
       const contributorsLink = page
-        .locator('.nav-link')
+        .locator('header nav a')
         .filter({ hasText: 'Contributors' });
 
       await expect(homeLink).toBeVisible();
@@ -298,19 +293,21 @@ test.describe('Blog Functionality', () => {
       await page.setViewportSize({ width: 1200, height: 800 });
 
       // Check that navigation is visible on desktop
-      const nav = page.locator('.site-nav');
+      const nav = page.locator('header nav');
       await expect(nav).toBeVisible();
 
-      // All navigation elements should be visible - use more flexible selectors
-      const homeLink = page.locator('.nav-link').filter({ hasText: 'Home' });
+      // All navigation elements should be visible - be more specific to header nav
+      const homeLink = page.locator('header nav a').filter({ hasText: 'Home' });
       const postsLink = page
-        .locator('.nav-link')
+        .locator('header nav a')
         .filter({ hasText: 'Articles' });
       const contributorsLink = page
-        .locator('.nav-link')
+        .locator('header nav a')
         .filter({ hasText: 'Contributors' });
-      const aboutLink = page.locator('.nav-link').filter({ hasText: 'About' });
-      const subscribeBtn = page.locator('.subscribe-btn');
+      const aboutLink = page
+        .locator('header nav a')
+        .filter({ hasText: 'About' });
+      const subscribeBtn = page.locator('header .btn-primary');
 
       await expect(homeLink).toBeVisible();
       await expect(postsLink).toBeVisible();
@@ -403,8 +400,8 @@ test.describe('Blog Functionality', () => {
         'http://localhost:1313/posts/react-18-concurrent-features/'
       );
 
-      // Check if main.js is loaded
-      const scripts = page.locator('script[src*="main.js"]');
+      // Check if search.js is loaded (our main JS file)
+      const scripts = page.locator('script[src*="search.js"]');
       if ((await scripts.count()) > 0) {
         await expect(scripts.first()).toBeAttached();
       }

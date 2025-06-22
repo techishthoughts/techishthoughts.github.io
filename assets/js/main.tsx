@@ -3,7 +3,9 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { CommentsSection } from './components/features/CommentsSection';
 import { SocialActions } from './components/features/SocialActions';
+import Footer from './components/Footer';
 import TextToSpeech from './components/TextToSpeech';
+import ThemeToggle from './components/ui/ThemeToggle';
 import { SearchProvider } from './context/SearchContext';
 import App from './search/App';
 import { useAppStore } from './stores/useAppStore';
@@ -159,6 +161,27 @@ document.addEventListener('DOMContentLoaded', () => {
       <ChakraProvider>
         <CommentsApp />
       </ChakraProvider>
+    );
+  }
+
+  // Theme Toggle
+  const themeToggleContainer = document.getElementById('theme-toggle-mount');
+  if (themeToggleContainer) {
+    const themeRoot = createRoot(themeToggleContainer);
+    themeRoot.render(<ThemeToggle />);
+  }
+
+  // Footer
+  const footerContainer = document.getElementById('footer-mount');
+  if (footerContainer) {
+    const footerRoot = createRoot(footerContainer);
+    const siteTitle = footerContainer.dataset.siteTitle || 'Tech.ish Thoughts';
+    const siteDescription =
+      footerContainer.dataset.siteDescription ||
+      'Insights, tutorials, and thoughts from tech enthusiasts, developers, and designers.';
+
+    footerRoot.render(
+      <Footer siteTitle={siteTitle} siteDescription={siteDescription} />
     );
   }
 });

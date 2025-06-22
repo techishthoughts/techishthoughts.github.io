@@ -1,238 +1,394 @@
 {{ define "main" }}
-<!-- Page Header -->
-<header class="page-header" style="margin-bottom: 48px; text-align: center;">
-  <h1 style="font-size: 36px; font-weight: 700; margin-bottom: 12px; color: var(--color-text);">
-    {{ if .IsHome }}
-      {{ .Site.Title }}
-    {{ else if eq .Section "posts" }}
-      All Articles
-    {{ else if .Title }}
-      {{ .Title }}
-    {{ else }}
-      {{ .Site.Title }}
-    {{ end }}
-  </h1>
-
-  {{ if .IsHome }}
-    <p style="font-size: 18px; color: var(--color-text-secondary); margin-bottom: 0; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+{{ if .IsHome }}
+<!-- Homepage Layout -->
+<div class="py-8">
+  <!-- Hero Section -->
+  <header class="text-center mb-16">
+    <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">{{ .Site.Title }}</h1>
+    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
       {{ .Site.Params.description }}
     </p>
-  {{ else if .Content }}
-    <div style="font-size: 16px; color: var(--color-text-secondary); max-width: 500px; margin-left: auto; margin-right: auto;">
-      {{ .Content }}
-    </div>
-  {{ end }}
-</header>
+  </header>
 
-<!-- Articles List -->
-<div class="articles-list">
-  {{ $pages := .Paginator.Pages }}
+  <!-- Featured Articles -->
+  {{ $pages := where .Site.RegularPages "Type" "posts" }}
   {{ if $pages }}
-    {{ $featuredPost := index $pages 0 }}
-    {{ $otherPosts := after 1 $pages }}
-
-    <!-- Featured Latest Post -->
-    <article class="featured-post">
-      <div class="featured-badge">Latest Post</div>
-
-      <!-- Author and Date -->
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-        {{ with $featuredPost.Params.author }}
-          {{ $author := index site.Data.authors . }}
-          {{ if $author }}
-            <img src="{{ $author.avatar }}" alt="{{ $author.name }}"
-                 style="width: 24px; height: 24px; border-radius: 50%;">
-            <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">{{ $author.name }}</span>
-          {{ else }}
-            <img src="/images/authors/default-avatar.png" alt="Unknown Author"
-                 style="width: 24px; height: 24px; border-radius: 50%;">
-            <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">Unknown Author</span>
-          {{ end }}
-        {{ else }}
-          <img src="/images/authors/default-avatar.png" alt="Unknown Author"
-               style="width: 24px; height: 24px; border-radius: 50%;">
-          <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">Unknown Author</span>
-        {{ end }}
-
-        <span style="color: var(--color-text-light); font-size: var(--font-size-sm);">·</span>
-        <time datetime="{{ $featuredPost.Date | time.Format "2006-01-02T15:04:05-07:00" }}"
-              style="font-size: var(--font-size-sm); color: var(--color-text-light);">
-          {{ $featuredPost.Date.Format "Jan 2" }}
-        </time>
-
-        {{ if $featuredPost.ReadingTime }}
-          <span style="color: var(--color-text-light); font-size: var(--font-size-sm);">·</span>
-          <span style="font-size: var(--font-size-sm); color: var(--color-text-light);">
-            {{ $featuredPost.ReadingTime }} min read
-          </span>
-        {{ end }}
-      </div>
-
-      <!-- Featured Post Title -->
-      <h2 class="post-title" style="margin: 0 0 16px 0;">
-        <a href="{{ $featuredPost.RelPermalink }}"
-           style="color: var(--color-text); text-decoration: none; display: block; transition: color 0.2s ease;"
-           onmouseover="this.style.color='var(--color-primary)'"
-           onmouseout="this.style.color='var(--color-text)'">
-          {{ $featuredPost.Title }}
-        </a>
-      </h2>
-
-      <!-- Featured Post Summary -->
-      <p class="post-summary" style="margin: 0 0 20px 0;">
-        {{ if $featuredPost.Summary }}
-          {{ $featuredPost.Summary | truncate 200 }}
-        {{ else }}
-          {{ $featuredPost.Content | plainify | truncate 200 }}
-        {{ end }}
-      </p>
-
-      <!-- Featured Post Tags -->
-      {{ if $featuredPost.Params.tags }}
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-          {{ range first 4 $featuredPost.Params.tags }}
-            <span style="background-color: var(--color-bg-secondary); color: var(--color-text-light); padding: 4px 12px; border-radius: 16px; font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);">
-              {{ . }}
-            </span>
-          {{ end }}
-        </div>
-      {{ end }}
-
-      <!-- Read More Button -->
-      <a href="{{ $featuredPost.RelPermalink }}"
-         style="display: inline-block; background-color: var(--color-primary); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: var(--font-weight-medium); font-size: var(--font-size-sm); transition: background-color 0.2s ease;"
-         onmouseover="this.style.backgroundColor='var(--color-primary-hover)'"
-         onmouseout="this.style.backgroundColor='var(--color-primary)'">
-        Read Full Article →
-      </a>
-    </article>
-
-    <!-- Other Posts -->
-    {{ if $otherPosts }}
-      <div style="display: grid; gap: 24px; margin-top: 32px;">
-        {{ range $otherPosts }}
-          <article style="padding: 20px 0; border-bottom: 1px solid var(--color-border-light); transition: transform 0.2s ease;"
-                   onmouseover="this.style.transform='translateX(4px)'"
-                   onmouseout="this.style.transform='translateX(0)'">
-            <!-- Author and Date -->
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-              {{ with .Params.author }}
-                {{ $author := index site.Data.authors . }}
-                {{ if $author }}
-                  <img src="{{ $author.avatar }}" alt="{{ $author.name }}"
-                       style="width: 18px; height: 18px; border-radius: 50%;">
-                  <span style="font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">{{ $author.name }}</span>
-                {{ else }}
-                  <img src="/images/authors/default-avatar.png" alt="Unknown Author"
-                       style="width: 18px; height: 18px; border-radius: 50%;">
-                  <span style="font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">Unknown Author</span>
-                {{ end }}
-              {{ else }}
-                <img src="/images/authors/default-avatar.png" alt="Unknown Author"
-                     style="width: 18px; height: 18px; border-radius: 50%;">
-                <span style="font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">Unknown Author</span>
-              {{ end }}
-
-              <span style="color: var(--color-text-light); font-size: var(--font-size-xs);">·</span>
-              <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}"
-                    style="font-size: var(--font-size-xs); color: var(--color-text-light);">
-                {{ .Date.Format "Jan 2" }}
-              </time>
-
-              {{ if .ReadingTime }}
-                <span style="color: var(--color-text-light); font-size: var(--font-size-xs);">·</span>
-                <span style="font-size: var(--font-size-xs); color: var(--color-text-light);">
-                  {{ .ReadingTime }} min read
-                </span>
-              {{ end }}
-            </div>
-
-            <!-- Article Title -->
-            <h3 style="margin: 0 0 8px 0;">
-              <a href="{{ .RelPermalink }}"
-                 style="color: var(--color-text); text-decoration: none; font-size: 20px; font-weight: 600; line-height: 1.3; display: block; transition: color 0.2s ease;"
-                 onmouseover="this.style.color='var(--color-primary)'"
-                 onmouseout="this.style.color='var(--color-text)'">
-                {{ .Title }}
-              </a>
-            </h3>
-
-            <!-- Article Summary -->
-            <p style="font-size: 15px; color: var(--color-text-secondary); line-height: 1.5; margin: 0 0 12px 0;">
-              {{ if .Summary }}
-                {{ .Summary | truncate 120 }}
-              {{ else }}
-                {{ .Content | plainify | truncate 120 }}
-              {{ end }}
-            </p>
-
-            <!-- Tags -->
-            {{ if .Params.tags }}
-              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                {{ range first 3 .Params.tags }}
-                  <span style="background-color: var(--color-bg-secondary); color: var(--color-text-light); padding: 2px 8px; border-radius: 12px; font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);">
-                    {{ . }}
-                  </span>
+    <div class="max-w-4xl mx-auto">
+      {{ range first 1 $pages }}
+        <!-- Featured Post - Clean Medium Style -->
+        <article class="mb-16">
+          <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow">
+            <a href="{{ .Permalink }}" class="block">
+              <!-- Author Info -->
+              <div class="flex items-center gap-3 mb-4">
+                {{ if or .Params.authors .Params.author }}
+                  {{ if .Params.authors }}
+                    {{ $firstAuthor := index .Params.authors 0 }}
+                    {{ $author := index $.Site.Data.authors $firstAuthor }}
+                    {{ if $author }}
+                      <img src="{{ $author.avatar }}" alt="{{ $author.name }}" style="width: 32px; height: 32px;" class="rounded-full object-cover">
+                      <div>
+                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $author.name }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                          {{ .Date.Format "Jan 2" }} · {{ .ReadingTime }} min read
+                        </div>
+                      </div>
+                    {{ end }}
+                  {{ else if .Params.author }}
+                    {{ $author := index .Site.Data.authors .Params.author }}
+                    {{ if $author }}
+                      <img src="{{ $author.avatar }}" alt="{{ $author.name }}" style="width: 32px; height: 32px;" class="rounded-full object-cover">
+                      <div>
+                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $author.name }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                          {{ .Date.Format "Jan 2" }} · {{ .ReadingTime }} min read
+                        </div>
+                      </div>
+                    {{ end }}
+                  {{ end }}
                 {{ end }}
               </div>
-            {{ end }}
-          </article>
+
+              <!-- Title -->
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                {{ .Title }}
+              </h2>
+
+              <!-- Summary -->
+              {{ if .Summary }}
+                <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                  {{ .Summary | truncate 180 }}
+                </p>
+              {{ end }}
+
+              <!-- Tags and Stats -->
+              <div class="flex items-center justify-between">
+                <div class="flex gap-2">
+                  {{ if .Params.tags }}
+                    {{ range first 3 .Params.tags }}
+                      <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">
+                        {{ . }}
+                      </span>
+                    {{ end }}
+                  {{ end }}
+                </div>
+                <div class="flex items-center gap-4 text-xs text-gray-400">
+                  <span>{{ .Params.claps | default (add (mul .ReadingTime 8) 27) }}</span>
+                  <span>{{ .Params.comments | default (add (div .ReadingTime 2) 1) }}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </article>
+      {{ end }}
+
+      <!-- Bold Separator Line -->
+      <div class="border-t-4 border-gray-900 dark:border-white my-12"></div>
+
+      <!-- Most Popular Section -->
+      <section class="mb-16">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Most Popular</h2>
+          <a href="/posts" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-sm uppercase tracking-wide transition-colors">
+            View All →
+          </a>
+        </div>
+
+        <!-- Most Popular Articles - Small Cards Grid -->
+        {{ $popularPosts := slice }}
+        {{ range $pages }}
+          {{ $views := or .Params.views (add (mul (len .Content) 0.1) (mul (sub now.Unix .Date.Unix) 0.00001) | int) }}
+          {{ $popularPosts = $popularPosts | append (dict "page" . "views" $views) }}
         {{ end }}
+        {{ $sortedPosts := sort $popularPosts "views" "desc" }}
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {{ range $index, $item := first 3 $sortedPosts }}
+          {{ $post := $item.page }}
+          <article class="group">
+            <a href="{{ $post.Permalink }}" class="block">
+              <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-lg transition-all duration-300 overflow-hidden">
+
+                <!-- Small Article Thumbnail -->
+                <div class="h-32 bg-gradient-to-br {{ if eq (mod $index 6) 0 }}from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800{{ else if eq (mod $index 6) 1 }}from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800{{ else if eq (mod $index 6) 2 }}from-green-100 to-green-200 dark:from-green-900 dark:to-green-800{{ else if eq (mod $index 6) 3 }}from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800{{ else if eq (mod $index 6) 4 }}from-pink-100 to-pink-200 dark:from-pink-900 dark:to-pink-800{{ else }}from-indigo-100 to-indigo-200 dark:from-indigo-900 dark:to-indigo-800{{ end }} flex items-center justify-center relative">
+                  <!-- Ranking Badge -->
+                  <div class="absolute top-2 right-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                      {{ add $index 1 }}
+                    </div>
+                  </div>
+                  <!-- Article Icon -->
+                  <svg class="w-8 h-8 {{ if eq (mod $index 6) 0 }}text-blue-500 dark:text-blue-400{{ else if eq (mod $index 6) 1 }}text-purple-500 dark:text-purple-400{{ else if eq (mod $index 6) 2 }}text-green-500 dark:text-green-400{{ else if eq (mod $index 6) 3 }}text-orange-500 dark:text-orange-400{{ else if eq (mod $index 6) 4 }}text-pink-500 dark:text-pink-400{{ else }}text-indigo-500 dark:text-indigo-400{{ end }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                  </svg>
+                </div>
+
+                <!-- Compact Content -->
+                <div class="p-4">
+                  <!-- Title -->
+                  <h3 class="font-bold text-gray-900 dark:text-white text-base leading-tight mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {{ $post.Title | truncate 50 }}
+                  </h3>
+
+                  <!-- Author and Date -->
+                  <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                    {{ with $post.Params.authors }}
+                      {{ range first 1 . }}
+                        {{ $author := index $.Site.Data.authors . }}
+                        {{ if $author }}
+                          <img src="{{ $author.avatar }}" alt="{{ $author.name }}" class="w-4 h-4 rounded-full">
+                          <span class="font-medium">{{ $author.name }}</span>
+                        {{ end }}
+                      {{ end }}
+                    {{ end }}
+                    <span>•</span>
+                    <time datetime="{{ $post.Date.Format "2006-01-02" }}">{{ $post.Date.Format "Jan 2" }}</time>
+                  </div>
+
+                  <!-- Summary -->
+                  {{ if $post.Summary }}
+                  <p class="text-gray-600 dark:text-gray-300 text-xs leading-relaxed mb-3 line-clamp-2">
+                    {{ $post.Summary | truncate 80 }}
+                  </p>
+                  {{ end }}
+
+                  <!-- Footer -->
+                  <div class="flex items-center justify-between">
+                    <!-- Tags -->
+                    {{ with $post.Params.tags }}
+                    <div class="flex gap-1">
+                      {{ range first 1 . }}
+                      <span class="px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded text-xs font-medium">
+                        {{ . | truncate 10 }}
+                      </span>
+                      {{ end }}
+                    </div>
+                    {{ end }}
+
+                    <!-- Stats -->
+                    <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+                      <span class="flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                          <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ $post.Params.views | default (add (mul (len $post.Content) 0.1) (mul (sub now.Unix $post.Date.Unix) 0.00001) | int) }}
+                      </span>
+                      <span>{{ $post.ReadingTime }}m</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+          {{ end }}
+        </div>
+      </section>
+
+      <!-- Highlighted Separator Line -->
+      <div class="relative my-16">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t-2 border-blue-500 dark:border-blue-400"></div>
+        </div>
+        <div class="relative flex justify-center">
+          <span class="bg-white dark:bg-gray-900 px-6 text-lg font-semibold text-blue-600 dark:text-blue-400">
+            More Articles
+          </span>
+        </div>
       </div>
-    {{ end }}
+
+      <!-- Other Articles - Featured Style -->
+      {{ $otherPosts := after 1 $pages }}
+      {{ if $otherPosts }}
+        <div id="articles-container" class="space-y-6" data-total-articles="{{ len $pages }}">
+          {{ range $index, $post := first 3 $otherPosts }}
+          <article class="mb-8">
+            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow">
+              <a href="{{ $post.Permalink }}" class="block">
+                <!-- Author Info -->
+                <div class="flex items-center gap-3 mb-4">
+                  {{ if or $post.Params.authors $post.Params.author }}
+                    {{ if $post.Params.authors }}
+                      {{ $firstAuthor := index $post.Params.authors 0 }}
+                      {{ $author := index $.Site.Data.authors $firstAuthor }}
+                      {{ if $author }}
+                        <img src="{{ $author.avatar }}" alt="{{ $author.name }}" style="width: 32px; height: 32px;" class="rounded-full object-cover">
+                        <div>
+                          <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $author.name }}</div>
+                          <div class="text-xs text-gray-500 dark:text-gray-400">
+                            {{ $post.Date.Format "Jan 2" }} · {{ $post.ReadingTime }} min read
+                          </div>
+                        </div>
+                      {{ end }}
+                    {{ else if $post.Params.author }}
+                      {{ $author := index .Site.Data.authors $post.Params.author }}
+                      {{ if $author }}
+                        <img src="{{ $author.avatar }}" alt="{{ $author.name }}" style="width: 32px; height: 32px;" class="rounded-full object-cover">
+                        <div>
+                          <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $author.name }}</div>
+                          <div class="text-xs text-gray-500 dark:text-gray-400">
+                            {{ $post.Date.Format "Jan 2" }} · {{ $post.ReadingTime }} min read
+                          </div>
+                        </div>
+                      {{ end }}
+                    {{ end }}
+                  {{ end }}
+                </div>
+
+                <!-- Title -->
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  {{ $post.Title }}
+                </h2>
+
+                <!-- Summary -->
+                {{ if $post.Summary }}
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                    {{ $post.Summary | truncate 180 }}
+                  </p>
+                {{ end }}
+
+                <!-- Tags and Stats -->
+                <div class="flex items-center justify-between">
+                  <div class="flex gap-2">
+                    {{ if $post.Params.tags }}
+                      {{ range first 3 $post.Params.tags }}
+                        <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">
+                          {{ . }}
+                        </span>
+                      {{ end }}
+                    {{ end }}
+                  </div>
+                  <div class="flex items-center gap-4 text-xs text-gray-400">
+                    <span>{{ $post.Params.claps | default (add (mul $post.ReadingTime 8) 27) }}</span>
+                    <span>{{ $post.Params.comments | default (add (div $post.ReadingTime 2) 1) }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </article>
+          {{ end }}
+        </div>
+
+        <!-- Lazy Loading Indicator -->
+        {{ if gt (len $otherPosts) 3 }}
+        <div id="loading-indicator" class="hidden text-center py-8">
+          <div class="inline-flex items-center gap-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-400"></div>
+            <span class="text-gray-600 dark:text-gray-400">Loading more articles...</span>
+          </div>
+        </div>
+
+        <!-- End of Articles Indicator -->
+        <div id="end-indicator" class="hidden text-center py-8">
+          <div class="text-gray-500 dark:text-gray-400">
+            <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <p>You've reached the end of our articles!</p>
+          </div>
+        </div>
+
+
+        {{ end }}
+
+
+      {{ end }}
+    </div>
+  {{ else }}
+    <!-- No Posts Message -->
+    <div class="text-center py-16">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">No articles yet</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-8">We're working on bringing you great content. Check back soon!</p>
+    </div>
   {{ end }}
 </div>
 
-<!-- Pagination -->
-{{ if or .Paginator.HasPrev .Paginator.HasNext }}
-  <nav class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--color-border);">
-    {{ if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}"
-         style="color: var(--color-text-secondary); text-decoration: none; font-weight: var(--font-weight-medium); padding: 8px 16px; border: 1px solid var(--color-border); border-radius: 6px; transition: all 0.2s ease; font-size: var(--font-size-sm);"
-         onmouseover="this.style.borderColor='var(--color-text)'; this.style.color='var(--color-text)'"
-         onmouseout="this.style.borderColor='var(--color-border)'; this.style.color='var(--color-text-secondary)'">
-        ← Previous
-      </a>
+{{ else }}
+<!-- Regular List Page Layout -->
+<div class="py-8">
+  <header class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ .Title }}</h1>
+    {{ if .Description }}
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{{ .Description }}</p>
     {{ end }}
+  </header>
 
-    {{ if .Paginator.HasNext }}
-      <a href="{{ .Paginator.Next.URL }}"
-         style="color: var(--color-text-secondary); text-decoration: none; font-weight: var(--font-weight-medium); padding: 8px 16px; border: 1px solid var(--color-border); border-radius: 6px; transition: all 0.2s ease; font-size: var(--font-size-sm);"
-         onmouseover="this.style.borderColor='var(--color-text)'; this.style.color='var(--color-text)'"
-         onmouseout="this.style.borderColor='var(--color-border)'; this.style.color='var(--color-text-secondary)'">
-        Next →
-      </a>
+  <div class="grid grid-auto-fit gap-8">
+    {{ range .Pages }}
+      <article class="card hover:shadow-lg transition-all duration-300">
+        <div class="mb-4">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            <a href="{{ .Permalink }}" class="hover:text-primary-500 dark:hover:text-primary-400 transition">
+              {{ .Title }}
+            </a>
+          </h2>
+
+          <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">
+              {{ .Date.Format "January 2, 2006" }}
+            </time>
+
+            {{ if or .Params.authors .Params.author }}
+              <span>•</span>
+              <div class="flex items-center gap-2">
+                <span>By</span>
+                {{ if .Params.authors }}
+                  {{ $authors := .Params.authors }}
+                  {{ range $i, $authorKey := $authors }}
+                    {{ $author := index $.Site.Data.authors $authorKey }}
+                    {{ if $author }}
+                      <a href="/contributors/#{{ $authorKey }}" class="hover:text-primary-500 dark:hover:text-primary-400 transition">
+                        {{ $author.name }}
+                      </a>
+                    {{ else }}
+                      <span>{{ $authorKey }}</span>
+                    {{ end }}
+                    {{ if lt $i (sub (len $authors) 1) }}, {{ end }}
+                  {{ end }}
+                {{ else if .Params.author }}
+                  {{ $author := index .Site.Data.authors .Params.author }}
+                  {{ if $author }}
+                    <a href="/contributors/#{{ .Params.author }}" class="hover:text-primary-500 dark:hover:text-primary-400 transition">
+                      {{ $author.name }}
+                    </a>
+                  {{ else }}
+                    <span>{{ .Params.author }}</span>
+                  {{ end }}
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        </div>
+
+        {{ if .Summary }}
+          <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">{{ .Summary }}</p>
+        {{ end }}
+
+        {{ if .Params.tags }}
+          <div class="flex flex-wrap gap-2 mb-4">
+            {{ range .Params.tags }}
+              <span class="expertise-tag">{{ . }}</span>
+            {{ end }}
+          </div>
+        {{ end }}
+
+        <a href="{{ .Permalink }}" class="btn-secondary inline-flex items-center gap-2">
+          Read More
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+      </article>
     {{ end }}
-  </nav>
-{{ end }}
+  </div>
 
-<!-- Subscribe Section (only on home page) -->
-{{ if .IsHome }}
-  <section id="subscribe" style="margin-top: 64px; padding: 32px 24px; background-color: var(--color-bg-secondary); border-radius: 8px; text-align: center; transition: background-color 0.3s ease;">
-    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--color-text);">
-      Subscribe to {{ .Site.Title }}
-    </h3>
-    <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: 24px; max-width: 320px; margin-left: auto; margin-right: auto;">
-      Get the latest articles and insights delivered to your inbox.
-    </p>
-
-    <!-- Simple subscribe form -->
-    <form style="display: flex; gap: 8px; max-width: 320px; margin: 0 auto; flex-wrap: wrap;"
-          action="#" method="post">
-      <input type="email"
-             placeholder="Enter your email"
-             style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: var(--font-size-sm); background-color: var(--color-bg); color: var(--color-text); transition: all 0.3s ease;">
-      <button type="submit"
-              style="background-color: var(--color-primary); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: var(--font-weight-medium); cursor: pointer; transition: background-color 0.2s ease; font-size: var(--font-size-sm);"
-              onmouseover="this.style.backgroundColor='var(--color-primary-hover)'"
-              onmouseout="this.style.backgroundColor='var(--color-primary)'">
-        Subscribe
-      </button>
-    </form>
-
-    <p style="font-size: var(--font-size-xs); color: var(--color-text-light); margin-top: 12px;">
-      No spam, unsubscribe at any time.
-    </p>
-  </section>
+  {{ if eq (len .Pages) 0 }}
+    <div class="text-center py-12">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">No posts found</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">There are no posts to display at the moment.</p>
+      <a href="/" class="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg">Back to Home</a>
+    </div>
+  {{ end }}
+</div>
 {{ end }}
 {{ end }}

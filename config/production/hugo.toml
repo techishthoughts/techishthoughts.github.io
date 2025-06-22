@@ -1,0 +1,9 @@
+baseURL = "https://techishthoughts.github.io/"
+
+# Production-specific settings
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+# Disable live reload for production
+disableLiveReload = true

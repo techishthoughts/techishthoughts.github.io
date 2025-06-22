@@ -1,480 +1,395 @@
 <!DOCTYPE html>
-<html lang="{{ site.LanguageCode | default "en" }}">
+<html lang="{{ .Site.LanguageCode | default "en" }}" class="scroll-smooth">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ if .IsHome }}{{ site.Title }} - {{ site.Params.description }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 
-  <!-- Meta tags -->
-  <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ site.Params.description }}{{ end }}">
-  <meta name="author" content="{{ if .Params.author }}{{ $author := index site.Data.authors .Params.author }}{{ $author.name }}{{ else }}{{ site.Title }}{{ end }}">
+  <!-- Enhanced SEO Meta Tags -->
+  <meta name="description" content="{{ .Description | default .Site.Params.description | truncate 160 }}">
+  <meta name="author" content="{{ .Site.Params.author | default .Site.Title }}">
+  <meta name="keywords" content="{{ if .Params.tags }}{{ delimit .Params.tags ", " }}{{ else }}{{ .Site.Params.keywords }}{{ end }}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ .Permalink }}">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+  <!-- Open Graph Enhanced -->
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
-  <meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
-  <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ site.Params.description }}{{ end }}">
-  <meta property="og:site_name" content="{{ site.Title }}">
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ .Description | default .Site.Params.description | truncate 160 }}">
+  <meta property="og:site_name" content="{{ .Site.Title }}">
+  <meta property="og:locale" content="{{ .Site.LanguageCode | default "en_US" }}">
+  {{ if .Params.image }}
+  <meta property="og:image" content="{{ .Params.image | absURL }}">
+  <meta property="og:image:alt" content="{{ .Title }}">
+  {{ end }}
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="{{ .Permalink }}">
-  <meta property="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
-  <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ site.Params.description }}{{ end }}">
+  <!-- Twitter Card Enhanced -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@techishthoughts">
+  <meta name="twitter:creator" content="@techishthoughts">
+  <meta name="twitter:url" content="{{ .Permalink }}">
+  <meta name="twitter:title" content="{{ .Title }}">
+  <meta name="twitter:description" content="{{ .Description | default .Site.Params.description | truncate 160 }}">
+  {{ if .Params.image }}
+  <meta name="twitter:image" content="{{ .Params.image | absURL }}">
+  <meta name="twitter:image:alt" content="{{ .Title }}">
+  {{ end }}
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
-  <!-- RSS -->
-  {{ range .AlternativeOutputFormats -}}
-    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
-  {{ end -}}
+  <!-- Fonts - Optimized Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Georgia:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
-  <style>
-    :root {
-      /* Typography */
-      --font-family-serif: "Georgia", "Times New Roman", serif;
-      --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  <!-- Syntax highlighting handled by Hugo's Chroma -->
 
-      /* Colors - Light mode (default) */
-      --color-primary: #ff6719;
-      --color-primary-hover: #e55a17;
-      --color-text: #242424;
-      --color-text-secondary: #6b6b6b;
-      --color-text-light: #8b8b8b;
-      --color-bg: #ffffff;
-      --color-bg-secondary: #f8f8f8;
-      --color-border: #e6e6e6;
-      --color-border-light: #f0f0f0;
-      --color-featured-bg: #f8f8f8;
-      --color-featured-border: #e6e6e6;
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/css/main.css">
 
-      /* Layout */
-      --max-width: 680px;
-      --container-padding: 20px;
-      --header-height: 80px;
-
-      /* Typography scale */
-      --font-size-base: 18px;
-      --font-size-sm: 14px;
-      --font-size-xs: 13px;
-      --line-height-base: 1.6;
-      --font-weight-normal: 400;
-      --font-weight-medium: 500;
-      --font-weight-bold: 700;
-    }
-
-    /* Dark mode */
-    [data-theme="dark"] {
-      --color-primary: #ff6719;
-      --color-primary-hover: #ff7a33;
-      --color-text: #ffffff;
-      --color-text-secondary: #b4b4b4;
-      --color-text-light: #8b8b8b;
-      --color-bg: #0a0b0d;
-      --color-bg-secondary: #1a1b1e;
-      --color-border: #2a2b2e;
-      --color-border-light: #1f2023;
-      --color-featured-bg: #1a1b1e;
-      --color-featured-border: #2a2b2e;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      font-size: var(--font-size-base);
-      scroll-behavior: smooth;
-      transition: color-scheme 0.3s ease;
-    }
-
-    body {
-      font-family: var(--font-family-sans);
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      line-height: var(--line-height-base);
-      font-weight: var(--font-weight-normal);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Layout */
-    .site-container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 var(--container-padding);
-    }
-
-    /* Header */
-    .site-header {
-      border-bottom: 1px solid var(--color-border);
-      background-color: var(--color-bg);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: var(--header-height);
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 var(--container-padding);
-    }
-
-    .site-title {
-      font-size: 20px;
-      font-weight: var(--font-weight-bold);
-      color: var(--color-text);
-      text-decoration: none;
-      letter-spacing: -0.01em;
-      transition: color 0.3s ease;
-    }
-
-    .site-nav {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .nav-link {
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      font-weight: var(--font-weight-medium);
-      font-size: var(--font-size-sm);
-      transition: color 0.2s ease;
-    }
-
-    .nav-link:hover {
-      color: var(--color-text);
-    }
-
-    .subscribe-btn {
-      background-color: var(--color-primary);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: var(--font-weight-medium);
-      font-size: var(--font-size-sm);
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: background-color 0.2s ease;
-    }
-
-    .subscribe-btn:hover {
-      background-color: var(--color-primary-hover);
-    }
-
-    /* Theme Toggle Button */
-    .theme-toggle {
-      background: none;
-      border: 1px solid var(--color-border);
-      color: var(--color-text-secondary);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      transition: all 0.2s ease;
-    }
-
-    .theme-toggle:hover {
-      color: var(--color-text);
-      border-color: var(--color-text);
-    }
-
-    /* Featured Post Styles */
-    .featured-post {
-      background-color: var(--color-featured-bg);
-      border: 1px solid var(--color-featured-border);
-      border-radius: 12px;
-      padding: 32px;
-      margin-bottom: 48px;
-      transition: all 0.3s ease;
-    }
-
-    .featured-post:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      border-color: var(--color-primary);
-    }
-
-    [data-theme="dark"] .featured-post:hover {
-      box-shadow: 0 8px 25px rgba(255, 103, 25, 0.15);
-    }
-
-    .featured-post .post-title {
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      color: var(--color-text);
-    }
-
-    .featured-post .post-summary {
-      font-size: 18px;
-      line-height: 1.6;
-      color: var(--color-text-secondary);
-      margin-bottom: 20px;
-    }
-
-    .featured-badge {
-      display: inline-block;
-      background-color: var(--color-primary);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 16px;
-    }
-
-    /* Main Content */
-    .site-main {
-      min-height: calc(100vh - var(--header-height) - 120px);
-      padding: 40px 0;
-    }
-
-    /* Typography */
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-family-serif);
-      font-weight: var(--font-weight-bold);
-      line-height: 1.2;
-      color: var(--color-text);
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      font-size: 42px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      font-size: 28px;
-      line-height: 1.15;
-      margin-top: 40px;
-    }
-
-    h3 {
-      font-size: 22px;
-      line-height: 1.2;
-      margin-top: 32px;
-    }
-
-    h4 {
-      font-size: 18px;
-      margin-top: 24px;
-    }
-
-    p {
-      margin-bottom: 20px;
-      color: var(--color-text);
-      line-height: 1.7;
-    }
-
-    a {
-      color: var(--color-text);
-      text-decoration: underline;
-      text-decoration-color: var(--color-border);
-      text-underline-offset: 2px;
-      transition: text-decoration-color 0.2s ease;
-    }
-
-    a:hover {
-      text-decoration-color: var(--color-text);
-    }
-
-    /* Code */
-    code {
-      font-family: var(--font-family-mono);
-      background-color: var(--color-bg-secondary);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: var(--font-size-sm);
-    }
-
-    pre {
-      background-color: var(--color-bg-secondary);
-      padding: 20px;
-      border-radius: 6px;
-      overflow-x: auto;
-      margin: 24px 0;
-      border: 1px solid var(--color-border);
-    }
-
-    pre code {
-      background: none;
-      padding: 0;
-    }
-
-    /* Lists */
-    ul, ol {
-      margin: 20px 0;
-      padding-left: 24px;
-    }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    /* Images */
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 4px;
-      margin: 24px 0;
-    }
-
-    /* Footer */
-    .site-footer {
-      border-top: 1px solid var(--color-border);
-      padding: 40px 0;
-      text-align: center;
-      color: var(--color-text-secondary);
-      font-size: var(--font-size-sm);
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      :root {
-        --container-padding: 16px;
-        --header-height: 60px;
+  <!-- Theme Detection Script (before content loads) -->
+  <script>
+    // Prevent flash of wrong theme
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
       }
+    })();
+  </script>
 
-      .site-nav {
-        gap: 16px;
-      }
-
-      .nav-link {
-        font-size: var(--font-size-xs);
-      }
-
-      .site-main {
-        padding: 24px 0;
-      }
-
-      h1 { font-size: 32px; }
-      h2 { font-size: 24px; margin-top: 32px; }
-      h3 { font-size: 20px; margin-top: 24px; }
+  <!-- JSON-LD Structured Data -->
+  {{ if .IsPage }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ .Title }}",
+    "description": "{{ .Description | default .Summary | truncate 160 }}",
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ if .Params.authors }}{{ $firstAuthor := index .Params.authors 0 }}{{ $author := index .Site.Data.authors $firstAuthor }}{{ if $author }}{{ $author.name }}{{ else }}{{ $firstAuthor }}{{ end }}{{ else if .Params.author }}{{ $author := index .Site.Data.authors .Params.author }}{{ if $author }}{{ $author.name }}{{ else }}{{ .Params.author }}{{ end }}{{ else }}{{ .Site.Title }}{{ end }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Title }}",
+      "url": "{{ .Site.BaseURL }}"
+    },
+    {{ if .Params.tags }}
+    "keywords": [{{ range $i, $tag := .Params.tags }}{{ if $i }}, {{ end }}"{{ $tag }}"{{ end }}],
+    {{ end }}
+    "wordCount": {{ .WordCount }},
+    "url": "{{ .Permalink }}"
+  }
+  </script>
+  {{ else }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ .Site.Title }}",
+    "description": "{{ .Site.Params.description }}",
+    "url": "{{ .Site.BaseURL }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Title }}"
     }
-
-    @media (max-width: 480px) {
-      .site-nav {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-      }
-
-      .site-nav .nav-link:not(.theme-toggle):not(.subscribe-btn) {
-        display: none;
-      }
-
-      .theme-toggle {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-
-    /* Utilities */
-    .text-center { text-align: center; }
-    .text-secondary { color: var(--color-text-secondary); }
-    .text-light { color: var(--color-text-light); }
-    .mb-0 { margin-bottom: 0; }
-    .mt-0 { margin-top: 0; }
-  </style>
+  }
+  </script>
+  {{ end }}
 </head>
 
-<body>
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-content">
-      <a href="{{ .Site.BaseURL }}" class="site-title">
-        {{ .Site.Title }}
-      </a>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+  <!-- Skip to content link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-      <nav class="site-nav">
-        <a href="{{ .Site.BaseURL }}" class="nav-link">Home</a>
-        <a href="/posts/" class="nav-link">Articles</a>
-        <a href="/contributors/" class="nav-link">Contributors</a>
-        <a href="/about/" class="nav-link">About</a>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-          <span id="theme-icon">🌙</span>
-        </button>
-        <a href="#subscribe" class="subscribe-btn">Subscribe</a>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700" role="banner">
+    <div class="container">
+      <nav class="flex items-center justify-between py-4" role="navigation" aria-label="Main navigation">
+        <!-- Logo/Brand -->
+        <div class="flex items-center">
+          <a href="/" class="flex items-center gap-2 text-decoration-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded-sm" aria-label="Go to homepage">
+            <span class="text-2xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {{ .Site.Title }}
+            </span>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-8" role="navigation" aria-label="Primary navigation">
+          <a href="/" class="nav-link" {{ if .IsHome }}aria-current="page"{{ end }}>
+            Home
+          </a>
+          <a href="/posts/" class="nav-link" {{ if eq .Section "posts" }}aria-current="page"{{ end }}>
+            Articles
+          </a>
+          <a href="/contributors/" class="nav-link" {{ if eq .Title "Contributors" }}aria-current="page"{{ end }}>
+            Contributors
+          </a>
+          <a href="/about/" class="nav-link" {{ if eq .Title "About" }}aria-current="page"{{ end }}>
+            About
+          </a>
+        </div>
+
+        <!-- Theme Toggle and Mobile Menu -->
+        <div class="flex items-center gap-4">
+          <!-- Theme Toggle -->
+          <button
+            id="theme-toggle"
+            class="theme-toggle p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            aria-label="Toggle dark mode"
+            data-testid="theme-toggle"
+          >
+            <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+            <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </button>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-button"
+            class="md:hidden p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            aria-label="Toggle mobile menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
       </nav>
+
+      <!-- Mobile Navigation -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4" role="navigation" aria-label="Mobile navigation">
+        <div class="flex flex-col gap-2">
+          <a href="/" class="nav-link py-2" {{ if .IsHome }}aria-current="page"{{ end }}>
+            Home
+          </a>
+          <a href="/posts/" class="nav-link py-2" {{ if eq .Section "posts" }}aria-current="page"{{ end }}>
+            Articles
+          </a>
+          <a href="/contributors/" class="nav-link py-2" {{ if eq .Title "Contributors" }}aria-current="page"{{ end }}>
+            Contributors
+          </a>
+          <a href="/about/" class="nav-link py-2" {{ if eq .Title "About" }}aria-current="page"{{ end }}>
+            About
+          </a>
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="site-main">
-    <div class="site-container">
+  <main id="main-content" class="container min-h-screen py-8" role="main">
       {{ block "main" . }}{{ end }}
-    </div>
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="site-container">
-      <p>&copy; {{ now.Year }} {{ .Site.Title }}. All rights reserved.</p>
-      <p style="margin-top: 8px;">
-        Built with Hugo · Hosted on GitHub Pages
-      </p>
+  <footer class="bg-gray-50 dark:bg-gray-800 mt-16 border-t border-gray-200 dark:border-gray-700" role="contentinfo">
+    <div class="container py-12">
+      <div class="text-center">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          {{ .Site.Title }}
+        </h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+          {{ .Site.Params.description }}
+        </p>
+        <div class="flex justify-center gap-4 mb-8" role="navigation" aria-label="Social media links">
+          <a href="https://github.com/techishthoughts" class="social-link github" aria-label="Follow us on GitHub" target="_blank" rel="noopener noreferrer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+          <a href="https://twitter.com/techishthoughts" class="social-link twitter" aria-label="Follow us on Twitter" target="_blank" rel="noopener noreferrer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com/company/techishthoughts" class="social-link linkedin" aria-label="Follow us on LinkedIn" target="_blank" rel="noopener noreferrer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">
+          © {{ now.Format "2006" }} {{ .Site.Title }}. All rights reserved.
+        </p>
+      </div>
     </div>
   </footer>
 
-  <!-- Theme Toggle Script -->
+  <!-- Scripts -->
+  <!-- Theme Toggle Functionality -->
   <script>
     // Theme toggle functionality
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.getElementById('theme-toggle');
-      const themeIcon = document.getElementById('theme-icon');
-      const html = document.documentElement;
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
 
-            // Check for saved theme preference or default to light mode
-      const currentTheme = localStorage.getItem('theme') || 'light';
-      html.setAttribute('data-theme', currentTheme);
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          const isDark = document.documentElement.classList.contains('dark');
+          const newTheme = !isDark;
 
-      // Update icon based on current theme
-      function updateIcon(theme) {
-        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+          if (newTheme) {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+          }
+        });
       }
 
-      updateIcon(currentTheme);
+      // Mobile menu toggle
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+          const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
 
-      // Apply theme immediately on page load to prevent flash
-      document.documentElement.setAttribute('data-theme', currentTheme);
-
-      // Toggle theme
-      themeToggle.addEventListener('click', function() {
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateIcon(newTheme);
-      });
-    })();
+          mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    });
   </script>
 
-  <!-- JavaScript Bundle -->
-  <script src="{{ "js/main.js" | relURL }}"></script>
+  <!-- Code block enhancements -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add language badges and copy functionality to code blocks
+      const codeBlocks = document.querySelectorAll('.chroma');
+
+      codeBlocks.forEach(function(block) {
+        const pre = block.querySelector('pre');
+        const code = block.querySelector('code');
+
+        if (code && code.hasAttribute('data-lang')) {
+          const lang = code.getAttribute('data-lang');
+          block.setAttribute('data-lang', lang);
+
+          // Add copy button
+          const copyButton = document.createElement('button');
+          copyButton.className = 'copy-button';
+          copyButton.textContent = 'Copy';
+          copyButton.setAttribute('aria-label', 'Copy code to clipboard');
+
+          copyButton.addEventListener('click', function() {
+            const codeText = code.textContent || code.innerText;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(codeText).then(function() {
+                copyButton.textContent = 'Copied!';
+                setTimeout(function() {
+                  copyButton.textContent = 'Copy';
+                }, 2000);
+              }).catch(function() {
+                fallbackCopy(codeText, copyButton);
+              });
+            } else {
+              fallbackCopy(codeText, copyButton);
+            }
+          });
+
+          block.appendChild(copyButton);
+        }
+      });
+
+      // Fallback copy function for older browsers
+      function fallbackCopy(text, button) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          document.execCommand('copy');
+          button.textContent = 'Copied!';
+          setTimeout(function() {
+            button.textContent = 'Copy';
+          }, 2000);
+        } catch (err) {
+          button.textContent = 'Error';
+          setTimeout(function() {
+            button.textContent = 'Copy';
+          }, 2000);
+        }
+
+        document.body.removeChild(textArea);
+      }
+    });
+  </script>
+
+  <!-- Lazy Loading for Homepage Articles -->
+  {{ if .IsHome }}
+  <script src="/js/lazy-loading.js"></script>
+  {{ end }}
+
+  <!-- Performance Analytics -->
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+  <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+
+  <!-- Custom Analytics for Enhanced UX -->
+  <script>
+    // Enhanced analytics with accessibility and performance tracking
+    window.TechishAnalytics = {
+      track: function(event, data) {
+        if (window.sa_event) {
+          window.sa_event(event, data);
+        }
+        this.storeLocal(event, data);
+      },
+
+      storeLocal: function(event, data) {
+        try {
+          const analytics = JSON.parse(localStorage.getItem('techish_analytics') || '{}');
+          analytics[event] = (analytics[event] || 0) + 1;
+          analytics.lastEvent = { event, data, timestamp: Date.now() };
+          localStorage.setItem('techish_analytics', JSON.stringify(analytics));
+        } catch (e) {
+          // Silently fail for localStorage issues
+        }
+      }
+    };
+
+    // Track accessibility improvements
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        window.TechishAnalytics.track('keyboard_navigation', { key: 'tab' });
+      }
+    });
+
+    // Track theme usage
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark');
+          window.TechishAnalytics.track('theme_change', { theme: isDark ? 'dark' : 'light' });
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  </script>
 </body>
 </html>

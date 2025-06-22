@@ -1,0 +1,10 @@
+baseURL = "http://localhost:1313"
+
+# Development-specific settings
+disableFastRender = false
+buildDrafts = true
+buildFuture = true
+buildExpired = true
+
+# Enable live reload
+disableLiveReload = false

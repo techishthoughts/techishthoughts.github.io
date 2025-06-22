@@ -19,7 +19,7 @@ Great API design is about **empathy**. It's putting yourself in the shoes of the
 
 ### The API Design Pyramid
 
-```
+```text
        🎯 Developer Experience
       /                    \
      📖 Documentation     🔒 Security
