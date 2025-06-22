@@ -43,7 +43,8 @@
     "build:all": "npm run hugo:build && npm run build",
     "analyze": "npm run build && npx vite-bundle-analyzer --no-open",
     "analyze:open": "npm run build && npx vite-bundle-analyzer",
-    "pre-commit": "lint-staged",
+    "pre-commit": "npm run pre-commit:format && lint-staged",
+    "pre-commit:format": "npm run format:check || (echo '🎨 Auto-fixing formatting issues...' && npm run format)",
     "pre-commit:full": "./scripts/pre-commit-comprehensive.sh",
     "pre-commit:fast": "npm run format && npm run lint && npm run type-check && npm run validate:content && npm run test",
     "pre-commit:test": "npm run lint && npm run type-check && npm run test",
@@ -122,18 +123,27 @@
       "eslint --fix --max-warnings 0",
       "prettier --write"
     ],
-    "*.{js,jsx,json,css,md,yml,yaml}": [
+    "*.{js,jsx,json,css,md,yml,yaml,html}": [
       "prettier --write"
     ],
     "*.{cjs,mjs}": [
+      "prettier --write"
+    ],
+    "scripts/*.{js,cjs,mjs}": [
       "prettier --write"
     ],
     "data/authors.json": [
       "node scripts/validate-authors.cjs",
       "prettier --write"
     ],
-    "content/posts/*.md": [
+    "content/**/*.md": [
       "node scripts/validate-frontmatter.cjs",
+      "prettier --write"
+    ],
+    "docs/*.md": [
+      "prettier --write"
+    ],
+    "README.MD": [
       "prettier --write"
     ],
     "package.json": [

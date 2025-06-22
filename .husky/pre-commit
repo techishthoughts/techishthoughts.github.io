@@ -3,14 +3,20 @@
 
 # Pre-commit hook with multiple options
 #
-# Default: Fast lint-staged checks (formatting, linting, validation)
+# Default: Format check + lint-staged (formatting, linting, validation)
 # For comprehensive checks including tests, run: npm run pre-commit:full
 # For quick test check, run: npm run pre-commit:test
 
 echo "🔍 Running pre-commit checks..."
 
-# Run the default fast pre-commit (lint-staged)
+# Run format check first, auto-fix if needed, then lint-staged
 npm run pre-commit
 
-echo "✅ Pre-commit checks completed!"
-echo "💡 For comprehensive checks (including all tests), run: npm run pre-commit:full"
+if [ $? -eq 0 ]; then
+    echo "✅ Pre-commit checks completed!"
+    echo "💡 For comprehensive checks (including all tests), run: npm run pre-commit:full"
+else
+    echo "❌ Pre-commit checks failed!"
+    echo "🔧 Try running: npm run format && npm run lint:fix"
+    exit 1
+fi
