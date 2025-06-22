@@ -19,6 +19,8 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Development Guide](#development-guide)
+- [Pre-Commit Setup](#pre-commit-setup)
+- [Design & Accessibility](#design--accessibility)
 - [Writing Articles](#writing-articles)
 - [Contributing](#contributing)
 - [Deployment](#deployment)
@@ -663,6 +665,410 @@ export const MyComponent: React.FC<Props> = ({ title, onClick }) => {
 - **Memoization**: Use React.memo and useMemo appropriately
 - **Bundle Analysis**: Regular bundle size monitoring
 - **Lighthouse**: Performance auditing
+
+## 🔧 Pre-Commit Setup
+
+This project uses a multi-tiered pre-commit system with **automatic format checking and fixing** to ensure code quality and prevent issues before they reach the repository.
+
+### 🚀 Quick Start
+
+The pre-commit hooks are automatically set up when you run:
+
+```bash
+npm install
+```
+
+This will install Husky and configure the pre-commit hooks with automatic formatting.
+
+### 🎨 Automatic Format Checking & Fixing
+
+#### How It Works
+
+Every commit now includes **automatic format checking**:
+
+1. **Format Check**: Runs `prettier --check .` to detect formatting issues
+2. **Auto-Fix**: If issues found, automatically runs `prettier --write .` to fix them
+3. **Lint-Staged**: Processes only staged files for optimal performance
+4. **Commit**: Proceeds with properly formatted code
+
+#### Visual Flow
+
+```bash
+git commit -m "your message"
+    ↓
+🔍 Running pre-commit checks...
+    ↓
+🎨 Checking code formatting...
+    ↓
+✅ All files properly formatted  OR  🔧 Auto-fixing formatting issues...
+    ↓
+📋 Running lint-staged on changed files...
+    ↓
+✅ Pre-commit checks completed!
+```
+
+### 📋 Pre-Commit Levels
+
+#### 1. Default Pre-Commit (Fast) ⚡
+
+**Runs automatically on every commit**
+
+```bash
+npm run pre-commit
+```
+
+**What it does:**
+
+- 🎨 **Format Check & Auto-Fix**: Automatically fixes formatting issues
+- ✅ **Linting (ESLint)**: Code quality checks with auto-fix
+- ✅ **Content Validation**: Authors & frontmatter validation
+- ✅ **File Processing**: Staged files only for performance
+
+**Time:** ~10-30 seconds
+
+#### 2. Test Pre-Commit (Medium) 🧪
+
+**Run manually when you want to include tests**
+
+```bash
+npm run pre-commit:test
+```
+
+**What it does:**
+
+- ✅ All fast checks above
+- ✅ TypeScript type checking
+- ✅ Unit tests (all 108 tests)
+
+**Time:** ~1-2 minutes
+
+#### 3. Comprehensive Pre-Commit (Full) 🔍
+
+**Run manually for complete validation**
+
+```bash
+npm run pre-commit:full
+```
+
+**What it does:**
+
+- ✅ All test checks above
+- ✅ Security audit
+- ✅ Build process validation
+- ✅ E2E tests (if E2E files changed)
+- ✅ Hugo build test (if content changed)
+
+**Time:** ~3-5 minutes
+
+### 🛠️ Configuration
+
+#### Enhanced Lint-Staged Configuration
+
+Located in `package.json` with comprehensive file coverage:
+
+```json
+{
+  "lint-staged": {
+    "assets/js/**/*.{ts,tsx}": [
+      "eslint --fix --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,css,md,yml,yaml,html}": ["prettier --write"],
+    "data/authors.json": [
+      "node scripts/validate-authors.cjs",
+      "prettier --write"
+    ],
+    "content/**/*.md": [
+      "node scripts/validate-frontmatter.cjs",
+      "prettier --write"
+    ]
+  }
+}
+```
+
+#### Format Check Scripts
+
+```json
+{
+  "scripts": {
+    "pre-commit": "npm run pre-commit:format && lint-staged",
+    "pre-commit:format": "npm run format:check || (echo '🎨 Auto-fixing formatting issues...' && npm run format)",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  }
+}
+```
+
+### 🔧 Customization
+
+#### Skip Pre-Commit (Emergency)
+
+If you need to skip pre-commit checks in an emergency:
+
+```bash
+git commit --no-verify -m "emergency fix"
+```
+
+**⚠️ Use sparingly! Always run checks manually afterward.**
+
+#### Modify Pre-Commit Behavior
+
+- **Change Default Behavior**: Edit `.husky/pre-commit`
+- **Add New File Types**: Edit the `lint-staged` section in `package.json`
+- **Customize Comprehensive Checks**: Edit `scripts/pre-commit-comprehensive.sh`
+
+### 🚨 Troubleshooting
+
+#### Common Issues
+
+**Pre-commit fails with "command not found"**
+
+```bash
+# Reinstall husky
+npm run prepare
+```
+
+**Tests fail during pre-commit**
+
+```bash
+# Run tests individually to debug
+npm run test
+npm run test:ui  # For interactive debugging
+```
+
+**Linting errors**
+
+```bash
+# Auto-fix linting issues
+npm run lint:fix
+```
+
+## 🎨 Design & Accessibility
+
+This section outlines the comprehensive design system and accessibility features implemented to ensure a modern, inclusive, and high-quality user experience.
+
+### ✅ Design System Implementation
+
+#### 1. Consistent Typography
+
+**Solutions Implemented:**
+
+- **Design System Variables**: CSS custom properties for consistent typography scale
+- **Responsive Typography**: `clamp()` functions for fluid text scaling across devices
+- **Font Loading**: Optimized Google Fonts loading with preconnect and display=swap
+- **Hierarchy**: Clear heading hierarchy (h1-h6) with semantic sizing
+
+```css
+/* Typography Scale */
+:root {
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, var(--font-size-5xl));
+}
+```
+
+#### 2. Color System & Contrast
+
+**WCAG AA Compliant Color Palette:**
+
+- **High Contrast Mode Support**: `@media (prefers-contrast: high)` styles
+- **Dark Mode Implementation**: Complete dark mode with proper contrast ratios
+- **Color Palette**: Redesigned with WCAG AA compliant contrast ratios
+- **Focus Indicators**: Enhanced focus states with proper color contrast
+
+```css
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    @apply border-2 border-gray-900 dark:border-white;
+  }
+  .btn {
+    @apply border-2;
+  }
+  a {
+    @apply underline;
+  }
+}
+```
+
+#### 3. Spacing & Layout System
+
+**Consistent Spacing Scale:**
+
+```css
+:root {
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 2.5rem;
+  --space-3xl: 3rem;
+  --space-4xl: 3.5rem;
+  --space-5xl: 4rem;
+}
+
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-xl);
+}
+```
+
+#### 4. Responsive Design
+
+**Mobile-First Approach:**
+
+- **Flexible Grids**: Auto-fit grids that adapt to screen size
+- **Responsive Navigation**: Mobile menu with proper aria attributes
+- **Fluid Typography**: Text that scales appropriately across devices
+- **Touch-Friendly**: Optimized for touch interfaces
+
+#### 5. Component System
+
+**Standardized Components:**
+
+- **Button System**: Primary, secondary, and ghost variants
+- **Card Components**: Consistent card-based design
+- **Form Elements**: Accessible form controls with proper labeling
+- **Navigation**: Semantic navigation with aria support
+
+### ♿ Accessibility Features
+
+#### 1. Semantic HTML & ARIA
+
+**Implementation:**
+
+```html
+<nav role="navigation" aria-label="Main navigation">
+  <a href="/" aria-current="page">Home</a>
+</nav>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<main id="main-content" tabindex="-1">
+  <!-- Main content -->
+</main>
+```
+
+#### 2. Keyboard Navigation
+
+**Features:**
+
+- **Skip Links**: "Skip to content" link for keyboard users
+- **Focus Management**: Proper focus indicators and management
+- **Tab Order**: Logical tab order throughout the site
+- **Keyboard Shortcuts**: Common keyboard shortcuts supported
+
+#### 3. Screen Reader Support
+
+**Implementation:**
+
+- **Alt Text Validation**: Visual indicators for missing alt attributes
+- **ARIA Labels**: Comprehensive aria-label usage
+- **Semantic Structure**: Proper heading hierarchy and landmarks
+- **Live Regions**: Dynamic content announcements
+
+```css
+/* Visual indicators for accessibility issues */
+img:not([alt]) {
+  @apply ring-2 ring-red-500;
+}
+img[alt=''] {
+  @apply ring-2 ring-yellow-500;
+}
+```
+
+#### 4. Motion & Animation
+
+**Reduced Motion Support:**
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+**Animation Guidelines:**
+
+- **Subtle Transitions**: Gentle hover and focus transitions (200-300ms)
+- **Performance Optimized**: GPU-accelerated transforms only
+- **User Preference**: Respects user's motion preferences
+
+#### 5. Form Accessibility
+
+**Features:**
+
+- **Proper Labeling**: All form controls have associated labels
+- **Error Handling**: Clear error messages with aria-describedby
+- **Required Fields**: Proper indication of required fields
+- **Validation**: Client-side validation with accessibility support
+
+### 🎯 Design Tokens
+
+**CSS Custom Properties System:**
+
+```css
+:root {
+  /* Colors */
+  --color-primary: #ff6700;
+  --color-primary-hover: #e55a00;
+  --color-secondary: #64748b;
+  --color-accent: #3b82f6;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Typography */
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+  --font-family-mono: 'Fira Code', monospace;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  /* Border Radius */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+```
+
+### 📱 Mobile Optimization
+
+**Touch-Friendly Design:**
+
+- **Minimum Touch Targets**: 44px minimum for touch targets
+- **Gesture Support**: Swipe navigation and touch interactions
+- **Viewport Optimization**: Proper viewport meta tags
+- **Performance**: Optimized for mobile performance
+
+### 🔍 SEO & Performance
+
+**Built-in Optimizations:**
+
+- **Structured Data**: JSON-LD structured data for articles
+- **Meta Tags**: Comprehensive meta tag system
+- **Open Graph**: Social media sharing optimization
+- **Performance**: Lighthouse score optimization
+- **Core Web Vitals**: Optimized for Google's Core Web Vitals
 
 ## ✍️ Writing Articles
 
