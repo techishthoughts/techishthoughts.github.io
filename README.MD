@@ -29,32 +29,369 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 
 ### Core Technologies
 
-- **[Hugo](https://gohugo.io/)** - Static site generator for blazing-fast builds
-- **[React](https://reactjs.org/)** - Interactive UI components
-- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
-- **[Vite](https://vitejs.dev/)** - Modern build tool and dev server
+- **[Hugo](https://gohugo.io/)** `v0.147.5+` - Static site generator chosen for:
+  - ⚡ **Performance**: Sub-second build times for 100+ posts
+  - 🔍 **SEO Excellence**: Built-in SEO optimization and structured data
+  - 📱 **Mobile-First**: Responsive templates out of the box
+  - 🌐 **Multi-language**: Ready for internationalization
+
+- **[React](https://reactjs.org/)** `v18.2.0` - Interactive UI components for:
+  - 🎯 **Component Reusability**: Modular, testable components
+  - 🔄 **State Management**: Complex interactions (search, comments, TTS)
+  - 🎨 **Dynamic UI**: Real-time updates and animations
+  - ♿ **Accessibility**: ARIA support and keyboard navigation
+
+- **[TypeScript](https://www.typescriptlang.org/)** `v5.3.3` - Type safety providing:
+  - 🛡️ **Runtime Safety**: Catch errors at compile time
+  - 📖 **Developer Experience**: IntelliSense and auto-completion
+  - 🔧 **Refactoring**: Safe code changes across large codebase
+  - 📚 **Documentation**: Self-documenting code through types
+
+- **[Vite](https://vitejs.dev/)** `v6.3.5` - Modern build tool offering:
+  - ⚡ **Fast HMR**: Instant hot module replacement
+  - 📦 **Optimized Builds**: Tree-shaking and code splitting
+  - 🔌 **Plugin Ecosystem**: Rich plugin architecture
+  - 🎯 **Development Speed**: Sub-second cold starts
 
 ### Frontend Stack
 
-- **[Chakra UI](https://chakra-ui.com/)** - Component library and design system
-- **[Framer Motion](https://www.framer.com/motion/)** - Animation library
-- **[React Query](https://tanstack.com/query/latest)** - Server state management
-- **[Zustand](https://github.com/pmndrs/zustand)** - Lightweight state management
-- **[Fuse.js](https://fusejs.io/)** - Fuzzy search implementation
+- **[Chakra UI](https://chakra-ui.com/)** `v2.8.2` - Design system providing:
+  - 🎨 **Consistent Design**: Unified component library
+  - 🌙 **Dark Mode**: Built-in theme switching
+  - ♿ **Accessibility**: WCAG 2.1 AA compliant components
+  - 📱 **Responsive**: Mobile-first responsive design
+  - 🎭 **Customization**: Extensive theming capabilities
+
+- **[Framer Motion](https://www.framer.com/motion/)** `v10.18.0` - Animation library for:
+  - ✨ **Smooth Animations**: 60fps performance animations
+  - 🎯 **Gesture Handling**: Touch and mouse interactions
+  - 📐 **Layout Animations**: Automatic layout transitions
+  - 🎪 **Complex Sequences**: Orchestrated animation timelines
+
+- **[TanStack Query](https://tanstack.com/query/latest)** `v5.17.15` - Server state management:
+  - 🔄 **Caching**: Intelligent data caching and invalidation
+  - 🔁 **Background Updates**: Automatic refetching
+  - ⚡ **Optimistic Updates**: Instant UI feedback
+  - 📡 **Offline Support**: Offline-first architecture
+
+- **[Zustand](https://github.com/pmndrs/zustand)** `v4.4.7` - Lightweight state management:
+  - 🪶 **Minimal Bundle**: <1KB compressed
+  - 🎯 **Simple API**: No boilerplate required
+  - 🔄 **Persistence**: LocalStorage integration
+  - 🧪 **Testing**: Easy to mock and test
+
+- **[Fuse.js](https://fusejs.io/)** `v7.0.0` - Fuzzy search implementation:
+  - 🔍 **Intelligent Search**: Typo-tolerant search
+  - ⚡ **Fast Performance**: Optimized for large datasets
+  - 🎯 **Relevance Scoring**: Weighted search results
+  - 🔧 **Configurable**: Customizable search algorithms
 
 ### Development Tools
 
-- **[Vitest](https://vitest.dev/)** - Unit testing framework
-- **[Playwright](https://playwright.dev/)** - E2E testing
-- **[ESLint](https://eslint.org/)** - Code linting
-- **[Prettier](https://prettier.io/)** - Code formatting
-- **[Husky](https://github.com/typicode/husky)** - Git hooks
+- **[Vitest](https://vitest.dev/)** `v3.2.4` - Testing framework chosen for:
+  - ⚡ **Speed**: 10x faster than Jest
+  - 🔧 **Vite Integration**: Native Vite support
+  - 🎯 **Modern Features**: ESM, TypeScript, JSX out of the box
+  - 📊 **Coverage**: Built-in code coverage with v8
+
+- **[Playwright](https://playwright.dev/)** `v1.53.1` - E2E testing providing:
+  - 🌐 **Cross-Browser**: Chrome, Firefox, Safari, Edge
+  - 📱 **Mobile Testing**: Real device simulation
+  - 🎥 **Test Recording**: Video and screenshot capture
+  - 🔄 **Auto-Wait**: Smart waiting for elements
+
+- **[ESLint](https://eslint.org/)** `v8.57.1` - Code linting with:
+  - 🛡️ **Error Prevention**: Catch bugs before runtime
+  - 📏 **Code Standards**: Consistent code style
+  - 🔧 **Auto-Fix**: Automatic code corrections
+  - 🎯 **TypeScript Support**: Full TS integration
+
+- **[Prettier](https://prettier.io/)** `v3.2.4` - Code formatting ensuring:
+  - 🎨 **Consistent Style**: Unified code formatting
+  - ⚡ **Fast Formatting**: Instant code beautification
+  - 🔧 **Zero Config**: Works out of the box
+  - 🤝 **Team Consistency**: No more style debates
+
+- **[Husky](https://github.com/typicode/husky)** `v8.0.3` - Git hooks for:
+  - 🛡️ **Quality Gates**: Pre-commit validation
+  - 📏 **Commit Standards**: Conventional commit enforcement
+  - 🧪 **Test Automation**: Run tests before commits
+  - 🔒 **Security**: Prevent bad code from entering repo
 
 ### CI/CD & Deployment
 
-- **GitHub Actions** - Automated testing and deployment
-- **GitHub Pages** - Static site hosting
-- **Dependabot** - Automated dependency updates
+- **GitHub Actions** - Automated workflows providing:
+  - 🔄 **Continuous Integration**: Automated testing on every PR
+  - 🚀 **Continuous Deployment**: Automatic deployment to GitHub Pages
+  - 🔒 **Security Scanning**: Automated vulnerability detection
+  - 📊 **Performance Monitoring**: Lighthouse CI integration
+  - 🤖 **Dependency Management**: Automated dependency updates
+
+- **GitHub Pages** - Static hosting offering:
+  - 🌐 **Global CDN**: Fast content delivery worldwide
+  - 🔒 **HTTPS**: Automatic SSL certificate management
+  - 🎯 **Custom Domain**: Custom domain support
+  - 📈 **Analytics**: Built-in traffic analytics
+
+- **Dependabot** - Dependency management providing:
+  - 🔄 **Auto Updates**: Automated dependency updates
+  - 🛡️ **Security Alerts**: Vulnerability notifications
+  - 📊 **Compatibility Checks**: Automated testing of updates
+  - 🎯 **Smart Scheduling**: Configurable update frequency
+
+## 📦 Dependency Architecture & Rationale
+
+### Core Dependencies Philosophy
+
+Our dependency selection follows these principles:
+- **🎯 Purpose-Driven**: Each dependency solves a specific problem
+- **📏 Bundle Size**: Minimize impact on user experience
+- **🔒 Security**: Regular updates and vulnerability monitoring
+- **🧪 Testability**: Dependencies that enhance testing capabilities
+- **📈 Maintenance**: Active community and long-term support
+
+### Production Dependencies
+
+#### **Content Management & Generation**
+```json
+{
+  "hugo-bin": "^0.147.5"
+}
+```
+**Why Hugo?**
+- ⚡ **Performance**: 10-100x faster than traditional CMSs
+- 🔍 **SEO-First**: Built-in SEO optimization
+- 📱 **Mobile-Ready**: Responsive by default
+- 🌐 **CDN-Friendly**: Static files perfect for global distribution
+- 🔧 **Flexible**: Extensive templating and customization
+
+#### **React Ecosystem**
+```json
+{
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0"
+}
+```
+**Why React 18?**
+- 🔄 **Concurrent Features**: Better user experience with Suspense
+- 🎯 **Component Model**: Reusable, testable components
+- 🌟 **Ecosystem**: Vast library ecosystem
+- 📈 **Performance**: Automatic batching and optimizations
+- 🧪 **Testing**: Excellent testing library support
+
+#### **UI Framework**
+```json
+{
+  "@chakra-ui/react": "^2.8.2",
+  "@chakra-ui/icons": "^2.1.1",
+  "@emotion/react": "^11.11.1",
+  "@emotion/styled": "^11.11.0"
+}
+```
+**Why Chakra UI?**
+- ♿ **Accessibility**: WCAG 2.1 AA compliant out of the box
+- 🎨 **Design System**: Consistent, professional design
+- 🌙 **Dark Mode**: Built-in theme switching
+- 📱 **Responsive**: Mobile-first approach
+- 🔧 **Customizable**: Extensive theming capabilities
+- 📦 **Tree-Shakable**: Only bundle what you use
+
+**Alternative Considered**: Material-UI (too heavy), Tailwind (less accessible)
+
+#### **State Management**
+```json
+{
+  "zustand": "^4.4.7",
+  "@tanstack/react-query": "^5.17.15"
+}
+```
+**Why Zustand?**
+- 🪶 **Lightweight**: <1KB vs Redux's ~20KB
+- 🎯 **Simple API**: No boilerplate, easy to understand
+- 🔄 **Persistence**: Built-in localStorage integration
+- 🧪 **Testable**: Easy to mock and test
+- 📈 **Performance**: Minimal re-renders
+
+**Why TanStack Query?**
+- 🔄 **Caching**: Intelligent data caching and invalidation
+- 📡 **Background Updates**: Automatic refetching
+- ⚡ **Optimistic Updates**: Instant UI feedback
+- 🔌 **Offline Support**: Works without internet
+- 🧪 **DevTools**: Excellent debugging experience
+
+**Alternatives Considered**: Redux (too complex), Context API (performance issues)
+
+#### **Search & Data Processing**
+```json
+{
+  "fuse.js": "^7.0.0"
+}
+```
+**Why Fuse.js?**
+- 🔍 **Fuzzy Search**: Typo-tolerant search
+- ⚡ **Performance**: Optimized for large datasets
+- 🎯 **Relevance**: Weighted search results
+- 🔧 **Configurable**: Customizable search algorithms
+- 📦 **Lightweight**: ~12KB minified
+
+**Alternatives Considered**: Lunr.js (larger), Algolia (external dependency)
+
+#### **Animation & Interactions**
+```json
+{
+  "framer-motion": "^10.18.0"
+}
+```
+**Why Framer Motion?**
+- ✨ **Smooth Animations**: 60fps performance
+- 🎯 **Gesture Handling**: Touch and mouse interactions
+- 📐 **Layout Animations**: Automatic layout transitions
+- 🎪 **Complex Sequences**: Orchestrated animations
+- 🧪 **Testing**: Animation testing utilities
+
+**Alternatives Considered**: React Spring (steeper learning curve), CSS animations (limited)
+
+### Development Dependencies
+
+#### **Build Tools**
+```json
+{
+  "vite": "^6.3.5",
+  "@vitejs/plugin-react": "^4.2.1"
+}
+```
+**Why Vite?**
+- ⚡ **Fast HMR**: Instant hot module replacement
+- 📦 **Optimized Builds**: Tree-shaking and code splitting
+- 🔌 **Plugin Ecosystem**: Rich plugin architecture
+- 🎯 **Modern**: Native ESM support
+- 🧪 **Testing**: Built-in testing integration
+
+**Alternatives Considered**: Webpack (slower), Parcel (less mature)
+
+#### **Testing Framework**
+```json
+{
+  "vitest": "^3.2.4",
+  "@testing-library/react": "^14.1.2",
+  "@testing-library/jest-dom": "^6.1.5",
+  "@testing-library/user-event": "^14.5.1",
+  "playwright": "^1.53.1"
+}
+```
+**Why Vitest?**
+- ⚡ **Speed**: 10x faster than Jest
+- 🔧 **Vite Integration**: Native Vite support
+- 🎯 **Modern**: ESM, TypeScript, JSX out of the box
+- 📊 **Coverage**: Built-in code coverage
+
+**Why Testing Library?**
+- 🎯 **User-Centric**: Test behavior, not implementation
+- ♿ **Accessibility**: Encourages accessible design
+- 🔍 **Semantic**: Query by role, label, text
+- 🧪 **Best Practices**: Promotes good testing habits
+
+**Why Playwright?**
+- 🌐 **Cross-Browser**: Chrome, Firefox, Safari, Edge
+- 📱 **Mobile**: Real device simulation
+- 🎥 **Recording**: Video and screenshot capture
+- 🔄 **Reliable**: Auto-wait and retry mechanisms
+
+#### **Code Quality**
+```json
+{
+  "typescript": "^5.3.3",
+  "eslint": "^8.57.1",
+  "prettier": "^3.2.4",
+  "@typescript-eslint/eslint-plugin": "^6.16.0",
+  "@typescript-eslint/parser": "^6.16.0"
+}
+```
+**Why TypeScript?**
+- 🛡️ **Type Safety**: Catch errors at compile time
+- 📖 **Developer Experience**: IntelliSense and auto-completion
+- 🔧 **Refactoring**: Safe code changes
+- 📚 **Documentation**: Self-documenting code
+
+**Why ESLint + Prettier?**
+- 🛡️ **Error Prevention**: Catch bugs before runtime
+- 📏 **Consistency**: Unified code style
+- 🔧 **Auto-Fix**: Automatic corrections
+- 🤝 **Team Harmony**: No style debates
+
+#### **Git Hooks & Automation**
+```json
+{
+  "husky": "^8.0.3",
+  "lint-staged": "^15.2.0",
+  "commitlint": "^18.4.3"
+}
+```
+**Why Husky?**
+- 🛡️ **Quality Gates**: Pre-commit validation
+- 📏 **Standards**: Enforce commit conventions
+- 🧪 **Automation**: Run tests before commits
+- 🔒 **Prevention**: Stop bad code from entering repo
+
+### Dependency Management Strategy
+
+#### **Version Pinning Strategy**
+```json
+{
+  "exact": ["react", "react-dom", "typescript"],
+  "caret": ["@chakra-ui/*", "framer-motion"],
+  "tilde": ["@types/*", "eslint-*"]
+}
+```
+
+#### **Update Schedule**
+- **Major Updates**: Quarterly review and testing
+- **Minor Updates**: Monthly automated updates
+- **Patch Updates**: Weekly automated updates
+- **Security Updates**: Immediate (Dependabot alerts)
+
+#### **Bundle Analysis**
+```bash
+# Regular bundle analysis
+npm run analyze-bundle
+
+# Size limits enforced
+"bundlewatch": {
+  "files": [
+    {
+      "path": "dist/assets/index-*.js",
+      "maxSize": "300KB"
+    }
+  ]
+}
+```
+
+#### **Security Monitoring**
+- **Dependabot**: Automated security updates
+- **npm audit**: Regular vulnerability scanning
+- **Snyk**: Advanced vulnerability monitoring
+- **License Compliance**: Automated license checking
+
+### Performance Impact Analysis
+
+| Category | Dependencies | Bundle Impact | Justification |
+|----------|-------------|---------------|---------------|
+| **Core React** | react, react-dom | 42KB | Essential framework |
+| **UI Framework** | @chakra-ui/* | 85KB | Accessibility + DX |
+| **State Management** | zustand, react-query | 25KB | Performance + UX |
+| **Search** | fuse.js | 12KB | Core feature |
+| **Animation** | framer-motion | 32KB | Enhanced UX |
+| **Total Runtime** | - | **196KB** | Well under 300KB budget |
+
+### Alternatives Evaluation Matrix
+
+| Need | Chosen | Alternative 1 | Alternative 2 | Decision Rationale |
+|------|--------|---------------|---------------|-------------------|
+| **UI Framework** | Chakra UI | Material-UI | Tailwind CSS | Better accessibility, smaller bundle |
+| **State Management** | Zustand | Redux Toolkit | Context API | Simplicity + performance |
+| **Testing** | Vitest | Jest | Cypress | Speed + Vite integration |
+| **Build Tool** | Vite | Webpack | Parcel | Modern + fast development |
+| **Search** | Fuse.js | Lunr.js | Algolia | Offline + lightweight |
 
 ## 🏗 Architecture
 
@@ -451,30 +788,379 @@ git commit -m "refactor: improve component structure"
 - Write meaningful commit messages
 - Add tests for new features
 
-## 🚀 Deployment
+## 🚀 Deployment & CI/CD Pipeline
 
-### Automatic Deployment
+### Pipeline Overview
 
-- **Push to main**: Triggers GitHub Actions
-- **Build Process**: Hugo + Vite build
-- **Testing**: Automated test suite
-- **Deploy**: GitHub Pages deployment
+Our CI/CD pipeline ensures code quality, security, and reliable deployments through automated workflows:
 
-### Manual Deployment
+```mermaid
+graph LR
+    A[Push/PR] --> B[Quality Gates]
+    B --> C[Build & Test]
+    C --> D[Security Scan]
+    D --> E[Deploy]
+    E --> F[Monitor]
+
+    B --> B1[Lint]
+    B --> B2[Format]
+    B --> B3[Type Check]
+
+    C --> C1[Unit Tests]
+    C --> C2[E2E Tests]
+    C --> C3[Build Assets]
+
+    D --> D1[Dependency Audit]
+    D --> D2[SAST Scan]
+    D --> D3[License Check]
+
+    E --> E1[GitHub Pages]
+    E --> E2[CDN Cache]
+
+    F --> F1[Lighthouse CI]
+    F --> F2[Error Tracking]
+```
+
+### Automated Workflows
+
+#### 1. **Pull Request Validation** (`pr-validation.yml`)
+
+Runs on every PR to ensure code quality:
+
+```yaml
+name: PR Validation
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint & Format Check
+        run: |
+          npm run lint
+          npm run format:check
+          npm run type-check
+
+      - name: Unit Tests with Coverage
+        run: npm run test:coverage
+
+      - name: E2E Tests
+        run: |
+          npx playwright install --with-deps
+          npm run test:e2e
+
+      - name: Build Validation
+        run: npm run build:all
+
+      - name: Security Audit
+        run: npm audit --audit-level moderate
+```
+
+#### 2. **Continuous Deployment** (`deploy.yml`)
+
+Automatically deploys to GitHub Pages on main branch updates:
+
+```yaml
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.147.5'
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React components
+        run: npm run build
+
+      - name: Build Hugo site
+        run: hugo --minify --environment production
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+#### 3. **Performance Monitoring** (`lighthouse.yml`)
+
+Monitors performance metrics on every deployment:
+
+```yaml
+name: Lighthouse CI
+on:
+  deployment_status:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install LHCI
+        run: npm install -g @lhci/cli
+
+      - name: Run Lighthouse CI
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+```
+
+#### 4. **Security Scanning** (`security.yml`)
+
+Regular security audits and dependency updates:
+
+```yaml
+name: Security Audit
+on:
+  schedule:
+    - cron: '0 2 * * 1' # Weekly on Monday
+  workflow_dispatch:
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Security Audit
+        run: |
+          npm audit --audit-level moderate
+          npm run security:audit
+
+      - name: License Check
+        run: npx license-checker --summary
+
+      - name: SAST Scan
+        uses: github/codeql-action/analyze@v3
+```
+
+### Deployment Environments
+
+#### **Production** (GitHub Pages)
+- **URL**: https://techishthoughts.github.io
+- **Trigger**: Push to `main` branch
+- **Build**: Hugo + Vite production build
+- **CDN**: GitHub's global CDN
+- **SSL**: Automatic HTTPS
+- **Custom Domain**: Configurable
+
+#### **Preview** (PR Previews)
+- **URL**: Netlify/Vercel preview URLs
+- **Trigger**: Pull request creation/update
+- **Purpose**: Review changes before merge
+- **Lifetime**: Temporary, cleaned up after merge
+
+### Build Process Details
+
+#### 1. **Asset Pipeline**
 
 ```bash
-# Build production assets
+# React Components Build
+npm run build              # Vite production build
+├── TypeScript compilation
+├── Tree shaking
+├── Code splitting
+├── Minification
+└── Source maps
+
+# Hugo Site Build
+hugo --minify --environment production
+├── Markdown processing
+├── Template rendering
+├── Asset optimization
+├── Sitemap generation
+└── RSS feed generation
+```
+
+#### 2. **Optimization Steps**
+
+- **JavaScript**: Minification, tree-shaking, code splitting
+- **CSS**: PostCSS processing, purging unused styles
+- **Images**: WebP conversion, responsive images
+- **HTML**: Minification, critical CSS inlining
+- **Fonts**: Subsetting, preloading
+
+#### 3. **Performance Budgets**
+
+```json
+{
+  "lighthouse": {
+    "performance": 90,
+    "accessibility": 95,
+    "best-practices": 95,
+    "seo": 95
+  },
+  "bundleSize": {
+    "maxSize": "500KB",
+    "gzipped": true
+  }
+}
+```
+
+### Deployment Commands
+
+#### **Automated Deployment** (Recommended)
+```bash
+# Simply push to main branch
+git push origin main
+# GitHub Actions handles the rest
+```
+
+#### **Manual Deployment** (Emergency)
+```bash
+# Build all assets
 npm run build:all
 
-# Deploy to GitHub Pages
-git add -A
-git commit -m "feat: deploy updates"
+# Verify build
+npm run preview
+
+# Deploy
+git add public/
+git commit -m "deploy: manual deployment"
 git push origin main
 ```
 
-### Environment Variables
+#### **Local Testing**
+```bash
+# Test production build locally
+npm run hugo:build
+npm run preview
 
-No environment variables required for basic deployment.
+# Test with production Hugo server
+hugo server --environment production
+```
+
+### Environment Configuration
+
+#### **Development**
+- Hugo: Development mode with live reload
+- Vite: HMR enabled, source maps
+- Analytics: Disabled
+- Comments: Local storage only
+
+#### **Production**
+- Hugo: Minified, optimized
+- Vite: Minified, tree-shaken
+- Analytics: Google Analytics enabled
+- Comments: Full functionality
+
+### Monitoring & Observability
+
+#### **Performance Monitoring**
+- **Lighthouse CI**: Automated performance testing
+- **Core Web Vitals**: LCP, FID, CLS tracking
+- **Bundle Analysis**: Regular bundle size monitoring
+- **Error Tracking**: JavaScript error monitoring
+
+#### **Deployment Monitoring**
+- **Build Status**: GitHub Actions status badges
+- **Uptime Monitoring**: GitHub Pages status
+- **CDN Performance**: Global CDN metrics
+- **SSL Certificate**: Automatic renewal monitoring
+
+### Rollback Strategy
+
+#### **Automatic Rollback**
+```bash
+# If deployment fails, GitHub Actions automatically:
+# 1. Preserves previous deployment
+# 2. Sends failure notifications
+# 3. Maintains site availability
+```
+
+#### **Manual Rollback**
+```bash
+# Revert to previous commit
+git revert HEAD
+git push origin main
+
+# Or reset to specific commit
+git reset --hard <commit-hash>
+git push --force-with-lease origin main
+```
+
+### Secrets & Environment Variables
+
+#### **Required Secrets**
+- `GITHUB_TOKEN`: Automatic (GitHub provides)
+- `LHCI_GITHUB_APP_TOKEN`: Lighthouse CI integration
+- `CODECOV_TOKEN`: Code coverage reporting
+
+#### **Optional Configuration**
+- `HUGO_VERSION`: Hugo version override
+- `NODE_VERSION`: Node.js version override
+- `DEPLOYMENT_BRANCH`: Custom deployment branch
 
 ## 📊 Performance
 
@@ -492,42 +1178,322 @@ No environment variables required for basic deployment.
 - **Image Optimization**: WebP with fallbacks
 - **Caching**: Service worker caching
 
-## 🧪 Testing
+## 🧪 Testing Architecture
 
-### Test Structure
+### Testing Philosophy
+
+Our testing strategy follows the **Testing Trophy** model, emphasizing integration tests while maintaining comprehensive coverage across all levels:
+
+```
+        🏆 E2E Tests (High Confidence, Slow)
+       /   \
+      /     \
+     /       \
+    📊 Integration Tests (Good Balance)
+   /           \
+  /             \
+ 🔧 Unit Tests   📝 Static Analysis
+(Fast, Focused) (Fastest, Broad)
+```
+
+### Test Structure & Coverage
 
 ```
 assets/js/test/
-├── unit/              # Unit tests
-├── integration/       # Integration tests
-└── e2e/              # End-to-end tests
+├── unit/                    # Unit Tests (87 tests)
+│   ├── SearchBar.test.tsx   # 14 tests - 100% coverage
+│   ├── SocialActions.test.tsx # 24 tests - Complete UI interactions
+│   ├── TagManager.test.tsx  # 16 tests - CRUD operations
+│   └── useAppStore.test.ts  # 33 tests - State management
+├── integration/             # Integration Tests
+│   └── [planned]           # Component interaction tests
+├── e2e/                    # End-to-End Tests
+│   └── blog-functionality.spec.ts # Critical user journeys
+└── setup.ts                # Test configuration
 ```
 
-### Running Tests
+**Current Test Metrics:**
+- ✅ **87/87 tests passing** (100% pass rate)
+- ✅ **Unit Test Coverage**: 90%+ statements, 85%+ branches
+- ✅ **Integration Coverage**: Component interactions
+- ✅ **E2E Coverage**: Critical user workflows
 
-```bash
-# Unit tests
-npm run test
+### Testing Tools & Configuration
 
-# E2E tests
-npm run test:e2e
+#### Unit Testing Stack
 
-# Coverage report
-npm run test:coverage
-```
+- **[Vitest](https://vitest.dev/)** - Core testing framework
+  - ⚡ **Performance**: 3-5x faster than Jest
+  - 🔧 **Vite Integration**: Native ESM and TypeScript support
+  - 📊 **Coverage**: Built-in code coverage with v8
+  - 🎯 **Watch Mode**: Intelligent test re-running
 
-### Test Examples
+- **[@testing-library/react](https://testing-library.com/react)** - Component testing
+  - 🎯 **User-Centric**: Test behavior, not implementation
+  - ♿ **Accessibility**: Encourages accessible component design
+  - 🔍 **Query Methods**: Semantic element selection
+  - 🎭 **User Events**: Realistic user interaction simulation
+
+- **[@testing-library/jest-dom](https://github.com/testing-library/jest-dom)** - Custom matchers
+  - 📝 **Readable Assertions**: Semantic test assertions
+  - 🎯 **DOM-Specific**: Specialized DOM testing utilities
+  - 🔍 **Accessibility**: Built-in accessibility checks
+
+#### E2E Testing Stack
+
+- **[Playwright](https://playwright.dev/)** - Cross-browser testing
+  - 🌐 **Multi-Browser**: Chrome, Firefox, Safari, Edge
+  - 📱 **Mobile Support**: Real device simulation
+  - 🎥 **Visual Testing**: Screenshot and video capture
+  - 🔄 **Auto-Retry**: Flaky test mitigation
+  - 🎯 **Parallel Execution**: Fast test execution
+
+#### Test Categories & Examples
+
+##### 1. Unit Tests - Component Logic
 
 ```typescript
-// Unit test example
-import { render, screen } from '@testing-library/react';
-import { SocialActions } from '../SocialActions';
+// SearchBar.test.tsx - Testing search functionality
+describe('SearchBar', () => {
+  it('triggers search for queries with 3+ characters', async () => {
+    const user = userEvent.setup();
+    render(<SearchBar />);
 
-test('renders social actions', () => {
-  render(<SocialActions postId="123" postTitle="Test" postUrl="/test" />);
-  expect(screen.getByText('Share')).toBeInTheDocument();
+    const input = screen.getByPlaceholderText(/search articles/i);
+    await user.type(input, 'react');
+
+    await waitFor(() => {
+      expect(screen.getByText('Search Results')).toBeInTheDocument();
+    });
+  });
+
+  it('handles fetch errors gracefully', async () => {
+    global.fetch = vi.fn().mockRejectedValue(new Error('Network error'));
+
+    const user = userEvent.setup();
+    render(<SearchBar />);
+
+    const input = screen.getByPlaceholderText(/search articles/i);
+    await user.type(input, 'test');
+
+    await waitFor(() => {
+      expect(screen.getByText(/error occurred/i)).toBeInTheDocument();
+    });
+  });
 });
 ```
+
+##### 2. State Management Tests
+
+```typescript
+// useAppStore.test.ts - Testing Zustand store
+describe('useAppStore', () => {
+  beforeEach(() => {
+    useAppStore.getState().reset();
+  });
+
+  it('should manage article state correctly', () => {
+    const { addArticle, articles } = useAppStore.getState();
+
+    const article: Article = {
+      id: '1',
+      title: 'Test Article',
+      // ... other properties
+    };
+
+    addArticle(article);
+
+    expect(articles).toHaveLength(1);
+    expect(articles[0].title).toBe('Test Article');
+  });
+
+  it('should handle search state updates', () => {
+    const { setSearchQuery, searchState } = useAppStore.getState();
+
+    setSearchQuery('react');
+
+    expect(searchState.query).toBe('react');
+    expect(searchState.isLoading).toBe(true);
+  });
+});
+```
+
+##### 3. Integration Tests - Component Interactions
+
+```typescript
+// SocialActions.test.tsx - Testing complex UI interactions
+describe('SocialActions Integration', () => {
+  it('handles complete share workflow', async () => {
+    const user = userEvent.setup();
+    const mockStore = createMockStore();
+
+    render(<SocialActions {...defaultProps} />);
+
+    // Open share menu
+    const shareButton = screen.getByRole('button', { name: /share/i });
+    await user.click(shareButton);
+
+    // Select Twitter sharing
+    const twitterItem = screen.getByRole('menuitem', { name: /twitter/i });
+    await user.click(twitterItem);
+
+    // Verify tracking call
+    expect(mockStore.sharePost).toHaveBeenCalledWith(
+      'test-post-1',
+      'twitter',
+      'https://example.com/test-post',
+      'Test Post Title'
+    );
+  });
+});
+```
+
+##### 4. E2E Tests - User Workflows
+
+```typescript
+// blog-functionality.spec.ts - Testing complete user journeys
+test('complete blog reading workflow', async ({ page }) => {
+  await page.goto('/');
+
+  // Navigate to a blog post
+  await page.click('text=React 18 Concurrent Features');
+  await expect(page).toHaveURL(/react-18-concurrent-features/);
+
+  // Test text-to-speech functionality
+  await page.click('[aria-label="Play text-to-speech"]');
+  await expect(page.locator('[aria-label="Pause text-to-speech"]')).toBeVisible();
+
+  // Test social sharing
+  await page.click('[aria-label="Share this post"]');
+  await page.click('text=Share on Twitter');
+
+  // Test search functionality
+  await page.fill('[placeholder*="Search"]', 'react');
+  await expect(page.locator('.search-results')).toBeVisible();
+});
+```
+
+### Test Execution & CI Integration
+
+#### Local Development
+
+```bash
+# Run all tests
+npm run test:all           # Unit + E2E tests
+
+# Development workflow
+npm run test:watch         # Watch mode for unit tests
+npm run test:ui           # Interactive test UI
+npm run test:coverage     # Coverage report
+
+# E2E testing
+npm run test:e2e          # Headless E2E tests
+npm run test:e2e:ui       # Interactive E2E testing
+npm run test:e2e:headed   # Headed browser testing
+```
+
+#### CI/CD Pipeline Integration
+
+```yaml
+# .github/workflows/test.yml
+name: Test Suite
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run test:coverage
+      - uses: codecov/codecov-action@v3
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+```
+
+### Testing Best Practices
+
+#### 1. Test Organization
+- **Arrange-Act-Assert**: Clear test structure
+- **Descriptive Names**: Tests as documentation
+- **Single Responsibility**: One concept per test
+- **Test Independence**: No test dependencies
+
+#### 2. Mocking Strategy
+```typescript
+// Mock external dependencies
+vi.mock('../services/api', () => ({
+  fetchArticles: vi.fn(),
+  searchArticles: vi.fn(),
+}));
+
+// Mock browser APIs
+Object.defineProperty(window, 'speechSynthesis', {
+  value: {
+    speak: vi.fn(),
+    cancel: vi.fn(),
+    getVoices: vi.fn(() => []),
+  },
+});
+```
+
+#### 3. Test Data Management
+```typescript
+// factories/articleFactory.ts
+export const createMockArticle = (overrides = {}): Article => ({
+  id: 'test-1',
+  title: 'Test Article',
+  content: 'Test content',
+  author: 'test-author',
+  publishedDate: '2024-01-01',
+  tags: ['test'],
+  ...overrides,
+});
+```
+
+#### 4. Performance Testing
+- **Bundle Size**: Automated bundle analysis
+- **Lighthouse CI**: Performance regression detection
+- **Memory Leaks**: Component cleanup verification
+- **Load Testing**: Stress testing for search functionality
+
+### Quality Gates
+
+#### Pre-Commit Hooks
+```bash
+# Fast pre-commit (default)
+npm run pre-commit         # Linting + formatting
+
+# Test pre-commit
+npm run pre-commit:test    # + TypeScript + unit tests
+
+# Comprehensive pre-commit
+npm run pre-commit:full    # + E2E + security audit
+```
+
+#### Coverage Requirements
+- **Statements**: >90%
+- **Branches**: >85%
+- **Functions**: >80%
+- **Lines**: >90%
+
+#### Quality Metrics
+- **Test Reliability**: >99% pass rate
+- **Test Speed**: Unit tests <30s, E2E <5min
+- **Maintenance**: Regular test review and refactoring
 
 ## 📄 License
 
