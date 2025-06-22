@@ -589,8 +589,8 @@ App (Hugo Template)
    ```
 
 4. **Open in browser**
-   - Hugo site: http://localhost:1313
-   - Vite dev server: http://localhost:5173
+   - Hugo site: <http://localhost:1313>
+   - Vite dev server: <http://localhost:5173>
 
 ### Development Workflow
 
@@ -1472,7 +1472,7 @@ jobs:
 
 #### **Production** (GitHub Pages)
 
-- **URL**: https://techishthoughts.github.io
+- **URL**: <https://techishthoughts.github.io>
 - **Trigger**: Push to `main` branch
 - **Build**: Hugo + Vite production build
 - **CDN**: GitHub's global CDN
