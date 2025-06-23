@@ -2,16 +2,16 @@ import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import type {
-  Article,
-  Author,
-  Category,
-  Comment,
-  CommentFormData,
-  PostInteraction,
-  SearchState,
-  SocialStats,
-  Tag,
-  TTSState,
+    Article,
+    Author,
+    Category,
+    Comment,
+    CommentFormData,
+    PostInteraction,
+    SearchState,
+    SocialStats,
+    Tag,
+    TTSState,
 } from '../types';
 
 interface AppState {
@@ -52,6 +52,7 @@ interface AppState {
   };
 }
 
+/* eslint-disable no-unused-vars */
 interface AppActions {
   // Content actions
   setArticles: (articles: Article[]) => void;
@@ -106,6 +107,7 @@ interface AppActions {
     preferences: Partial<AppState['userPreferences']>
   ) => void;
 }
+/* eslint-enable no-unused-vars */
 
 export const useAppStore = create<AppState & AppActions>()(
   devtools(
