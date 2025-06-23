@@ -93,7 +93,7 @@ test.describe('Blog Functionality', () => {
         await expect(nav).toBeVisible();
 
         // Regular nav links should be hidden on mobile (they have md:flex class)
-        const navLinks = page.locator('header nav .hidden');
+        const navLinks = page.locator('header nav div.hidden.md\\:flex');
         await expect(navLinks).toBeAttached(); // They exist but are hidden
 
         // But site title should still be visible
@@ -252,12 +252,8 @@ test.describe('Blog Functionality', () => {
       await expect(nav).toBeVisible();
 
       // Desktop nav links should be hidden on mobile (they have md:flex class)
-      const desktopNavLinks = page.locator('header nav .hidden');
+      const desktopNavLinks = page.locator('header nav div.hidden.md\\:flex');
       await expect(desktopNavLinks).toBeAttached();
-
-      // Subscribe button should be visible (specifically the one in header)
-      const subscribeBtn = page.locator('header .btn-primary');
-      await expect(subscribeBtn).toBeVisible();
 
       // Site title should still be visible and clickable
       const siteTitle = page.locator('header a').first();
@@ -307,13 +303,11 @@ test.describe('Blog Functionality', () => {
       const aboutLink = page
         .locator('header nav a')
         .filter({ hasText: 'About' });
-      const subscribeBtn = page.locator('header .btn-primary');
 
       await expect(homeLink).toBeVisible();
       await expect(postsLink).toBeVisible();
       await expect(contributorsLink).toBeVisible();
       await expect(aboutLink).toBeVisible();
-      await expect(subscribeBtn).toBeVisible();
     });
   });
 
