@@ -121,7 +121,6 @@ html {
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
   -moz-tab-size: 4;
-  -o-tab-size: 4;
   tab-size: 4;
   font-family: Inter, Arial, sans-serif;
   font-feature-settings: normal;
@@ -175,7 +174,7 @@ sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
-  vertical-align: baseline;
+  vertical-align: initial;
 }
 sub {
   bottom: -0.25em;
@@ -213,7 +212,7 @@ input:where([type='button']),
 input:where([type='reset']),
 input:where([type='submit']) {
   -webkit-appearance: button;
-  background-color: transparent;
+  background-color: initial;
   background-image: none;
 }
 :-moz-focusring {
@@ -223,7 +222,7 @@ input:where([type='submit']) {
   box-shadow: none;
 }
 progress {
-  vertical-align: baseline;
+  vertical-align: initial;
 }
 ::-webkit-inner-spin-button,
 ::-webkit-outer-spin-button {
@@ -495,7 +494,7 @@ pre {
 pre code {
   border-width: 0;
   padding: 0;
-  background-color: transparent;
+  background-color: initial;
   border: none;
 }
 .chroma {
@@ -1419,7 +1418,7 @@ textarea:invalid {
 }
 .prose
   :where(pre code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
-  background-color: transparent;
+  background-color: initial;
   border-radius: 0;
   padding: 0;
   font-weight: inherit;
@@ -1477,7 +1476,7 @@ textarea:invalid {
 }
 .prose
   :where(tbody td):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
-  vertical-align: baseline;
+  vertical-align: initial;
 }
 .prose :where(tfoot):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   border-top-width: 1px;
@@ -2298,7 +2297,6 @@ textarea:invalid {
   border-radius: 9999px;
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
-  -o-object-fit: cover;
   object-fit: cover;
 }
 .avatar:is(.dark *) {
@@ -2655,7 +2653,7 @@ textarea:invalid {
 }
 .article-content
   :where(pre code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
-  background-color: transparent;
+  background-color: initial;
   border-radius: 0;
   padding: 0;
   font-weight: inherit;
@@ -2715,7 +2713,7 @@ textarea:invalid {
 }
 .article-content
   :where(tbody td):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
-  vertical-align: baseline;
+  vertical-align: initial;
 }
 .article-content
   :where(tfoot):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
@@ -3786,7 +3784,6 @@ textarea:invalid {
   fill: currentColor;
 }
 .object-cover {
-  -o-object-fit: cover;
   object-fit: cover;
 }
 .p-2 {
