@@ -715,6 +715,8 @@ npm run pre-commit
 
 **Time:** ~15-45 seconds (only processes changed files)
 
+> **🚀 CI Pipeline**: All these checks now run in pre-commit hooks instead of CI for faster deployments!
+
 #### 2. Test Pre-Commit (Medium) 🧪
 
 **Run manually when you want to include tests**
@@ -748,6 +750,36 @@ npm run pre-commit:full
 - ✅ Hugo build test (if content changed)
 
 **Time:** ~3-5 minutes
+
+### ⚡ Optimized CI/CD Pipeline
+
+Our GitHub Actions workflow has been streamlined for maximum speed and efficiency:
+
+#### What Runs in CI (GitHub Actions)
+```yaml
+# Only essential steps for fast deployment
+- 📥 Checkout code
+- 🟢 Setup Node.js with caching
+- 📦 Install dependencies
+- ⚛️ Build React components
+- 🦄 Setup Hugo
+- 🚀 Build Hugo site
+- 📤 Deploy to GitHub Pages
+```
+
+#### What Runs in Pre-Commit (Local)
+- 🔒 Security audits
+- 🎨 Code formatting & linting
+- ✅ TypeScript compilation
+- 📝 Content validation
+- 🧪 Unit tests
+- 🏗️ Build verification
+
+**Benefits:**
+- ⚡ **Faster CI**: ~2-3 minutes vs previous ~10-15 minutes
+- 🚫 **No CI Failures**: Quality issues caught before push
+- 💰 **Reduced CI Costs**: Less compute time in GitHub Actions
+- 🔄 **Immediate Feedback**: Developers get instant feedback locally
 
 ### 🛠️ Configuration
 
@@ -1250,9 +1282,9 @@ git commit -m "refactor: improve component structure"
 
 ### Pipeline Overview
 
-Our CI/CD pipeline ensures code quality, security, and reliable deployments through automated workflows:
+Our CI/CD pipeline is optimized for speed and efficiency with quality gates moved to pre-commit hooks:
 
-> **🎯 Recent Update**: Linting and formatting checks have been moved from CI to pre-commit hooks only. This makes CI faster and less error-prone while ensuring code quality is maintained during development.
+> **⚡ Optimized Pipeline**: The CI/CD workflow has been streamlined to focus only on essential build and deployment steps. All quality checks (linting, testing, validation) now run in pre-commit hooks for faster CI builds and immediate developer feedback.
 
 ```mermaid
 graph LR

@@ -30,7 +30,9 @@
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
     "validate:content": "node scripts/validate-authors.cjs && node scripts/validate-frontmatter.cjs",
-    "pre-commit": "lint-staged && npm run type-check && npm run test",
+    "validate:all": "npm audit --audit-level moderate && npm run validate:content",
+    "test:unit": "vitest run",
+    "pre-commit": "lint-staged && npm run validate:all && npm run type-check && npm run test:unit",
     "pre-commit:full": "./scripts/pre-commit-comprehensive.sh",
     "prepare": "husky install",
     "clean": "rm -rf public/ static/js/*.js static/js/*.map node_modules/.cache/ .hugo_build.lock"
