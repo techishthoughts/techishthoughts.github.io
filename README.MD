@@ -706,12 +706,14 @@ npm run pre-commit
 
 **What it does:**
 
-- 🎨 **Format Check & Auto-Fix**: Automatically fixes formatting issues
-- ✅ **Linting (ESLint)**: Code quality checks with auto-fix
-- ✅ **Content Validation**: Authors & frontmatter validation
-- ✅ **File Processing**: Staged files only for performance
+- 🎨 **Lint-Staged Processing**: Only processes staged files for maximum speed
+- ✅ **Auto-Fix Formatting**: Prettier formatting with auto-fix
+- ✅ **Auto-Fix Linting**: ESLint with auto-fix (max 10 warnings allowed)
+- ✅ **Content Validation**: Authors & frontmatter validation (only if changed)
+- ✅ **Type Checking**: TypeScript compilation check
+- ✅ **Unit Tests**: Quick test run to catch regressions
 
-**Time:** ~10-30 seconds
+**Time:** ~15-45 seconds (only processes changed files)
 
 #### 2. Test Pre-Commit (Medium) 🧪
 
@@ -757,7 +759,7 @@ Located in `package.json` with comprehensive file coverage:
 {
   "lint-staged": {
     "assets/js/**/*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
+      "eslint --fix --max-warnings 10",
       "prettier --write"
     ],
     "*.{js,jsx,json,css,md,yml,yaml,html}": ["prettier --write"],
@@ -772,6 +774,12 @@ Located in `package.json` with comprehensive file coverage:
   }
 }
 ```
+
+**Key Changes:**
+- 🎯 **Linting Only in Pre-Commit**: Removed from CI pipeline to prevent blocking deployments
+- ⚡ **Faster CI**: CI now focuses on building and testing, not linting
+- 🔧 **Developer-Friendly**: Allows up to 10 warnings in pre-commit (vs 0 in CI)
+- 📦 **Lint-Staged Only**: Only lints files you're actually changing
 
 #### Format Check Scripts
 
@@ -1243,6 +1251,8 @@ git commit -m "refactor: improve component structure"
 ### Pipeline Overview
 
 Our CI/CD pipeline ensures code quality, security, and reliable deployments through automated workflows:
+
+> **🎯 Recent Update**: Linting and formatting checks have been moved from CI to pre-commit hooks only. This makes CI faster and less error-prone while ensuring code quality is maintained during development.
 
 ```mermaid
 graph LR

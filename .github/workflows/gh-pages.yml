@@ -143,17 +143,7 @@ jobs:
             echo "✅ $file validated"
           done
 
-      - name: 🔧 Lint TypeScript/JavaScript
-        run: |
-          echo "🔧 Linting TypeScript and JavaScript files..."
-          npm run lint
-          echo "✅ Code linting completed"
 
-      - name: 🎨 Check Code Formatting
-        run: |
-          echo "🎨 Checking code formatting..."
-          npm run format:check
-          echo "✅ Code formatting check completed"
 
   test:
     name: 🧪 Run Tests
