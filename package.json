@@ -36,13 +36,25 @@
     "clean": "rm -rf public/ static/js/*.js static/js/*.map node_modules/.cache/ .hugo_build.lock"
   },
   "dependencies": {
-    "fuse.js": "^7.0.0"
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^10.18.0",
+    "fuse.js": "^7.0.0",
+    "immer": "^10.0.3",
+    "lodash-es": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.29.0",
     "@playwright/test": "^1.53.1",
+    "@vitejs/plugin-react": "^4.2.1",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^16.3.0",
@@ -66,6 +78,7 @@
     "prettier": "^3.6.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.3.3",
+    "vite": "^5.1.4",
     "vitest": "^3.2.4"
   },
   "lint-staged": {
