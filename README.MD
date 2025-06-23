@@ -32,21 +32,18 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Core Technologies
 
 - **[Hugo](https://gohugo.io/)** `v0.147.5+` - Static site generator chosen for:
-
   - ⚡ **Performance**: Sub-second build times for 100+ posts
   - 🔍 **SEO Excellence**: Built-in SEO optimization and structured data
   - 📱 **Mobile-First**: Responsive templates out of the box
   - 🌐 **Multi-language**: Ready for internationalization
 
 - **[React](https://reactjs.org/)** `v18.2.0` - Interactive UI components for:
-
   - 🎯 **Component Reusability**: Modular, testable components
   - 🔄 **State Management**: Complex interactions (search, comments, TTS)
   - 🎨 **Dynamic UI**: Real-time updates and animations
   - ♿ **Accessibility**: ARIA support and keyboard navigation
 
 - **[TypeScript](https://www.typescriptlang.org/)** `v5.3.3` - Type safety providing:
-
   - 🛡️ **Runtime Safety**: Catch errors at compile time
   - 📖 **Developer Experience**: IntelliSense and auto-completion
   - 🔧 **Refactoring**: Safe code changes across large codebase
@@ -61,7 +58,6 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Frontend Stack
 
 - **[Chakra UI](https://chakra-ui.com/)** `v2.8.2` - Design system providing:
-
   - 🎨 **Consistent Design**: Unified component library
   - 🌙 **Dark Mode**: Built-in theme switching
   - ♿ **Accessibility**: WCAG 2.1 AA compliant components
@@ -69,21 +65,18 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
   - 🎭 **Customization**: Extensive theming capabilities
 
 - **[Framer Motion](https://www.framer.com/motion/)** `v10.18.0` - Animation library for:
-
   - ✨ **Smooth Animations**: 60fps performance animations
   - 🎯 **Gesture Handling**: Touch and mouse interactions
   - 📐 **Layout Animations**: Automatic layout transitions
   - 🎪 **Complex Sequences**: Orchestrated animation timelines
 
 - **[TanStack Query](https://tanstack.com/query/latest)** `v5.17.15` - Server state management:
-
   - 🔄 **Caching**: Intelligent data caching and invalidation
   - 🔁 **Background Updates**: Automatic refetching
   - ⚡ **Optimistic Updates**: Instant UI feedback
   - 📡 **Offline Support**: Offline-first architecture
 
 - **[Zustand](https://github.com/pmndrs/zustand)** `v4.4.7` - Lightweight state management:
-
   - 🪶 **Minimal Bundle**: <1KB compressed
   - 🎯 **Simple API**: No boilerplate required
   - 🔄 **Persistence**: LocalStorage integration
@@ -98,28 +91,24 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### Development Tools
 
 - **[Vitest](https://vitest.dev/)** `v3.2.4` - Testing framework chosen for:
-
   - ⚡ **Speed**: 10x faster than Jest
   - 🔧 **Vite Integration**: Native Vite support
   - 🎯 **Modern Features**: ESM, TypeScript, JSX out of the box
   - 📊 **Coverage**: Built-in code coverage with v8
 
 - **[Playwright](https://playwright.dev/)** `v1.53.1` - E2E testing providing:
-
   - 🌐 **Cross-Browser**: Chrome, Firefox, Safari, Edge
   - 📱 **Mobile Testing**: Real device simulation
   - 🎥 **Test Recording**: Video and screenshot capture
   - 🔄 **Auto-Wait**: Smart waiting for elements
 
 - **[ESLint](https://eslint.org/)** `v8.57.1` - Code linting with:
-
   - 🛡️ **Error Prevention**: Catch bugs before runtime
   - 📏 **Code Standards**: Consistent code style
   - 🔧 **Auto-Fix**: Automatic code corrections
   - 🎯 **TypeScript Support**: Full TS integration
 
 - **[Prettier](https://prettier.io/)** `v3.2.4` - Code formatting ensuring:
-
   - 🎨 **Consistent Style**: Unified code formatting
   - ⚡ **Fast Formatting**: Instant code beautification
   - 🔧 **Zero Config**: Works out of the box
@@ -134,7 +123,6 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
 ### CI/CD & Deployment
 
 - **GitHub Actions** - Automated workflows providing:
-
   - 🔄 **Continuous Integration**: Automated testing on every PR
   - 🚀 **Continuous Deployment**: Automatic deployment to GitHub Pages
   - 🔒 **Security Scanning**: Automated vulnerability detection
@@ -142,7 +130,6 @@ Visit [techishthoughts.github.io](https://techishthoughts.github.io) to see the 
   - 🤖 **Dependency Management**: Automated dependency updates
 
 - **GitHub Pages** - Static hosting offering:
-
   - 🌐 **Global CDN**: Fast content delivery worldwide
   - 🔒 **HTTPS**: Automatic SSL certificate management
   - 🎯 **Custom Domain**: Custom domain support
@@ -1700,14 +1687,12 @@ assets/js/test/
 #### Unit Testing Stack
 
 - **[Vitest](https://vitest.dev/)** - Core testing framework
-
   - ⚡ **Performance**: 3-5x faster than Jest
   - 🔧 **Vite Integration**: Native ESM and TypeScript support
   - 📊 **Coverage**: Built-in code coverage with v8
   - 🎯 **Watch Mode**: Intelligent test re-running
 
 - **[@testing-library/react](https://testing-library.com/react)** - Component testing
-
   - 🎯 **User-Centric**: Test behavior, not implementation
   - ♿ **Accessibility**: Encourages accessible component design
   - 🔍 **Query Methods**: Semantic element selection
