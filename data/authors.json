@@ -138,5 +138,74 @@
     },
     "followers": 156,
     "following": 3
+  },
+  "gabriel-jeronimo": {
+    "name": "Gabriel Jeronimo",
+    "title": "Blockchain Developer & Smart Contract Engineer",
+    "bio": "Blockchain developer specializing in Ethereum, Solidity, and DeFi protocols. Expert in smart contract development and Web3 technologies.",
+    "long_bio": "Gabriel Jeronimo is a blockchain developer with extensive experience in Ethereum ecosystem development, smart contract engineering, and decentralized finance (DeFi) protocols. He specializes in Solidity development, Foundry framework, and building secure, scalable smart contracts.\n\nGabriel has contributed to various DeFi projects, including escrow marketplace systems, token protocols, and automated market makers. He's passionate about the potential of blockchain technology to create transparent, trustless systems that can transform traditional finance and commerce.\n\nWhen not coding smart contracts, Gabriel enjoys researching emerging blockchain technologies, contributing to open-source Web3 projects, and writing about the intersection of traditional software development and blockchain innovation.",
+    "avatar": "https://avatars.githubusercontent.com/u/gabriel-jeronimo?v=4",
+    "location": "São Paulo, Brazil",
+    "company": "Web3 Innovations",
+    "website": "https://gabrieljeronimo.dev",
+    "expertise": [
+      "Solidity & Smart Contracts",
+      "Ethereum Development",
+      "DeFi Protocols",
+      "Foundry Framework",
+      "Web3 Integration",
+      "Blockchain Architecture",
+      "Security Auditing"
+    ],
+    "languages": ["Solidity", "JavaScript", "TypeScript", "Rust", "Python"],
+    "tools": [
+      "Foundry",
+      "Hardhat",
+      "MetaMask",
+      "OpenZeppelin",
+      "Web3.js",
+      "Ethers.js",
+      "IPFS",
+      "Chainlink"
+    ],
+    "certifications": [
+      "Certified Ethereum Developer",
+      "Smart Contract Security Specialist",
+      "DeFi Protocol Developer"
+    ],
+    "experience": {
+      "years": 4,
+      "current_role": "Senior Blockchain Developer",
+      "previous_roles": [
+        "Smart Contract Developer at DeFi Labs",
+        "Frontend Developer at Web3 Startup",
+        "Full-Stack Developer at TechCorp"
+      ]
+    },
+    "achievements": [
+      "Deployed smart contracts handling $10M+ in TVL",
+      "Contributed to 5+ major DeFi protocols",
+      "Published smart contract security best practices",
+      "Led blockchain integration for enterprise clients"
+    ],
+    "social": {
+      "linkedin": "https://www.linkedin.com/in/gabriel-jeronimo-dev/",
+      "github": "https://github.com/gabriel-jeronimo",
+      "twitter": "https://twitter.com/gabriel_web3",
+      "dev": "https://dev.to/gabrieljeronimo",
+      "medium": "https://medium.com/@gabriel.jeronimo"
+    },
+    "contact": {
+      "email": "gabriel@techishthoughts.com",
+      "calendar": "https://calendly.com/gabriel-jeronimo"
+    },
+    "stats": {
+      "posts_count": 3,
+      "github_stars": 450,
+      "followers": 320,
+      "contributions": 800
+    },
+    "followers": 89,
+    "following": 2
   }
 }

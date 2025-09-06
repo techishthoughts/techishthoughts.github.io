@@ -3,7 +3,8 @@ languageCode = "en-us"
 title = "Tech.ish Thoughts"
 
 [outputs]
-  home = ["HTML", "JSON"]
+  home = ["HTML", "JSON", "RSS"]
+  section = ["HTML", "RSS"]
 
 [pagination]
   pagerSize = 10
@@ -11,19 +12,42 @@ title = "Tech.ish Thoughts"
 [params]
   description = "Insights, tutorials, and thoughts from tech enthusiasts, developers, and designers."
   author = "Tech.ish Thoughts Community"
+  keywords = ["tech blog", "programming", "software development", "tutorials", "blockchain", "web development"]
 
   # Social media
   github = "https://github.com/techishthoughts/techishthoughts.github.io"
+  twitter = "https://twitter.com/techishthoughts"
+  linkedin = "https://linkedin.com/company/techish-thoughts"
 
   # Features
   showReadingTime = true
   showWordCount = false
-  showShareButtons = false
-  showToc = false
+  showShareButtons = true
+  showToc = true
+  enableSearch = true
+  enableComments = false
 
-  # SEO
+  # SEO and Performance
   enableTwitterCard = true
   enableOpenGraph = true
+  enableJsonLD = true
+  enableRobotsTXT = true
+  enableSitemap = true
+  enableGitInfo = true
+  enableEmoji = true
+  
+  # Analytics (placeholder for when user adds)
+  # googleAnalytics = ""
+  
+  # Performance
+  enableInlineCSS = true
+  enableMinification = true
+  
+  # RSS and feeds
+  rssLimit = 20
+  
+  # Image optimization
+  enableImageProcessing = true
 
 [markup]
   [markup.goldmark]
@@ -52,3 +76,61 @@ title = "Tech.ish Thoughts"
   [[related.indices]]
     name = "categories"
     weight = 200
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.8
+
+[permalinks]
+  posts = "/posts/:year/:month/:slug/"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "Contributors"
+    url = "/contributors/"
+    weight = 3
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 4
+
+[minify]
+  disableCSS = false
+  disableHTML = false
+  disableJS = false
+  disableJSON = false
+  disableSVG = false
+  disableXML = false
+  minifyOutput = true
+  
+  [minify.tdewolff]
+    [minify.tdewolff.css]
+      keepCSS2 = true
+      precision = 0
+    [minify.tdewolff.html]
+      keepComments = false
+      keepConditionalComments = true
+      keepDefaultAttrVals = true
+      keepDocumentTags = true
+      keepEndTags = true
+      keepQuotes = false
+      keepWhitespace = false
+    [minify.tdewolff.js]
+      keepVarNames = false
+      precision = 0
+    [minify.tdewolff.json]
+      keepNumbers = false
+      precision = 0
+    [minify.tdewolff.svg]
+      keepComments = false
+      precision = 0
+    [minify.tdewolff.xml]
+      keepWhitespace = false

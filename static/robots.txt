@@ -1,0 +1,36 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://techishthoughts.github.io/sitemap.xml
+
+# Crawl delay for better server performance
+Crawl-delay: 1
+
+# Allow access to CSS and JS files
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# Block access to admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.git/
+Disallow: /node_modules/
+
+# Block access to search results and pagination to prevent duplicate content issues
+Disallow: /search/
+Disallow: /*?page=*
+
+# Allow major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
