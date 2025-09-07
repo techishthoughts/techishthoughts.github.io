@@ -1,0 +1,70 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - duplicate
+      - invalid
+      - wontfix
+    authors:
+      - octocat
+  categories:
+    - title: 🚀 New Features
+      labels:
+        - enhancement
+        - feature
+    - title: 🐛 Bug Fixes
+      labels:
+        - bug
+        - fix
+    - title: 🔒 Security
+      labels:
+        - security
+    - title: 🏗️ Refactoring
+      labels:
+        - refactor
+        - refactoring
+    - title: 📚 Documentation
+      labels:
+        - documentation
+        - docs
+    - title: 🧪 Testing
+      labels:
+        - test
+        - tests
+    - title: 🔧 Maintenance
+      labels:
+        - maintenance
+        - chore
+    - title: 📦 Dependencies
+      labels:
+        - dependencies
+        - deps
+    - title: ⚡ Performance
+      labels:
+        - performance
+        - perf
+    - title: 🎨 Styling
+      labels:
+        - style
+        - css
+        - ui
+    - title: 🔨 Build System
+      labels:
+        - build
+        - ci
+        - cd
+    - title: 📱 Mobile
+      labels:
+        - mobile
+        - responsive
+    - title: ♿ Accessibility
+      labels:
+        - accessibility
+        - a11y
+    - title: 🌐 Internationalization
+      labels:
+        - i18n
+        - l10n
+    - title: Other Changes
+      labels:
+        - "*"

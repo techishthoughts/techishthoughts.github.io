@@ -1,0 +1,178 @@
+name: 🏷️ Release & Release Notes
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0, v2.1.3, etc.
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  create-release:
+    name: 📦 Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for release notes
+
+      - name: 🏷️ Get Tag Info
+        id: tag-info
+        run: |
+          echo "tag-name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "is-prerelease=$(echo ${GITHUB_REF#refs/tags/} | grep -q -E '(alpha|beta|rc)' && echo true || echo false)" >> $GITHUB_OUTPUT
+          
+      - name: 📝 Generate Release Notes
+        id: release-notes
+        run: |
+          # Get the previous tag for comparison
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          CURRENT_TAG="${{ steps.tag-info.outputs.tag-name }}"
+          
+          echo "## 🚀 What's Changed" > release_notes.md
+          echo "" >> release_notes.md
+          
+          # If we have a previous tag, show commits since then
+          if [ ! -z "$PREVIOUS_TAG" ]; then
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREVIOUS_TAG}...${CURRENT_TAG}" >> release_notes.md
+            echo "" >> release_notes.md
+            
+            # Get commit messages between tags
+            echo "### 📋 Commits" >> release_notes.md
+            git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges >> release_notes.md
+          else
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/commits/${CURRENT_TAG}" >> release_notes.md
+            echo "" >> release_notes.md
+            
+            # Get all commits for first release
+            echo "### 📋 All Commits" >> release_notes.md
+            git log HEAD --pretty=format:"- %s (%h)" --no-merges >> release_notes.md
+          fi
+          
+          echo "" >> release_notes.md
+          echo "---" >> release_notes.md
+          echo "*🤖 Auto-generated release notes*" >> release_notes.md
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag-info.outputs.tag-name }}
+          name: ${{ steps.tag-info.outputs.tag-name }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: ${{ steps.tag-info.outputs.is-prerelease }}
+          generate_release_notes: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  enhanced-release-notes:
+    name: 📝 Enhanced Release Notes  
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 🏷️ Get Release Info
+        id: release-info
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          echo "tag-name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          
+          # Get release info from GitHub API
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${TAG_NAME} --jq '.id')
+          echo "release-id=${RELEASE_ID}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚡ Update Release with Enhanced Notes
+        run: |
+          TAG_NAME="${{ steps.release-info.outputs.tag-name }}"
+          RELEASE_ID="${{ steps.release-info.outputs.release-id }}"
+          
+          # Generate enhanced release notes using GitHub's API
+          gh api repos/${{ github.repository }}/releases/generate-notes \
+            -f tag_name="${TAG_NAME}" \
+            -f target_commitish="main" > generated_notes.json
+          
+          # Extract the generated body
+          GENERATED_BODY=$(cat generated_notes.json | jq -r '.body')
+          
+          # Create enhanced release notes
+          cat << EOF > enhanced_notes.md
+          ## 🎉 Release ${TAG_NAME}
+          
+          **Release Date**: $(date +"%Y-%m-%d")
+          
+          ${GENERATED_BODY}
+          
+          ---
+          
+          ## 📊 Project Stats
+          
+          - **Total Commits**: $(git rev-list --count HEAD)
+          - **Contributors**: $(git shortlog -sn HEAD | wc -l)
+          - **Files Changed**: $(git diff --name-only HEAD~10 HEAD | wc -l) files in last 10 commits
+          
+          ## 🔗 Links
+          
+          - [📚 Documentation](https://github.com/${{ github.repository }}#readme)
+          - [🐛 Report Issues](https://github.com/${{ github.repository }}/issues)
+          - [💬 Discussions](https://github.com/${{ github.repository }}/discussions)
+          - [🌐 Live Site](https://${{ github.repository_owner }}.github.io)
+          
+          ---
+          
+          **🤖 Generated with ❤️ by GitHub Actions**
+          EOF
+          
+          # Update the release with enhanced notes
+          gh api repos/${{ github.repository }}/releases/${RELEASE_ID} \
+            -X PATCH \
+            -f body="$(cat enhanced_notes.md)"
+            
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🎯 Create Release Announcement
+        run: |
+          TAG_NAME="${{ steps.release-info.outputs.tag-name }}"
+          
+          # Create a simple announcement
+          cat << EOF > announcement.md
+          🎉 **New Release: ${TAG_NAME}**
+          
+          We're excited to announce the release of ${TAG_NAME}! 
+          
+          Check out the [release notes](https://github.com/${{ github.repository }}/releases/tag/${TAG_NAME}) for details on what's new.
+          
+          ---
+          *Automatically posted by Release Bot 🤖*
+          EOF
+          
+          echo "Release announcement created for ${TAG_NAME}"
+          echo "Content:"
+          cat announcement.md
+
+      - name: 📢 Notify Success
+        run: |
+          echo "✅ Release ${{ steps.release-info.outputs.tag-name }} created successfully!"
+          echo "🔗 View release: https://github.com/${{ github.repository }}/releases/tag/${{ steps.release-info.outputs.tag-name }}"
