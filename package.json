@@ -17,7 +17,7 @@
   "scripts": {
     "start": "hugo server -D --port 1313 --bind 0.0.0.0 --baseURL http://localhost:1313 --environment development",
     "build": "pnpm run build:css && hugo --environment production --minify",
-    "build:css": "pnpm dlx tailwindcss@latest -i ./assets/css/main.css -o ./static/css/main.css --minify",
+    "build:css": "pnpm dlx tailwindcss@3.4.17 -i ./assets/css/main.css -o ./static/css/main.css --minify",
     "dev": "hugo server -D --port 1313 --bind 0.0.0.0 --baseURL http://localhost:1313 --environment development --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -79,7 +79,7 @@
     "lint-staged": "^16.1.5",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.12",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.9.2",
     "vite": "^7.1.2",
     "vitest": "^3.2.4"
