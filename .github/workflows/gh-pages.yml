@@ -46,7 +46,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🎨 Build CSS with Tailwind
-        run: pnpm run build:css
+        run: |
+          export PATH="$PWD/node_modules/.bin:$PATH"
+          pnpm run build:css
 
       - name: 🦄 Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -99,7 +101,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🎨 Build CSS with Tailwind
-        run: pnpm run build:css
+        run: |
+          export PATH="$PWD/node_modules/.bin:$PATH"
+          pnpm run build:css
 
       - name: 🦄 Setup Hugo
         uses: peaceiris/actions-hugo@v3
