@@ -17,16 +17,33 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 📦 Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: 📦 Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: 📦 Install Dependencies
-        run: npm ci
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🧪 Run Tests
         run: |
           echo "🧪 Running tests to ensure PR is safe to merge..."
-          npm run test
-          npm run lint
+          pnpm run test:unit
+          pnpm run lint
           echo "✅ All tests passed"
 
       - name: ✅ Auto-approve PR
