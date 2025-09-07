@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: 📦 Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🎨 Build CSS with Tailwind
         run: |
@@ -98,7 +98,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: 📦 Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🎨 Build CSS with Tailwind
         run: |
