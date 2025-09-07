@@ -11,9 +11,39 @@ env:
   NODE_VERSION: '20'
 
 jobs:
+  build:
+    name: 🛠️ Build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🎨 Build CSS with Tailwind
+        run: npm run build:css
+
+      - name: 🦄 Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: 🚀 Build Hugo Site
+        run: hugo --environment production --minify --gc
+
   build-and-deploy:
     name: 🚀 Build & Deploy
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: read
       pages: write
@@ -47,22 +77,20 @@ jobs:
         run: hugo --environment production --minify --gc
 
       - name: 🔧 Setup Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: 📤 Upload Pages Artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
       - name: 🚀 Deploy to GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: ✅ Deployment Success
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           echo "🎉 Site deployed successfully!"
           echo "🌐 Live at: ${{ steps.deployment.outputs.page_url }}"
