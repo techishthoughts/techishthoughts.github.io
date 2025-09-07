@@ -23,13 +23,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 📦 Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: 📦 Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: 📦 Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🎨 Build CSS with Tailwind
-        run: npm run build:css
+        run: pnpm run build:css
 
       - name: 🦄 Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -59,13 +76,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 📦 Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: 📦 Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: 📦 Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🎨 Build CSS with Tailwind
-        run: npm run build:css
+        run: pnpm run build:css
 
       - name: 🦄 Setup Hugo
         uses: peaceiris/actions-hugo@v3
