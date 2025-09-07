@@ -17,7 +17,7 @@
   "scripts": {
     "start": "hugo server -D --port 1313 --bind 0.0.0.0 --baseURL http://localhost:1313 --environment development",
     "build": "pnpm run build:css && hugo --environment production --minify",
-    "build:css": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --minify",
+    "build:css": "pnpm dlx tailwindcss@latest -i ./assets/css/main.css -o ./static/css/main.css --minify",
     "dev": "hugo server -D --port 1313 --bind 0.0.0.0 --baseURL http://localhost:1313 --environment development --watch",
     "test": "vitest run",
     "test:watch": "vitest",
