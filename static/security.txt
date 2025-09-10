@@ -1,0 +1,18 @@
+# 2025 Security Policy
+# Content Protection Notice
+
+# AI Training Policy
+This website's content is protected under copyright law.
+Unauthorized scraping, crawling, or data harvesting for AI training is prohibited.
+
+# Reporting Security Issues
+Contact: security@techishthoughts.com
+Preferred-Languages: en
+
+# Content License
+All content on this website is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+Commercial use and AI training use is prohibited without explicit written permission.
+
+# Legal Notice
+Violation of our robots.txt or terms of service may result in legal action.
+This includes but is not limited to: automated scraping, content harvesting, AI training data collection.

@@ -1,15 +1,16 @@
 {{ define "main" }}
-<article class="container">
+<main id="main-content" class="container min-h-screen py-8" role="main">
+<article>
   <header class="page-header">
-    <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ .Title }}</h1>
-    <div class="text-lg text-gray-600 max-w-2xl mx-auto">
+    <h1>{{ .Title }}</h1>
+    <div>
       {{ .Description }}
     </div>
   </header>
 
-  <main class="mb-12">
+  <section class="content-section">
     {{ .Content }}
-  </main>
+  </section>
 
   <!-- Contributors Grid -->
   <section class="mt-12">
@@ -106,16 +107,13 @@
   </section>
 
   <!-- Call to Action -->
-  <section class="text-center mt-16 p-8 bg-gray-50 rounded-2xl border border-gray-200">
-    <h3 class="text-2xl font-bold text-gray-900 mb-4">
-      Join Our Contributors
-    </h3>
-    <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
-      We're always looking for passionate developers to join our team and share their knowledge with the community.
-    </p>
+  <section class="cta-section">
+    <h3>Join Our Contributors</h3>
+    <p>We're always looking for passionate developers to join our team and share their knowledge with the community.</p>
     <a href="https://github.com/techishthoughts/techishthoughts.github.io" class="btn-primary">
       Contribute on GitHub
     </a>
   </section>
 </article>
+</main>
 {{ end }}

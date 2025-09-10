@@ -1,0 +1,50 @@
+# 2025 Content Protection - .htaccess
+# Block AI Crawlers at Server Level
+
+# Block OpenAI Crawlers
+SetEnvIfNoCase User-Agent "GPTBot" block_bot
+SetEnvIfNoCase User-Agent "ChatGPT-User" block_bot
+
+# Block Anthropic Crawlers  
+SetEnvIfNoCase User-Agent "ClaudeBot" block_bot
+SetEnvIfNoCase User-Agent "anthropic-ai" block_bot
+SetEnvIfNoCase User-Agent "Claude-Web" block_bot
+
+# Block Google AI Crawlers
+SetEnvIfNoCase User-Agent "Google-Extended" block_bot
+SetEnvIfNoCase User-Agent "Bard" block_bot
+SetEnvIfNoCase User-Agent "PaLM" block_bot
+
+# Block Other AI Crawlers
+SetEnvIfNoCase User-Agent "CCBot" block_bot
+SetEnvIfNoCase User-Agent "PerplexityBot" block_bot
+SetEnvIfNoCase User-Agent "Bytespider" block_bot
+SetEnvIfNoCase User-Agent "FacebookBot" block_bot
+SetEnvIfNoCase User-Agent "Applebot-Extended" block_bot
+
+# Deny access to blocked bots
+<RequireAll>
+    Require all granted
+    Require not env block_bot
+</RequireAll>
+
+# Rate limiting - max 100 requests per 10 minutes per IP
+<IfModule mod_evasive24.c>
+    DOSHashTableSize    32768
+    DOSPageCount        50
+    DOSPageInterval     10
+    DOSLogDir           "/var/log/httpd"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-Robots-Tag "noai, noimageai"
+</IfModule>
+
+# Block suspicious patterns
+RewriteEngine On
+RewriteCond %{HTTP_USER_AGENT} ^.*(bot|crawl|spider|scrape|harvest).*$ [NC]
+RewriteCond %{HTTP_USER_AGENT} !^.*(googlebot|bingbot|duckduckbot|slurp).*$ [NC]
+RewriteRule ^(.*)$ - [F,L]

@@ -1,0 +1,28 @@
+# TechIsh Thoughts - Humans.txt
+# The humans responsible & technology colophon
+
+# TEAM
+  Developer: Arthur Costa & Contributors
+  Location: Global
+  
+# TECHNOLOGY
+  Standards: HTML5, CSS3, JavaScript ES2025
+  Framework: Hugo Static Site Generator v0.148.2+
+  Frontend: React 19, TypeScript, Chakra UI v3
+  Build: Vite, Tailwind CSS 3.4
+  Testing: Vitest, Playwright
+  Analytics: Privacy-focused
+  
+# SECURITY & PRIVACY
+  AI Training: PROHIBITED
+  Content Protection: ENABLED
+  Privacy: No tracking without consent
+  Security Headers: Comprehensive CSP, HSTS
+  
+# CONTENT POLICY
+  License: Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+  AI Training: Explicitly prohibited
+  Scraping: Blocked via robots.txt, .htaccess, headers
+  
+# LAST UPDATE
+  2025-01-10

@@ -1,0 +1,39 @@
+# AI Training Policy - 2025
+# TechIsh Thoughts Content Protection
+
+# NOTICE TO AI COMPANIES AND CRAWLERS
+This website's content is protected under copyright law.
+
+# PROHIBITED USES
+- AI model training
+- Large Language Model (LLM) training
+- Machine learning dataset creation
+- Content scraping for commercial AI purposes
+- Unauthorized data harvesting
+- Automated content extraction
+
+# LICENSING
+All content on this website is licensed under:
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+
+# COMMERCIAL USE
+Commercial use requires explicit written permission from:
+legal@techishthoughts.com
+
+# COMPLIANCE
+Accessing this website constitutes agreement to:
+1. Respect our robots.txt directives
+2. Comply with our terms of service
+3. Not use content for AI training without permission
+
+# ENFORCEMENT
+Violations may result in:
+- Legal action under copyright law
+- DMCA takedown notices
+- Cease and desist orders
+
+# CONTACT
+For licensing inquiries: legal@techishthoughts.com
+For security issues: security@techishthoughts.com
+
+Last updated: {{ now.Format "2006-01-02" }}

@@ -1,0 +1,55 @@
+# Netlify Configuration for Enhanced Security 2025
+[build]
+  publish = "public"
+  command = "npm run build"
+
+[build.environment]
+  HUGO_VERSION = "0.148.2"
+  NODE_VERSION = "18"
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    X-Robots-Tag = "noai, noimageai"
+    X-AI-Training = "disabled"
+    X-Content-Protection = "enabled"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:; frame-ancestors 'none';"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+
+# Cache optimizations
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# AI Protection for XML feeds
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    X-Robots-Tag = "noai, noimageai"
+
+[[headers]]
+  for = "/index.xml"
+  [headers.values]
+    X-Robots-Tag = "noai, noimageai"
+
+# Redirects for old URLs
+[[redirects]]
+  from = "https://techishthoughts.substack.com/*"
+  to = "https://techishthoughts.github.io/:splat"
+  status = 301

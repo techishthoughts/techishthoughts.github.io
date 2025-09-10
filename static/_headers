@@ -1,0 +1,46 @@
+# Netlify/Cloudflare Headers for Enhanced Security 2025
+
+/*
+  # Content Security Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:; frame-ancestors 'none';
+  
+  # AI Training Protection Headers
+  X-Robots-Tag: noai, noimageai
+  X-AI-Training: disabled
+  X-Content-Protection: enabled
+  
+  # Security Headers
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()
+  
+  # HSTS (1 year)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  
+  # Cache Control for Static Assets
+  Cache-Control: public, max-age=31536000, immutable
+
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# API/Content Protection
+/api/*
+  X-Robots-Tag: noindex, nofollow, noai, noimageai
+  X-Content-Type-Options: nosniff
+
+# Block AI Crawler Access to Critical Pages
+/sitemap.xml
+  X-Robots-Tag: noai, noimageai
+
+/rss.xml
+  X-Robots-Tag: noai, noimageai

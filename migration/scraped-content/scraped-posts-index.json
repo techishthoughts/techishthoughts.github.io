@@ -1,0 +1,48 @@
+{
+  "totalPosts": 3,
+  "scrapedAt": "2025-09-06T15:46:33.812Z",
+  "posts": [
+    {
+      "id": "sample-1",
+      "title": "Getting Started with React and TypeScript",
+      "slug": "getting-started-react-typescript",
+      "content": "# Getting Started with React and TypeScript\n\nReact and TypeScript make a powerful combination for building robust web applications. In this post, we'll explore how to set up a new React project with TypeScript and discuss the benefits of this setup.\n\n## Why TypeScript?\n\nTypeScript provides static type checking, which helps catch errors early in the development process. When combined with React, it offers:\n\n- Better IDE support with autocomplete\n- Compile-time error checking\n- Improved code documentation through types\n- Easier refactoring\n\n## Setting Up the Project\n\nTo create a new React project with TypeScript, you can use Create React App:\n\n```bash\nnpx create-react-app my-app --template typescript\ncd my-app\nnpm start\n```\n\nThis command creates a new React project with TypeScript already configured.\n\n## Creating Your First Component\n\nHere's an example of a simple React component written in TypeScript:\n\n```tsx\nimport React from 'react';\n\ninterface Props {\n  name: string;\n  age: number;\n}\n\nconst UserProfile: React.FC<Props> = ({ name, age }) => {\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>Age: {age}</p>\n    </div>\n  );\n};\n\nexport default UserProfile;\n```\n\n## Conclusion\n\nReact with TypeScript provides a great developer experience and helps build more reliable applications. The type safety and tooling support make it worth the initial learning curve.",
+      "summary": "Learn how to set up and use React with TypeScript for building robust web applications with better type safety and developer experience.",
+      "author": "Tech Writer",
+      "publishedAt": "2024-01-15T10:00:00Z",
+      "updatedAt": "2024-01-15T10:00:00Z",
+      "tags": ["react", "typescript", "javascript", "web-development"],
+      "categories": ["Frontend Development"],
+      "featured": true,
+      "coverImage": "/images/react-typescript.jpg"
+    },
+    {
+      "id": "sample-2",
+      "title": "Modern CSS Techniques for Better Layouts",
+      "slug": "modern-css-techniques-layouts",
+      "content": "# Modern CSS Techniques for Better Layouts\n\nCSS has evolved significantly over the years, introducing powerful layout techniques that make creating complex designs easier than ever. Let's explore some modern CSS features that can improve your layouts.\n\n## CSS Grid\n\nCSS Grid is a two-dimensional layout system that provides precise control over both rows and columns:\n\n```css\n.grid-container {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 20px;\n}\n```\n\n## Flexbox\n\nFlexbox excels at one-dimensional layouts and alignment:\n\n```css\n.flex-container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n```\n\n## CSS Custom Properties\n\nCustom properties (CSS variables) make your code more maintainable:\n\n```css\n:root {\n  --primary-color: #007bff;\n  --font-size-large: 1.5rem;\n}\n\n.button {\n  background-color: var(--primary-color);\n  font-size: var(--font-size-large);\n}\n```\n\n## Container Queries\n\nContainer queries allow components to adapt based on their container size:\n\n```css\n@container (min-width: 400px) {\n  .card {\n    display: flex;\n  }\n}\n```\n\n## Best Practices\n\n1. Use Grid for two-dimensional layouts\n2. Use Flexbox for one-dimensional layouts  \n3. Combine both when needed\n4. Leverage custom properties for theming\n5. Consider container queries for responsive components\n\nThese modern CSS techniques will help you create more flexible and maintainable layouts.",
+      "summary": "Explore modern CSS techniques including Grid, Flexbox, custom properties, and container queries to create better, more responsive layouts.",
+      "author": "CSS Expert",
+      "publishedAt": "2024-01-10T14:30:00Z",
+      "updatedAt": "2024-01-10T14:30:00Z",
+      "tags": ["css", "layout", "grid", "flexbox", "responsive-design"],
+      "categories": ["CSS", "Frontend Development"],
+      "featured": false,
+      "coverImage": "/images/css-layouts.jpg"
+    },
+    {
+      "id": "sample-3",
+      "title": "Building Scalable Node.js APIs",
+      "slug": "building-scalable-nodejs-apis",
+      "content": "# Building Scalable Node.js APIs\n\nCreating scalable APIs with Node.js requires careful consideration of architecture, error handling, and performance optimization. Here's a comprehensive guide to building robust APIs.\n\n## Project Structure\n\nA well-organized project structure is crucial for maintainability:\n\n```\nsrc/\n├── controllers/\n├── middleware/\n├── models/\n├── routes/\n├── services/\n├── utils/\n└── app.js\n```\n\n## Error Handling\n\nImplement centralized error handling:\n\n```javascript\n// middleware/errorHandler.js\nconst errorHandler = (err, req, res, next) => {\n  console.error(err.stack);\n  \n  res.status(err.status || 500).json({\n    message: err.message,\n    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })\n  });\n};\n\nmodule.exports = errorHandler;\n```\n\n## Input Validation\n\nUse libraries like Joi or express-validator:\n\n```javascript\nconst Joi = require('joi');\n\nconst userSchema = Joi.object({\n  name: Joi.string().required(),\n  email: Joi.string().email().required(),\n  age: Joi.number().integer().min(18)\n});\n\nconst validateUser = (req, res, next) => {\n  const { error } = userSchema.validate(req.body);\n  if (error) {\n    return res.status(400).json({ message: error.details[0].message });\n  }\n  next();\n};\n```\n\n## Rate Limiting\n\nProtect your API from abuse:\n\n```javascript\nconst rateLimit = require('express-rate-limit');\n\nconst limiter = rateLimit({\n  windowMs: 15 * 60 * 1000, // 15 minutes\n  max: 100 // limit each IP to 100 requests per windowMs\n});\n\napp.use(limiter);\n```\n\n## Caching\n\nImplement caching for better performance:\n\n```javascript\nconst Redis = require('redis');\nconst client = Redis.createClient();\n\nconst cache = (duration) => {\n  return async (req, res, next) => {\n    const key = req.originalUrl;\n    const cached = await client.get(key);\n    \n    if (cached) {\n      return res.json(JSON.parse(cached));\n    }\n    \n    res.sendResponse = res.json;\n    res.json = (body) => {\n      client.setex(key, duration, JSON.stringify(body));\n      res.sendResponse(body);\n    };\n    \n    next();\n  };\n};\n```\n\n## Database Connection Pooling\n\nUse connection pooling for better database performance:\n\n```javascript\nconst { Pool } = require('pg');\n\nconst pool = new Pool({\n  host: process.env.DB_HOST,\n  port: process.env.DB_PORT,\n  database: process.env.DB_NAME,\n  user: process.env.DB_USER,\n  password: process.env.DB_PASSWORD,\n  max: 20, // maximum number of connections\n  idleTimeoutMillis: 30000,\n});\n```\n\n## Conclusion\n\nBuilding scalable Node.js APIs requires attention to architecture, error handling, validation, rate limiting, caching, and database optimization. These practices will help you create APIs that can handle growth and maintain performance.",
+      "summary": "Learn how to build scalable Node.js APIs with proper architecture, error handling, validation, rate limiting, and performance optimization techniques.",
+      "author": "Backend Developer",
+      "publishedAt": "2024-01-08T09:15:00Z",
+      "updatedAt": "2024-01-08T09:15:00Z",
+      "tags": ["nodejs", "api", "backend", "scalability", "performance"],
+      "categories": ["Backend Development", "Node.js"],
+      "featured": false,
+      "coverImage": "/images/nodejs-api.jpg"
+    }
+  ]
+}
